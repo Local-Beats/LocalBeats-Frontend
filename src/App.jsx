@@ -12,17 +12,17 @@ import CallBack from "./components/CallBack";
 import { API_URL } from "./shared";
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 
-// Replace these with your Auth0 domain and client ID
+// DO NOT TOUCH OR CHAANGE THESE VALUES THIS IS FOR THE AUTH0 INTEGRATION
 const AUTH0_DOMAIN = "dev-m71z1z5w3vgzg8av.us.auth0.com";
 const AUTH0_CLIENT_ID = "qhqEo3tGexhy8VRLbVR1OiSv2KGuadlh";
 
 const App = () => {
   const [user, setUser] = useState(null);
 
-  // Optionally integrate Auth0 user info if needed
+  
   const { isAuthenticated, user: auth0User } = useAuth0();
 
-  // Keep your backend auth check, but you can also sync Auth0 user info
+  
   const checkAuth = async () => {
     try {
       const response = await axios.get(`${API_URL}/auth/me`, {
@@ -39,10 +39,10 @@ const App = () => {
     checkAuth();
   }, []);
 
-  // You might want to sync Auth0 user info or decide how to unify auth here
+  
   useEffect(() => {
     if (isAuthenticated && auth0User) {
-      // Example: update your local user state from Auth0 profile
+      
       setUser({
         name: auth0User.name,
         email: auth0User.email,
@@ -97,5 +97,3 @@ const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
 
 
-
-// test to help fix issues with merge
