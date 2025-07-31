@@ -19,37 +19,37 @@ Users should be able to create a poll, listing several options. Once they're sat
 - [x] User can log in & signup with an email and password
 - [ ] User can log in & signup with an OAuth provider
 - [ ] Users have first name, last name, email, and profile picture
-- [x] Users can view a list of polls they've created (draft, published, ended)
+- [ ] Users can view a list of polls they've created (draft, published, ended)
 - [ ] The application is deployed
 
 ### Poll Creation
 
-- [x] User can create a new poll with a title and description
+- [ ] User can create a new poll with a title and description
 - [ ] User can toggle whether or not to allow unauthenticated users to vote
-- [x] User can add multiple poll options (minimum 2)
-- [x] User can edit poll details while in draft status
-- [x] User can delete poll options
-- [x] User can set poll end date/time
+- [ ] User can add multiple poll options (minimum 2)
+- [ ] User can edit poll details while in draft status
+- [ ] User can delete poll options
+- [ ] User can set poll end date/time
   - (Optional: if no end date present, the poll must be manually closed)
 - [ ] User can publish a poll (changes status from draft to published)
 - [ ] Published polls cannot be modified
-- [x] User can duplicate an existing poll to create a new one
-- [x] User can delete a draft poll
+- [ ] User can duplicate an existing poll to create a new one
+- [ ] User can delete a draft poll
 - [ ] Optionally, the poll is only accessible to a predetermined list of users
 
 ### Voting
 
-- [x] Anyone with the poll link can access a published poll
-- [x] Voters can see poll title, description, and all options
-- [x] Voters can rank all options from 1st choice to last choice
-- [x] Voters cannot submit duplicate rankings
-- [x] Voters receive a warning message if they try to submit without ranking all choices, but they may submit regardless
-- [x] Authenticated voters can save their ballot for later submission
-- [x] Voters receive confirmation after successful submission
-- [x] Voters cannot vote multiple times on the same poll
+- [ ] Anyone with the poll link can access a published poll
+- [ ] Voters can see poll title, description, and all options
+- [ ] Voters can rank all options from 1st choice to last choice
+- [ ] Voters cannot submit duplicate rankings
+- [ ] Voters receive a warning message if they try to submit without ranking all choices, but they may submit regardless
+- [ ] Authenticated voters can save their ballot for later submission
+- [ ] Voters receive confirmation after successful submission
+- [ ] Voters cannot vote multiple times on the same poll
   - Unless the poll is open to unauthenticated users, in which case there's no way to prevent it
-- [x] Voters can see how many people have voted so far
-- [x] Voters can see the poll end date/time
+- [ ] Voters can see how many people have voted so far
+- [ ] Voters can see the poll end date/time
 
 ### Results
 
@@ -65,7 +65,7 @@ Users should be able to create a poll, listing several options. Once they're sat
 - [ ] Results are accessible to anyone with the poll link
 - [ ] Results page shows poll title and description
 - [ ] Users can view polls they've voted in previously
-- [x] Users who voted receive an email update with a link to the results
+- [ ] Users who voted receive an email update with a link to the results
 
 ### Admin Users
 
@@ -76,10 +76,10 @@ Users should be able to create a poll, listing several options. Once they're sat
 ### Miscellaneous
 
 - [ ] The UI should be mobile-friendly
-- [x] User-friendly error messages
-- [x] Success notifications for key actions
-- [x] Forms display validation errors before submission
-- [x] Poll links are shareable via social media
-- [x] Poll links can be copied to clipboard
-- [x] Polls have various "share on social media" buttons
-- [x] Search and filter functionality for user's poll list
+- [ ] User-friendly error messages
+- [ ] Success notifications for key actions
+- [ ] Forms display validation errors before submission
+- [ ] Poll links are shareable via social media
+- [ ] Poll links can be copied to clipboard
+- [ ] Polls have various "share on social media" buttons
+- [ ] Search and filter functionality for user's poll list

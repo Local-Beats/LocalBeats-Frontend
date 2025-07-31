@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./AuthStyles.css";
 import { API_URL } from "../shared";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const Signup = ({ setUser }) => {
   const [formData, setFormData] = useState({
@@ -14,12 +13,6 @@ const Signup = ({ setUser }) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const {
-    loginWithRedirect,
-    isLoading: auth0Loading,
-    error: auth0Error,
-  } = useAuth0();
 
   const validateForm = () => {
     const newErrors = {};
@@ -77,10 +70,6 @@ const Signup = ({ setUser }) => {
     }
   };
 
-  const handleAuth0Signup = () => {
-    loginWithRedirect(); // Redirect to Auth0 where user can choose to sign up
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -88,6 +77,7 @@ const Signup = ({ setUser }) => {
       [name]: value,
     }));
 
+    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -115,7 +105,6 @@ const Signup = ({ setUser }) => {
               value={formData.username}
               onChange={handleChange}
               className={errors.username ? "error" : ""}
-              autoComplete="username"
             />
             {errors.username && (
               <span className="error-text">{errors.username}</span>
@@ -131,7 +120,6 @@ const Signup = ({ setUser }) => {
               value={formData.password}
               onChange={handleChange}
               className={errors.password ? "error" : ""}
-              autoComplete="new-password"
             />
             {errors.password && (
               <span className="error-text">{errors.password}</span>
@@ -147,7 +135,6 @@ const Signup = ({ setUser }) => {
               value={formData.confirmPassword}
               onChange={handleChange}
               className={errors.confirmPassword ? "error" : ""}
-              autoComplete="new-password"
             />
             {errors.confirmPassword && (
               <span className="error-text">{errors.confirmPassword}</span>
@@ -159,22 +146,6 @@ const Signup = ({ setUser }) => {
           </button>
         </form>
 
-        <hr className="divider" />
-
-        <div className="auth0-login">
-          <p>Or sign up with:</p>
-          {auth0Error && (
-            <div className="error-message">Auth0 Error: {auth0Error.message}</div>
-          )}
-          <button
-            onClick={handleAuth0Signup}
-            className="auth0-button"
-            disabled={auth0Loading}
-          >
-            {auth0Loading ? "Redirecting..." : "Sign Up with Auth0"}
-          </button>
-        </div>
-
         <p className="auth-link">
           Already have an account? <Link to="/login">Login</Link>
         </p>
@@ -184,4 +155,3 @@ const Signup = ({ setUser }) => {
 };
 
 export default Signup;
-
