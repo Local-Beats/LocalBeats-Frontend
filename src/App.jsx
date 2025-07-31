@@ -1,5 +1,3 @@
-// src/main.jsx (or index.jsx)
-
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import axios from "axios";
@@ -55,11 +53,7 @@ const App = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${API_URL}/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
       setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
@@ -85,14 +79,13 @@ const App = () => {
 const Root = () => {
   return (
     <Auth0Provider
-  domain={AUTH0_DOMAIN}
-  clientId={AUTH0_CLIENT_ID}
-  authorizationParams={{
-    redirectUri: window.location.origin + "/callback",
-  }}
-  cacheLocation="localstorage"
->
-
+      domain={AUTH0_DOMAIN}
+      clientId={AUTH0_CLIENT_ID}
+      authorizationParams={{
+        redirectUri: window.location.origin + "/callback",
+      }}
+      cacheLocation="localstorage"
+    >
       <Router>
         <App />
       </Router>
@@ -102,3 +95,7 @@ const Root = () => {
 
 const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
+
+
+
+// test to help fix issues with merge
