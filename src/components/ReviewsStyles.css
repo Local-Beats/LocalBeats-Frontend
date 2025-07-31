@@ -1,0 +1,170 @@
+.reviews {
+  padding: 4rem 2rem;
+  background: transparent;
+  min-height: 100vh;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-bottom: -190px;
+}
+
+.reviews h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: white; /* Changed to white */
+}
+
+.reviews-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.review-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  cursor: pointer;
+}
+
+.review-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.review-header {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.stars-container {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.stars {
+  color: gold;
+  font-size: 1.2rem;
+}
+
+.confetti {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+  animation: explode 0.8s ease-out forwards;
+}
+
+.review-comment {
+  font-style: italic;
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+/* Confetti animation */
+@keyframes explode {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.copyright-footer {
+  margin-top: 3rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+
+/* How It Works Section */
+.how-it-works {
+  padding: 4rem 2rem;
+  background: white; /* Back to white box */
+  border-radius: 1rem;
+  color: black;
+  text-align: center;
+  max-width: 1000px;
+  margin: 4rem auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Restored shadow */
+}
+
+.how-it-works h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #00f260, #0575e6);
+  -webkit-background-clip: text;
+  background-clip: text; /* ✅ Add this */
+  -webkit-text-fill-color: transparent;
+}
+
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.step {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+  color: white;
+}
+
+.step:hover {
+  animation: jingle 2s ease;
+  filter: brightness(1.1);
+}
+
+@keyframes jingle {
+  0% { transform: translateX(0); }
+  15% { transform: translateX(-5px) rotate(-5deg); }
+  30% { transform: translateX(5px) rotate(5deg); }
+  45% { transform: translateX(-5px) rotate(-5deg); }
+  60% { transform: translateX(5px) rotate(5deg); }
+  75% { transform: translateX(-5px) rotate(-5deg); }
+  90% { transform: translateX(5px) rotate(5deg); }
+  100% { transform: translateX(0); }
+}
+
+.step h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.step p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Distinct background colors for each step */
+.step:nth-child(1) {
+  background-color: #4caf50; /* green */
+}
+
+.step:nth-child(2) {
+  background-color: #2196f3; /* blue */
+}
+
+.step:nth-child(3) {
+  background-color: #ff9800; /* orange */
+}

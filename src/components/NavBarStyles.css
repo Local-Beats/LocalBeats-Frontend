@@ -1,72 +1,204 @@
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: #f8f9fa;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #e9ecef;
+/* Navbar container: trapezoid shape, transparent dark background, fixed at top of screen */
+.navbar-container {
+  position: fixed; /* Sticks the navbar to the top */
+  top: 0; /* Aligns it to the very top of the viewport */
+  width: 100%; /* Full width across the screen */
+  z-index: 1000; /* Ensures it's above most content */
+  background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent dark background */
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%); /* Trapezoid shape */
+  height: 60px; /* Default height of navbar */
+  display: flex; /* Enables flex layout for child elements */
+  justify-content: space-between; /* Spaces brand and links apart */
+  align-items: center; /* Vertically centers children */
+  padding: 0; /* Removes internal padding */
+  transition: height 0.3s ease, transform 0.3s ease; /* Smooth transition for height/position changes */
 }
 
+
+/* When the navbar is hovered, expand height and drop slightly down */
+.navbar-container:hover {
+  height: 85px; /* Expanded height on hover */
+  
+}
+
+/* Apply matching height to the background trapezoid when hovered */
+.navbar-bg.hovered {
+  height: 85px; /* Background height matches navbar on hover */
+}
+
+/* Container for the logo/brand on the left side */
+.nav-brand {
+  flex: 1; /* Takes up proportional space in flex layout */
+  display: flex; /* Enables flex for internal alignment */
+  justify-content: flex-start; /* Align brand to the left */
+  align-items: left; /* Vertically center it */
+  margin-left: 0; /* No left margin */
+  padding-left: 95px; /* Adds left space from edge */
+}
+
+/* Styling the brand link (e.g., Instapoll logo text) */
 .nav-brand a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  text-decoration: none;
+  color: white; /* Text color */
+  font-size: 1.8rem; /* Font size (uses rem to scale with user settings) */
+  font-weight: bold; /* Bold for emphasis */
+  text-decoration: none; /* No underline */
 }
 
+/* Change Instapoll background on hover */
 .nav-brand a:hover {
-  color: #007bff;
+  background-color: #76c893;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
+/* Container for nav links on the right */
 .nav-links {
-  display: flex;
-  align-items: center;
+  flex: 2; /* More space than brand section */
+  display: flex; /* Flexbox layout for horizontal nav */
+  justify-content: flex-end; /* Align links to the right */
+  align-items: center; /* Vertically center the items */
+  gap: 1.5rem; /* Spacing between links */
+  transform: translateX(-85px); /* Nudge links slightly to the left */
+  transition: transform 0.3s ease; /* Smooth shift when needed */
 }
 
+/* Styles for individual nav links */
+.nav-links a {
+  color: white; /* White text */
+  text-decoration: none; /* Remove underline */
+  font-weight: 600; /* Medium-bold weight */
+  padding: 0.5rem 1rem; /* Clickable padding area */
+  border-radius: 0.5rem; /* Rounded corners */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+}
+
+/* Change nav links background on hover */
+.nav-links a:hover {
+  transform: scale(1.25); /* Grows the link slightly */
+  background-color: #76c893;
+}
+
+/* Scale up Instapoll brand, nav links, and slider on navbar hover */
+.navbar-container:hover .nav-brand,
+.navbar-container:hover .nav-links a,
+.navbar-container:hover .login-slider-container {
+  transform: scale(1.20); /* Adjust scale as you like */
+  transition: transform 0.3s ease;
+}
+
+
+/* Container for auth-related links (login/signup) */
 .auth-links {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  display: flex; /* Horizontal layout */
+  gap: 1rem; /* Space between login and signup */
+  align-items: center; /* Vertical alignment */
 }
 
-.nav-link {
-  color: #666;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.2s;
+/* Apply scale effect on buttons and auth links */
+button,
+.auth-links a {
+  transition: transform 0.2s ease, background-color 0.3s ease; /* Smooth scaling and color */
 }
 
-.nav-link:hover {
-  color: #007bff;
-  background-color: #e9ecef;
+/* Scale-up effect on hover for buttons and links and change background */
+button:hover,
+.auth-links a:hover {
+  transform: scale(1.1); /* Increase size slightly */
+  background-color: #76c893;
+  color: white; /* Ensure text is visible */
 }
 
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+/* Container for login + theme switch toggle */
+.login-slider-container {
+  display: flex; /* Horizontal alignment */
+  align-items: center; /* Center slider vertically */
+  gap: 0.5rem; /* Space between login and slider */
 }
 
-.username {
-  color: #666;
-  font-weight: 500;
+/* Toggle switch wrapper */
+.switch {
+  position: relative; /* Position base for inner slider */
+  display: inline-block; /* Inline-block for natural flow */
+  width: 50px; /* Width of the switch */
+  height: 24px; /* Height of the switch */
 }
 
-.logout-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+/* Hide the default checkbox */
+.switch input {
+  opacity: 0; /* Invisible */
+  width: 0;
+  height: 0;
+}
+
+/* Outer slider container */
+.slider {
+  position: absolute;
   cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.2s;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc; /* Default background color */
+  transition: 0.4s; /* Smooth toggle */
+  border-radius: 34px; /* Fully rounded ends */
 }
 
-.logout-btn:hover {
-  background-color: #c82333;
+/* Toggle knob */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Diameter of knob */
+  width: 20px;
+  left: 2px; /* Start position */
+  bottom: 2px;
+  background: white url('https://i.ibb.co/FxzBYR9/night.png') no-repeat center; /* Default night icon */
+  box-shadow: 0 0 15px #2020203d; /* Subtle glow */
+  transition: 0.4s; /* Smooth sliding */
+  border-radius: 50%; /* Round knob */
+}
+
+/* Background when checked (dark mode) */
+input:checked + .slider {
+  background-color: #2196f3; /* Blue background */
+}
+
+/* Focus outline (optional) */
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3; /* Blue glow on focus */
+}
+
+/* Move knob and change icon when checked */
+input:checked + .slider:before {
+  transform: translateX(26px); /* Move right */
+  background: white url('https://i.ibb.co/7JfqXxB/sunny.png') no-repeat center; /* Sunny icon */
+}
+
+/* Round switch styling */
+.slider.round {
+  border-radius: 34px; /* Makes ends fully round */
+}
+
+.slider.round:before {
+  border-radius: 50%; /* Round knob */
+}
+
+
+
+.logo-image {
+  height: 1.8rem; /* Matches font-size of Instapoll text */
+  margin-right: 0.5rem; /* Spacing between logo and text */
+  vertical-align: middle;
+}
+
+.instapoll-text {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+
+.user-section .username {
+  font-weight: 600;       /* Same weight as nav links */
+  font-size: 1rem;        /* Increase size to match nav-link text */
+  color: white;           /* Explicit white color */
+  margin-right: 12px;     /* Space between username and logout button */
+  white-space: nowrap;    /* Prevent the welcome text from wrapping */
 }

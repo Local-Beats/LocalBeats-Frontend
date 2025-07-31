@@ -1,0 +1,84 @@
+.footer {
+  /* Background with a dark blue gradient */
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+
+  /* Gives the footer a trapezoid shape */
+  clip-path: polygon(5% 0, 95% 0, 100% 100%, 0% 100%);
+
+  /* Flex layout to space out footer sections horizontally */
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  /* Padding around the content (THIS contributes to height) */
+  padding: 1rem 2rem; /* ⬅️ made smaller than 2rem 3rem to reduce height */
+
+  /* Positioning and size */
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  margin-top: 30px;
+
+  /* Text color and transition for animations */
+  color: #ffffff;
+  transition: all 0.4s ease;
+}
+
+/* Each individual section inside the footer */
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem; /* ⬅️ reduced vertical spacing between items */
+  min-width: 140px; /* ⬅️ slightly smaller section width */
+  padding: 0.5rem 0; /* ⬅️ adds internal spacing but keeps it minimal */
+}
+
+/* Section headers */
+.footer-section h4 {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #66fcf1;
+}
+
+/* Links inside the footer */
+.footer-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #66fcf1;
+  transform: translateX(5px);
+}
+
+/* Bottom text like copyright */
+.footer-bottom {
+  text-align: center;
+  margin-top: 1rem; /* ⬅️ reduced space above this section */
+  font-size: 0.7rem;
+  color: #66fcf1;
+  opacity: 0.7;
+  width: 100%;
+  flex-basis: 100%;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    clip-path: none;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+    padding: 1.2rem 1rem; /* ⬅️ smaller padding on mobile */
+  }
+
+  .footer-section {
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+}

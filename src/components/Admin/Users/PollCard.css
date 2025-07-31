@@ -1,0 +1,134 @@
+.poll-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.7rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    font-family: sans-serif;
+  }
+  
+  .poll-question {
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .poll-options {
+    margin-bottom: 16px;
+  }
+  
+  .poll-option {
+    margin-bottom: 10px;
+  }
+  
+  .option-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .percentage-text {
+    color: gray;
+  }
+  
+  .progress-bar {
+    background: #f0f0f0;
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    background-color: #16c784;
+    height: 100%;
+    border-radius: 20px;
+  }
+  
+  .more-button {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  
+  .poll-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .poll-actions > :only-child {
+    margin-left: auto;
+  }
+  
+  .view-details {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .ban-button {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    background: #feeeef;
+    color: #ee536b;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .status-badge-active {
+    background-color: #e0f7fa; 
+    color: #00796b;           
+    padding: 0.5rem 0.7rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  
+  .status-badge-complete {
+    background-color: #dcedc8; 
+    color: #33691e;            
+    padding: 0.5rem 0.7rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .status-badge-banned {
+    background-color: #ffebee; 
+    color: #c62828;           
+    padding: 0.5rem 0.7rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    letter-spacing: 0.05em;
+    margin-left: 0.5rem;
+  }
+  
+
+
+  .unban-post-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    background: #e6f4ff;   
+    color: #3a7bd5;       
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .unban-post-btn:hover {
+    background: #c0d8ff;   
+  }
+  

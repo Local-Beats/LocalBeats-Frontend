@@ -1,0 +1,190 @@
+/* === GLOBAL STYLES === */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  background-image: var(--bg-pattern);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* === HEADER SECTION === */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #d3f3ec;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+.login-link {
+  text-decoration: none;
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+/* === MAIN CONTENT CONTAINER === */
+.home-section {
+  min-height: 100vh;
+  padding: 5px 178px;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}
+
+.home-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0px;
+}
+
+@media (min-width: 768px) {
+  .home-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* === LEFT SIDE (TEXT) === */
+.home-left {
+  max-width: 600px;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+/* === RIGHT SIDE (IMAGE) === */
+.home-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+}
+
+/* === IMAGE ITSELF === */
+.home-img {
+  width: auto;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+/* === TEXT STYLES === */
+.headline {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  margin-top: 0px;
+}
+
+@media (max-width: 768px) {
+  .headline {
+    font-size: 38px;
+  }
+}
+
+.subtext {
+  font-size: 24px;
+  line-height: 1.8;
+  color: #f0f0f0;
+  margin-top: 0px;
+  margin-bottom: 32px;
+  max-width: 90%;
+}
+
+/* === BUTTON GROUP === */
+.home-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 0px;
+  justify-content: center;
+}
+
+/* === INDIVIDUAL BUTTON STYLES === */
+.create-btn {
+  background-color: #33c4aa;
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.create-btn:hover {
+  background-color: #2ca991;
+}
+
+.browse-btn {
+  background-color: transparent;
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  border: 2px solid white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.browse-btn:hover {
+  background-color: #cceeff; /* light blue */
+  color: #0077cc;
+}
+
+/* === THEME TEXT COLOR SWITCHES === */
+body.light .headline,
+body.light .subtext {
+  color: #2a2a2a;
+}
+
+body.dark .headline,
+body.dark .subtext {
+  color: #f0f0f0;
+}
+
+body.light .browse-btn {
+  border: 2px solid #2a2a2a;
+  color: #2a2a2a;
+  background-color: transparent;
+}
+
+body.light .browse-btn:hover {
+  background-color: #e0f7ff;
+  color: #0077cc;
+}
+
+/* === LOGO SECTION === */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0;
+}
