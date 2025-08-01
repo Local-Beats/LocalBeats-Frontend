@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import axios from "axios";
+// import axios from "axios";
 import "./AppStyles.css";
 import NavBar from "./components/NavBar";
-import NowPlaying from "./components/NowPlaying";
+// import NowPlaying from "./components/NowPlaying";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Home from "./components/Home";
+// import Home from "./components/Home";
 import NotFound from "./components/NotFound";
-import CallBack from "./components/CallBack";
+// import CallBack from "./components/CallBack";
 import { jwtDecode } from "jwt-decode";
-import { API_URL } from "./shared";
+// import { API_URL } from "./shared";
+import axios from './utils/axiosInstance';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 
 // AUTH0 CONFIGURATION
@@ -31,7 +32,7 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(`${API_URL}/auth/me`, {
+        const response = await axios.get("/auth/me", {
           withCredentials: true,
         });
         setUser(response.data.user);
@@ -59,8 +60,7 @@ const App = () => {
           console.log("Decoded Spotify Access Token:", spotifyAccessToken);
 
           // Send token to backend
-          await axios.post(
-            `${API_URL}/auth/auth0`,
+          await axios.post('/auth/auth0',
             {
               auth0Id: auth0User.sub,
               email: auth0User.email,
@@ -100,8 +100,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/callback" element={<CallBack />} />
-          <Route
+          {/* <Route path="/callback" element={<CallBack />} /> */}
+          {/* <Route
             exact
             path="/"
             element={
@@ -129,7 +129,7 @@ const App = () => {
                 )}
               </div>
             }
-          />
+          /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
@@ -144,7 +144,7 @@ const Root = () => {
       domain={AUTH0_DOMAIN}
       clientId={AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: window.location.origin + "/callback",
+        redirect_uri: window.location.origin,
         audience: "https://api.spotify.com",
         scope: "user-read-email user-read-playback-state",
       }}

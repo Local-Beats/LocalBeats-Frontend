@@ -20,7 +20,7 @@ const Login = ({ setUser }) => {
             console.warn("No user returned from /auth/me");
           }
         } catch (error) {
-          console.error("Error verifying session:", error.response?.data || err.message);
+          console.error("Error verifying session:", error.response?.data || error.message);
         }
       }
     };
