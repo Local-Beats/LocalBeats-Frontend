@@ -20,6 +20,7 @@ const Login = ({ setUser }) => {
 
   return (
     <div className="auth-container">
+      <h1> Discover What NYC is Vibing to!</h1>
       <div className="auth-form" style={{ textAlign: "center" }}>
         <h2>Login with Spotify</h2>
 
