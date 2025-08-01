@@ -12,13 +12,32 @@ const NavBar = ({ user, onLogout }) => {
       <div className="nav-links">
         {user ? (
           <div className="user-section">
-            <span className="username">Welcome, {user.username}!</span>
+            {/* Optional: Show profile picture if available */}
+            {user.picture && (
+              <img
+                src={user.picture}
+                alt="Profile"
+                className="profile-pic"
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  borderRadius: "50%",
+                  marginRight: "10px",
+                }}
+              />
+            )}
+
+            {/* Welcome message using name or nickname */}
+            <span className="username">Welcome, {user.name || user.nickname}!</span>
+
+            {/* Logout button */}
             <button onClick={onLogout} className="logout-btn">
               Logout
             </button>
           </div>
         ) : (
           <div className="auth-links">
+            {/* Links to login/signup when not authenticated */}
             <Link to="/login" className="nav-link">
               Login
             </Link>
