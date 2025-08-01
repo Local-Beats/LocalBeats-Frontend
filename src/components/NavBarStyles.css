@@ -10,6 +10,10 @@
   border-bottom: 1px solid #e9ecef;
 }
 
+.navbar-logo {
+  /* border-radius: 5rem; */
+}
+
 .nav-brand a {
   font-size: 1.5rem;
   font-weight: bold;

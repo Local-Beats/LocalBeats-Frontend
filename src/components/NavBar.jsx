@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBarStyles.css";
+import logo from '../assets/LocalBeats.png'
 
 const NavBar = ({ user, onLogout }) => {
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <Link to="/">Capstone I</Link>
+        <Link to="/">
+          <img className="navbar-logo" src={logo} alt="Logo" />
+        </Link>
       </div>
 
       <div className="nav-links">
