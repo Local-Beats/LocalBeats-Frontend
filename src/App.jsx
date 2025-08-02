@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
 import NavBar from "./components/NavBar";
+import Dashboard from "./components/Dashboard";
 // import NowPlaying from "./components/NowPlaying";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
@@ -111,6 +112,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           {/* <Route path="/callback" element={<CallBack />} /> */}
           {/* <Route
             exact
@@ -165,7 +167,7 @@ const Root = () => {
       domain={AUTH0_DOMAIN}
       clientId={AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: window.location.origin + "/callback"
+        redirect_uri: window.location.origin + "/dashboard"
       }}
       cacheLocation="localstorage"
     >
