@@ -34,7 +34,14 @@ const Login = ({ setUser }) => {
         <h2>Login with Spotify</h2>
 
         <button
-          onClick={() => loginWithRedirect({ connection: "spotify" })}
+          onClick={() => loginWithRedirect({
+            authorizationParams: {
+              prompt: "login",
+            },
+            connection: "spotify-custom",
+            prompt: "consent", // to force refresh token prompt
+            scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access"
+          })}
           style={{
             marginTop: "20px",
             width: "100%",

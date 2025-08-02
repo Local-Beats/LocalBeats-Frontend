@@ -10,7 +10,7 @@ import Signup from "./components/Signup";
 // import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 // import CallBack from "./components/CallBack";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 // import { API_URL } from "./shared";
 import axios from './utils/axiosInstance';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
@@ -26,8 +26,8 @@ const App = () => {
   const {
     isAuthenticated,
     user: auth0User,
-    getAccessTokenSilently,
-  } = useAuth0();
+    getIdTokenClaims,
+  } = useAuth0(); // swapped getAccessTokenSilently for getIdTokenClaims
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -46,47 +46,58 @@ const App = () => {
 
   useEffect(() => {
     const updateUserAndToken = async () => {
-      if (isAuthenticated && auth0User) {
-        try {
-          const accessToken = await getAccessTokenSilently({
-            audience: "https://api.spotify.com", // ✅ Ensure correct audience is passed
-          });
-          setToken(accessToken);
+      if (!isAuthenticated || !auth0User) {
+        console.warn("User not authenticated or auth0User not ready.");
+        return;
+      }
 
-          // Decode the freshly received accessToken
-          const decoded = jwtDecode(accessToken);
-          const spotifyAccessToken =
-            decoded["https://yourdomain.com/spotify_access_token"];
-          console.log("Decoded Spotify Access Token:", spotifyAccessToken);
+      try {
+        const claims = await getIdTokenClaims();
+        console.log("✅ Full ID token claims:", claims);
 
-          // Send token to backend
-          await axios.post('/auth/auth0',
-            {
-              auth0Id: auth0User.sub,
-              email: auth0User.email,
-              username: auth0User.nickname || auth0User.name,
-              spotifyAccessToken,
-            },
-            { withCredentials: true }
-          );
+        const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
 
-          setUser({
-            name: auth0User.name,
-            email: auth0User.email,
-            picture: auth0User.picture,
-          });
-        } catch (err) {
-          console.error("Failed to get access token:", err);
+        if (!claims["https://localbeats.app/spotify_access_token"]) {
+          console.warn("⚠️ PostLogin Action ran, but no access token was set.");
         }
+
+        if (!spotifyAccessToken) {
+          console.warn("⚠️ No Spotify access token found in ID token.");
+          return;
+        }
+
+        console.log("🎧 Sending token to backend for sync...");
+
+        // ✅ Sync user using backend route that calls Spotify API
+        await axios.post(
+          "/auth/spotify/sync",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${spotifyAccessToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+
+        // ✅ Update frontend state
+        setUser({
+          name: auth0User.name,
+          email: auth0User.email,
+          picture: auth0User.picture,
+        });
+      } catch (err) {
+        console.error("❌ Error during post-login sync:", err);
       }
     };
 
+    console.log("Auth0 state ->", { isAuthenticated, auth0User });
     updateUserAndToken();
-  }, [isAuthenticated, auth0User, getAccessTokenSilently]);
+  }, [isAuthenticated, auth0User, getIdTokenClaims]);
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
+      await axios.post('/auth/logout', {}, { withCredentials: true });
       setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
@@ -140,13 +151,21 @@ const App = () => {
 // ✅ Root with Spotify audience + scopes
 const Root = () => {
   return (
+    // <Auth0Provider
+    //   domain={AUTH0_DOMAIN}
+    //   clientId={AUTH0_CLIENT_ID}
+    //   authorizationParams={{
+    //     redirect_uri: window.location.origin + "/callback",
+    //     audience: "https://api.spotify.com",
+    //     scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access",
+    //   }}
+    //   cacheLocation="localstorage"
+    // >
     <Auth0Provider
       domain={AUTH0_DOMAIN}
       clientId={AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: window.location.origin,
-        audience: "https://api.spotify.com",
-        scope: "user-read-email user-read-playback-state",
+        redirect_uri: window.location.origin + "/callback"
       }}
       cacheLocation="localstorage"
     >
