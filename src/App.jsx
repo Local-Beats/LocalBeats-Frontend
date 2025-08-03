@@ -69,17 +69,19 @@ const App = () => {
 
         // console.log("🎧 Sending token to backend for sync...");
         const claims = await getIdTokenClaims();
-        const idToken = claims.__raw
-        // ✅ Sync user using backend route that calls Spotify API
-        await axios.post(
-          "/auth/spotify/sync",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
-            withCredentials: true,
-          }
+        const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
+        if (!spotifyAccessToken) {
+          console.warn("No Spotify access token found in ID token claims.");
+          return;
+        }
+
+        //  Sync user using backend route that calls Spotify API
+        await axios.post("/auth/spotify/sync", {}, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+          withCredentials: true,
+        }
         );
 
         // ✅ Update frontend state
