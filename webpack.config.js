@@ -55,7 +55,7 @@ module.exports = {
     compress: true,
     historyApiFallback: true,
     port: 3000,
-    host: "127.0.0.1",  // Serve at 127.0.0.1
+    host: "127.0.0.1",
     open: true,         // Auto-open browser
   },
 };

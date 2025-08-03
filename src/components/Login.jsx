@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import axios from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./AuthStyles.css";
@@ -8,14 +9,22 @@ const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated && auth0User) {
-      setUser({
-        name: auth0User.name,
-        email: auth0User.email,
-        picture: auth0User.picture,
-      });
-      navigate("/");
-    }
+    const verifySessionAndSetUser = async () => {
+      if (isAuthenticated && auth0User) {
+        try {
+          const res = await axios.get("/auth/me");
+          if (res.data.user) {
+            setUser(res.data.user);
+            navigate("/");
+          } else {
+            console.warn("No user returned from /auth/me");
+          }
+        } catch (error) {
+          console.error("Error verifying session:", error.response?.data || error.message);
+        }
+      }
+    };
+    verifySessionAndSetUser();
   }, [isAuthenticated, auth0User, setUser, navigate]);
 
   return (
@@ -25,7 +34,14 @@ const Login = ({ setUser }) => {
         <h2>Login with Spotify</h2>
 
         <button
-          onClick={() => loginWithRedirect({ connection: "spotify" })}
+          onClick={() => loginWithRedirect({
+            authorizationParams: {
+              prompt: "login",
+            },
+            connection: "spotify-custom",
+            prompt: "consent", // to force refresh token prompt
+            scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access"
+          })}
           style={{
             marginTop: "20px",
             width: "100%",
