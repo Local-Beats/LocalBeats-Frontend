@@ -78,13 +78,13 @@ const App = () => {
         //  Sync user using backend route that calls Spotify API
         await axios.post("/auth/spotify/sync", {}, {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            Authorization: `Bearer ${spotifyAccessToken}`,
           },
           withCredentials: true,
         }
         );
 
-        // ✅ Update frontend state
+        // Update frontend state
         setUser({
           name: auth0User.name,
           email: auth0User.email,
