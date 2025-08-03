@@ -68,6 +68,7 @@ const App = () => {
         // }
 
         // console.log("🎧 Sending token to backend for sync...");
+        const claims = await getIdTokenClaims();
         const idToken = claims.__raw
         // ✅ Sync user using backend route that calls Spotify API
         await axios.post(
