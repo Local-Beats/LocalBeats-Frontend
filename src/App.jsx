@@ -17,8 +17,8 @@ import axios from './utils/axiosInstance';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 
 // AUTH0 CONFIGURATION
-const AUTH0_DOMAIN = "dev-m71z1z5w3vgzg8av.us.auth0.com";
-const AUTH0_CLIENT_ID = "qhqEo3tGexhy8VRLbVR1OiSv2KGuadlh";
+const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
+const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -53,29 +53,29 @@ const App = () => {
       }
 
       try {
-        const claims = await getIdTokenClaims();
-        console.log("✅ Full ID token claims:", claims);
+        // const claims = await getIdTokenClaims();
+        // console.log("✅ Full ID token claims:", claims);
 
-        const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
+        // const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
 
-        if (!claims["https://localbeats.app/spotify_access_token"]) {
-          console.warn("⚠️ PostLogin Action ran, but no access token was set.");
-        }
+        // if (!claims["https://localbeats.app/spotify_access_token"]) {
+        //   console.warn("⚠️ PostLogin Action ran, but no access token was set.");
+        // }
 
-        if (!spotifyAccessToken) {
-          console.warn("⚠️ No Spotify access token found in ID token.");
-          return;
-        }
+        // if (!spotifyAccessToken) {
+        //   console.warn("⚠️ No Spotify access token found in ID token.");
+        //   return;
+        // }
 
-        console.log("🎧 Sending token to backend for sync...");
-
+        // console.log("🎧 Sending token to backend for sync...");
+        const idToken = claims.__raw
         // ✅ Sync user using backend route that calls Spotify API
         await axios.post(
           "/auth/spotify/sync",
           {},
           {
             headers: {
-              Authorization: `Bearer ${spotifyAccessToken}`,
+              Authorization: `Bearer ${idToken}`,
             },
             withCredentials: true,
           }
