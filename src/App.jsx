@@ -22,6 +22,7 @@ const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const App = () => {
   const [user, setUser] = useState(null);
+  console.log("this is user--->", user)
   const [token, setToken] = useState("");
 
   const {
@@ -46,36 +47,22 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const updateUserAndToken = async () => {
+    const syncSpotifyAndFetchUser = async () => {
       if (!isAuthenticated || !auth0User) {
         console.warn("User not authenticated or auth0User not ready.");
         return;
       }
 
       try {
-        // const claims = await getIdTokenClaims();
-        // console.log("✅ Full ID token claims:", claims);
-
-        // const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
-
-        // if (!claims["https://localbeats.app/spotify_access_token"]) {
-        //   console.warn("⚠️ PostLogin Action ran, but no access token was set.");
-        // }
-
-        // if (!spotifyAccessToken) {
-        //   console.warn("⚠️ No Spotify access token found in ID token.");
-        //   return;
-        // }
-
-        // console.log("🎧 Sending token to backend for sync...");
         const claims = await getIdTokenClaims();
         const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
+
         if (!spotifyAccessToken) {
           console.warn("No Spotify access token found in ID token claims.");
           return;
         }
 
-        //  Sync user using backend route that calls Spotify API
+        //  Sync with backend — this will update DB & create session token
         await axios.post("/auth/spotify/sync", {}, {
           headers: {
             Authorization: `Bearer ${spotifyAccessToken}`,
@@ -84,20 +71,28 @@ const App = () => {
         }
         );
 
-        // Update frontend state
-        setUser({
-          name: auth0User.name,
-          email: auth0User.email,
-          picture: auth0User.picture,
-        });
+
+        // Fetch user info from DB (using session token)
+        const res = await axios.get("/auth/me", { withCredentials: true });
+        console.log("this is data-->", res.data)
+        setUser(res.data.user);
       } catch (err) {
-        console.error("❌ Error during post-login sync:", err);
+        console.error("Post-login sync failed:", err);
       }
     };
 
+    // Update frontend state
+    // setUser({
+    //   name: auth0User.name,
+    //   email: auth0User.email,
+    //   picture: auth0User.picture,
+    // });
+
     console.log("Auth0 state ->", { isAuthenticated, auth0User });
-    updateUserAndToken();
+    syncSpotifyAndFetchUser();
   }, [isAuthenticated, auth0User, getIdTokenClaims]);
+
+
 
   const handleLogout = async () => {
     try {
