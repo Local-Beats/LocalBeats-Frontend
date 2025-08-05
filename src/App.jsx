@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import "./AppStyles.css";
 import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
-// import NowPlaying from "./components/NowPlaying";
+import NowPlaying from "./components/NowPlaying";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -23,7 +23,7 @@ const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const App = () => {
   const [user, setUser] = useState(null);
   console.log("this is user--->", user)
-  const [token, setToken] = useState("");
+  //const [token, setToken] = useState("");
 
   const {
     isAuthenticated,
@@ -110,37 +110,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/dashboard" element={<Dashboard user={user} />} />
-          {/* <Route path="/callback" element={<CallBack />} /> */}
-          {/* <Route
-            exact
-            path="/"
-            element={
-              <div>
-                <Home />
-                {isAuthenticated && token && (
-                  <>
-                    <div
-                      className="access-token-display"
-                      style={{ margin: "20px 0" }}
-                    >
-                      <h3>Access Token:</h3>
-                      <pre
-                        style={{
-                          whiteSpace: "pre-wrap",
-                          wordBreak: "break-word",
-                        }}
-                      >
-                        {token}
-                      </pre>
-                    </div>
+          <Route path="/dashboard" element={
+            <>
+              <Dashboard user={user} />
+              <NowPlaying />
+            </>
+          } />
 
-                    <NowPlaying accessToken={token} />
-                  </>
-                )}
-              </div>
-            }
-          /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
