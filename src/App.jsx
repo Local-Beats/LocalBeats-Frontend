@@ -113,7 +113,7 @@ const App = () => {
           <Route path="/dashboard" element={
             <>
               <Dashboard user={user} />
-              <NowPlaying />
+              <NowPlaying user={user} />
             </>
           } />
 
