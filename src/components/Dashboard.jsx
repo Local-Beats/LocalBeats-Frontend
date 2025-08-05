@@ -1,8 +1,12 @@
 import React from 'react';
+import ListenerCard from './LIstenerCard';
 
 const Dashboard = () => {
     return (
-        <h1>Dashboard</h1>
+        <main>
+            <h1>Dashboard</h1>
+            <ListenerCard />
+        </main>
     )
 };
 
