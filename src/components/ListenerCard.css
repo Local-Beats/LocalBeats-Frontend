@@ -1,0 +1,17 @@
+.listener-card-container {
+    display: flex;
+    border-style: solid;
+    border-color: black;
+    border-radius: 1rem;
+    gap: 3rem;
+    align-items: center;
+    background-color: rgb(204, 203, 203);
+
+}
+
+.listener-card-status {
+    border-style: solid;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    padding: .3rem;
+}

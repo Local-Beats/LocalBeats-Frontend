@@ -1,8 +1,13 @@
 import React from 'react';
+import Activelistener from './ActiveListener';
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
+    // console.log("this is user from dashboard---> ", user)
     return (
-        <h1>Dashboard</h1>
+        <main>
+            <h1>Dashboard</h1>
+            <Activelistener user={user} />
+        </main>
     )
 };
 
