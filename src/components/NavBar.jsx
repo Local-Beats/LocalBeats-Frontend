@@ -31,7 +31,7 @@ const NavBar = ({ user, onLogout }) => {
             )}
 
             {/* Welcome message using name or nickname */}
-            <span className="username">Welcome, {user.name || user.nickname}!</span>
+            <span className="username">Welcome, {user.spotify_display_name || user.nickname}!</span>
 
             {/* Logout button */}
             <button onClick={onLogout} className="logout-btn">
