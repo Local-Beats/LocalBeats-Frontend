@@ -9,14 +9,29 @@ const NowPlaying = () => {
   useEffect(() => {
     const fetchTrackFromBackend = async () => {
       try {
-        const response = await axios.get(`${API_URL}/spotify/current-track`, {
-          withCredentials: true,
-        });
+        console.log(
+          "Fetching current track from:",
+          `${API_URL.trim()}/spotify/current-track`
+        );
+        const response = await axios.get(
+          `${API_URL.trim()}/spotify/current-track`,
+          {
+            withCredentials: true,
+          }
+        );
 
-        setTrack(response.data);
+        const data = response.data;
+
+        // Only set track if data is valid and has a title
+        if (data && data.title) {
+          setTrack(data);
+          setError(null);
+        } else {
+          setTrack(null);
+        }
       } catch (err) {
+        console.error("Error fetching current track:", err);
         setError("Unable to fetch currently playing track.");
-        console.error(err);
       }
     };
 
@@ -26,11 +41,20 @@ const NowPlaying = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (error) return <p>{error}</p>;
-  if (!track) return <p>No song is currently playing.</p>;
+  if (error)
+    return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
+  if (!track)
+    return (
+      <p style={{ textAlign: "center", marginTop: "40px" }}>
+        No song is currently playing.
+      </p>
+    );
 
   return (
-    <div className="now-playing" style={{ textAlign: "center", marginTop: "40px" }}>
+    <div
+      className="now-playing"
+      style={{ textAlign: "center", marginTop: "40px" }}
+    >
       <img
         src={track.albumArt}
         alt={track.title}
@@ -38,7 +62,13 @@ const NowPlaying = () => {
       />
       <h2>{track.title}</h2>
       <p>
-        {track.artist} — <em>{track.album}</em>
+        {track.artist}
+        {track.albumArt && track.album ? (
+          <>
+            {" "}
+            — <em>{track.album}</em>
+          </>
+        ) : null}
       </p>
     </div>
   );
