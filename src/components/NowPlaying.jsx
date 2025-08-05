@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { API_URL } from "../shared";
+import axios from "../utils/axiosInstance";
+// import { API_URL } from "../shared";
 
 const NowPlaying = () => {
   const [track, setTrack] = useState(null);
@@ -9,12 +9,11 @@ const NowPlaying = () => {
   useEffect(() => {
     const fetchTrackFromBackend = async () => {
       try {
-        console.log(
-          "Fetching current track from:",
-          `${API_URL.trim()}/spotify/current-track`
-        );
-        const response = await axios.get(
-          `${API_URL.trim()}/spotify/current-track`,
+        // console.log(
+        //   "Fetching current track from:",
+        //   `${API_URL.trim()}/spotify/current-track`
+        // );
+        const response = await axios.get("/api/spotify/current-track",
           {
             withCredentials: true,
           }
