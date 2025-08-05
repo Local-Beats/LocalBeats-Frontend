@@ -23,7 +23,7 @@ const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const App = () => {
   const [user, setUser] = useState(null);
   console.log("this is user--->", user)
-  const [token, setToken] = useState("");
+  //const [token, setToken] = useState("");
 
   const {
     isAuthenticated,
