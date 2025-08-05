@@ -1,11 +1,11 @@
 import React from 'react';
-import ListenerCard from './LIstenerCard';
+import Activelistener from './ActiveListener';
 
 const Dashboard = () => {
     return (
         <main>
             <h1>Dashboard</h1>
-            <ListenerCard />
+            <Activelistener />
         </main>
     )
 };
