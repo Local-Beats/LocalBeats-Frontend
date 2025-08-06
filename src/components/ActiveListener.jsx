@@ -8,6 +8,7 @@ const Activelistener = ({ user }) => {
             <h1>
                 Active Listeners
             </h1>
+            <ListenerCard />
             {/* <div className="active-listener-cards">
                 <ul>
                     {user.map((element) => (
