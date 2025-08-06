@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../assets/LocalBeats.png"
 import "./ListenerCard.css"
 
-const ListenerCard = () => {
+const ListenerCard = ({ element }) => {
     return (
         <main className="listener-card-container">
             <div className="listener-card-image">

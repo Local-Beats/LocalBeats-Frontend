@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "../utils/axiosInstance";
+import ListenerCard from "./LIstenerCard";
 // import { API_URL } from "../shared";
 
-const NowPlaying = ({ user }) => {
-  console.log("this is user from Nowplaying--->", user)
+const ActliveListener = ({ user }) => {
+  // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
-  console.log("this is track", track)
+  // console.log("this is track", track)
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -78,27 +79,44 @@ const NowPlaying = ({ user }) => {
     );
 
   return (
-    <div
-      className="now-playing"
-      style={{ textAlign: "center", marginTop: "40px" }}
-    >
-      <img
-        src={track.albumArt}
-        alt={track.title}
-        style={{ width: "200px", borderRadius: "12px" }}
-      />
-      <h2>{track.title}</h2>
-      <p>
-        {track.artist}
-        {track.albumArt && track.album ? (
-          <>
-            {" "}
-            — <em>{track.album}</em>
-          </>
-        ) : null}
-      </p>
-    </div>
+    <main>
+      <h1>
+        Active Listeners
+      </h1>
+      <ListenerCard />
+      <div className="active-listener-cards">
+        <ul>
+          {user.map((element) => (
+            <li key={user.id}>
+              <ListenerCard element={element} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </main>
+
+
+    // <div
+    //   className="now-playing"
+    //   style={{ textAlign: "center", marginTop: "40px" }}
+    // >
+    //   <img
+    //     src={track.albumArt}
+    //     alt={track.title}
+    //     style={{ width: "200px", borderRadius: "12px" }}
+    //   />
+    //   <h2>{track.title}</h2>
+    //   <p>
+    //     {track.artist}
+    //     {track.albumArt && track.album ? (
+    //       <>
+    //         {" "}
+    //         — <em>{track.album}</em>
+    //       </>
+    //     ) : null}
+    //   </p>
+    // </div>
   );
 };
 
-export default NowPlaying;
+export default ActliveListener;
