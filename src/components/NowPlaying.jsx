@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "../utils/axiosInstance";
 // import { API_URL } from "../shared";
 
-const NowPlaying = () => {
+const NowPlaying = ({ user }) => {
+  console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
+  console.log("this is track", track)
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -25,6 +27,7 @@ const NowPlaying = () => {
         if (data && data.title) {
           setTrack(data);
           setError(null);
+
         } else {
           setTrack(null);
         }
@@ -39,6 +42,31 @@ const NowPlaying = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+
+
+  useEffect(() => {
+    const createListeningSession = async () => {
+
+      if (!user || !user.id) return;
+
+      if (track) {
+        const createListeningSession = await axios.post("/api/listeners",
+          {
+            status: "playing",
+            user_id: user?.id,
+            song_id: track.song_id,
+            ended_at: null,
+          },
+          {
+            withCredentials: true
+          }
+
+        );
+      }
+    }
+    createListeningSession();
+  }, [track?.song_id])
 
   if (error)
     return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
