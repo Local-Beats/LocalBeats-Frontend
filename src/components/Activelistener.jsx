@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../utils/axiosInstance";
-import ListenerCard from "./LIstenerCard";
+import ListenerCard from "./ListenerCard";
 // import { API_URL } from "../shared";
 
 const ActliveListener = ({ user }) => {
@@ -83,15 +83,8 @@ const ActliveListener = ({ user }) => {
       <h1>
         Active Listeners
       </h1>
-      <ListenerCard />
+      <ListenerCard user={user} track={track} />
       <div className="active-listener-cards">
-        <ul>
-          {user.map((element) => (
-            <li key={user.id}>
-              <ListenerCard element={element} track={track} />
-            </li>
-          ))}
-        </ul>
       </div>
     </main>
     // <div
