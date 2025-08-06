@@ -1,5 +1,5 @@
 import React from 'react';
-import Activelistener from './ActiveListener';
+import Activelistener from './Activelistener';
 
 const Dashboard = ({ user }) => {
     // console.log("this is user from dashboard---> ", user)

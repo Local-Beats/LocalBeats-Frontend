@@ -88,14 +88,12 @@ const ActliveListener = ({ user }) => {
         <ul>
           {user.map((element) => (
             <li key={user.id}>
-              <ListenerCard element={element} />
+              <ListenerCard element={element} track={track} />
             </li>
           ))}
         </ul>
       </div>
     </main>
-
-
     // <div
     //   className="now-playing"
     //   style={{ textAlign: "center", marginTop: "40px" }}
