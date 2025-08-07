@@ -9,6 +9,11 @@ const ActliveListener = ({ user }) => {
   // console.log("this is track", track)
   const [error, setError] = useState(null);
 
+  const [activeListeners, setActiveListeners] = useState([]);
+  console.log("This is active listener", activeListeners)
+
+  let currentTrack = activeListeners.song_id;
+
   useEffect(() => {
     const fetchTrackFromBackend = async () => {
       try {
@@ -47,6 +52,7 @@ const ActliveListener = ({ user }) => {
 
 
   useEffect(() => {
+
     const createListeningSession = async () => {
 
       if (!user || !user.id) return;
@@ -62,12 +68,40 @@ const ActliveListener = ({ user }) => {
           {
             withCredentials: true
           }
-
         );
+        setActiveListeners(createListeningSession.data)
       }
     }
     createListeningSession();
+
+    if (createListeningSession.data.id !== activeListeners.id) {
+      const updateListeningSession = async () => {
+        const listeningSession = await axios.patch("/api/listeners",
+          { status: "ended" }
+        )
+      }
+    }
+
   }, [track?.song_id])
+
+  // useEffect(() => {
+  //   
+  //   
+  // }, [])
+
+
+
+  useEffect(() => {
+    const getActiveListeners = async () => {
+      await axios.get("/api/listeners",
+        {
+          withCredentials: true,
+        }
+      )
+    }
+    getActiveListeners();
+
+  }, [])
 
   if (error)
     return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
