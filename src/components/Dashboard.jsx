@@ -1,12 +1,17 @@
+
+// React and dependencies
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
-//import ActiveListener from './ActiveListener';
+// import ActiveListener from './ActiveListener'; // Optional: for future use
 
 
+
+// Google Maps API key from environment
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 console.log("Google Maps API Key:", apiKey);
 
-// Helper to load Google Maps script
+
+// Helper to dynamically load the Google Maps script if not already loaded
 function loadGoogleMapsScript(apiKey, callback) {
   if (window.google && window.google.maps) {
     callback();
@@ -29,15 +34,26 @@ function loadGoogleMapsScript(apiKey, callback) {
   }
 }
 
+
+// Main Dashboard component
 const Dashboard = ({ user }) => {
+    // State for user's geolocation coordinates
     const [coords, setCoords] = useState(null);
+    // State for geolocation error
     const [geoError, setGeoError] = useState(null);
+    // State for user's address (reverse geocoded)
     const [address, setAddress] = useState("");
+    // State for all online users (with locations)
     const [onlineUsers, setOnlineUsers] = useState([]);
+    // Ref for the map container div
     const mapRef = useRef(null);
     // const [mapLoaded, setMapLoaded] = useState(false); // Remove for debugging
 
-    // Get current user's location, post to backend, and fetch all online users
+    // On mount or when user changes:
+    // 1. Get current user's geolocation
+    // 2. Reverse geocode to get address
+    // 3. Post location to backend
+    // 4. Fetch all online users with locations
     useEffect(() => {
         if (user) {
             if (navigator.geolocation) {
@@ -48,7 +64,7 @@ const Dashboard = ({ user }) => {
                         setCoords({ lat, lng });
                         setGeoError(null);
                         console.log("Geolocation success:", lat, lng);
-                        // Reverse geocode to get address
+                        // Reverse geocode to get address from coordinates
                         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`)
                           .then(res => res.json())
                           .then(data => {
@@ -60,14 +76,14 @@ const Dashboard = ({ user }) => {
                           })
                           .catch(() => setAddress(""));
 
-                        // Post location to backend
+                        // Post location to backend (update user's location)
                         try {
                             await axios.post("/api/users/location", { latitude: lat, longitude: lng }, { withCredentials: true });
                         } catch (err) {
                             console.error("Failed to update location:", err);
                         }
 
-                        // Fetch all online users
+                        // Fetch all online users (with locations)
                         try {
                             const res = await axios.get("/api/users/online", { withCredentials: true });
                             setOnlineUsers(res.data.users || []);
@@ -88,12 +104,13 @@ const Dashboard = ({ user }) => {
         }
     }, [user]);
 
-    // Load Google Maps and render map with all online users
+    // When user, coords, or onlineUsers change, load Google Maps and render all markers
     useEffect(() => {
       if (user && coords && apiKey && mapRef.current) {
         console.log("Attempting to load Google Maps...");
         loadGoogleMapsScript(apiKey, () => {
           if (window.google && window.google.maps) {
+            // Custom map style: hide POI and transit icons
             const customMapStyle = [
               {
                 featureType: "poi",
@@ -107,6 +124,7 @@ const Dashboard = ({ user }) => {
               }
             ];
 
+            // Create the map centered on the user's location
             const map = new window.google.maps.Map(mapRef.current, {
               center: coords,
               zoom: 12,
@@ -129,6 +147,7 @@ const Dashboard = ({ user }) => {
               { lat: 40.917577, lng: -73.700272 },
             ];
 
+            // Draw NYC boundary polygon
             new window.google.maps.Polygon({
               paths: nycBoroughsCoords,
               strokeColor: "#2196f3",
@@ -139,29 +158,55 @@ const Dashboard = ({ user }) => {
               map: map,
             });
 
-            // Add a marker for each online user
+            // Add a marker for each online user (except current geolocation)
             (onlineUsers || []).forEach(u => {
               if (typeof u.latitude === "number" && typeof u.longitude === "number") {
-                new window.google.maps.Marker({
+                // Don't render your own marker from backend if it matches your geolocation (avoid duplicate pin)
+                if (u.username === user.username && u.latitude === coords.lat && u.longitude === coords.lng) return;
+                let markerOptions = {
                   position: { lat: u.latitude, lng: u.longitude },
                   map,
                   title: u.username === user.username ? "You are here!" : u.username,
-                  icon: u.username === user.username ? undefined : {
-                    path: window.google.maps.SymbolPath.CIRCLE,
-                    scale: 7,
-                    fillColor: "#1DB954",
-                    fillOpacity: 1,
-                    strokeColor: "#333",
-                    strokeWeight: 1,
-                  },
                   label: {
                     text: u.username === user.username ? "You" : u.username,
-                    color: u.username === user.username ? "#1976d2" : "#1DB954",
+                    color: u.username === user.username ? "#8e24aa" : "#d32f2f",
                     fontWeight: "bold",
                   },
-                });
+                };
+                // Use LocalBeats.png for your own marker, green pin for others
+                if (u.username === user.username) {
+                  markerOptions.icon = {
+                    url: require("../assets/LocalBeats.png"),
+                    scaledSize: new window.google.maps.Size(40, 40),
+                  };
+                } else {
+                  markerOptions.icon = {
+                    url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    scaledSize: new window.google.maps.Size(40, 40),
+                  };
+                }
+                new window.google.maps.Marker(markerOptions);
               }
             });
+
+            // Always render LocalBeats.png for the current user's geolocation (matching address box)
+            if (coords && typeof coords.lat === "number" && typeof coords.lng === "number") {
+              new window.google.maps.Marker({
+                position: { lat: coords.lat, lng: coords.lng },
+                map,
+                title: "You are here!",
+                icon: {
+                  url: require("../assets/LocalBeats.png"),
+                  scaledSize: new window.google.maps.Size(40, 40),
+                },
+                label: {
+                  text: "You",
+                  color: "#8e24aa",
+                  fontWeight: "bold",
+                },
+                zIndex: 9999,
+              });
+            }
             console.log("Map rendered with users:", onlineUsers);
           } else {
             console.error("Google Maps JS API not available after script load.");
@@ -170,13 +215,17 @@ const Dashboard = ({ user }) => {
       }
     }, [user, coords, apiKey, onlineUsers]);
 
+
+    // Positioning for the location info box
     const locationBoxTop = 20; // px from top
     const locationBoxRight = -270; // px from right
 
+
+    // Render the dashboard UI
     return (
       <main style={{ position: "relative" }}>
         <h1>Dashboard</h1>
-        {/* <ActiveListener user={user} /> */}
+        {/* Location info box for the current user */}
         {user && (
           <div
             style={{
@@ -188,18 +237,27 @@ const Dashboard = ({ user }) => {
               borderRadius: "8px",
               padding: "12px 18px",
               minWidth: "160px",
+              maxWidth: "260px",
               boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
               fontSize: "14px",
               zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              gap: "8px",
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}
           >
             <strong>Your Location</strong>
-            <div style={{ marginTop: "8px" }}>
+            <div style={{ marginTop: "8px", width: "100%", display: "flex", flexDirection: "column" }}>
               {coords ? (
-                <>
-                  <div>Lat: {coords.lat.toFixed(5)}</div>
-                  <div>Lng: {coords.lng.toFixed(5)}</div>
-                </>
+                address ? (
+                  <div style={{ color: "#333", fontWeight: 500, wordBreak: "break-word", whiteSpace: "pre-line" }}>{address}</div>
+                ) : (
+                  <div>Fetching address...</div>
+                )
               ) : geoError ? (
                 <div style={{ color: "#c00" }}>{geoError}</div>
               ) : (
@@ -208,7 +266,7 @@ const Dashboard = ({ user }) => {
             </div>
           </div>
         )}
-        {/* Map Box */}
+        {/* Map container for Google Maps */}
         {user && coords && (
           <div
             style={{
