@@ -17,6 +17,7 @@ module.exports = {
       REACT_APP_AUTH0_DOMAIN: "",
       REACT_APP_AUTH0_CLIENT_ID: "",
       REACT_APP_AUTH0_AUDIENCE: "",
+      REACT_APP_GOOGLE_MAPS_API_KEY: "", 
     }),
   ],
   module: {

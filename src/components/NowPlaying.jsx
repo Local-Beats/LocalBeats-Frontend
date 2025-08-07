@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "../utils/axiosInstance";
-// import { API_URL } from "../shared";
+//import { API_URL } from "../shared";
 
-const NowPlaying = () => {
+const NowPlaying = ({ user }) => {
   const [track, setTrack] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      setTrack(null);
+      setError("You must be logged in to view the current track.");
+      return;
+    }
     const fetchTrackFromBackend = async () => {
       try {
         // console.log(
@@ -38,7 +43,7 @@ const NowPlaying = () => {
     const interval = setInterval(fetchTrackFromBackend, 10000); // Refresh every 10s
 
     return () => clearInterval(interval);
-  }, []);
+  }, [user]);
 
   if (error)
     return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
