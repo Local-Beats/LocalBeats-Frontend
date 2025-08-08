@@ -46,16 +46,16 @@ const Login = ({ setUser }) => {
             marginTop: "20px",
             width: "100%",
             padding: "12px 0",
-            backgroundColor: "#1DB954",
-            color: "white",
+            backgroundColor: "transparent",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
-            fontSize: "16px",
-            fontWeight: "bold",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          Log in with Spotify
+          <img src={require("../assets/spotify-logo.png")} alt="Log in with Spotify" style={{ width: "60px", height: "60px" }} />
         </button>
       </div>
     </div>

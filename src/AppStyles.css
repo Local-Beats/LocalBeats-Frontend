@@ -16,19 +16,6 @@ body {
   overflow-x: hidden;
 }
 
-html {
-  height: 100%;
-  min-height: 100%;
-}
-
-/* Shift background 150px left on iPhone-sized screens */
-@media only screen and (max-width: 600px) {
-  body {
-    background-position: calc(50% - 350px) center !important;
-  }
-}
-
-
 .title {
   color: #ffffff;
   font-size: 3rem;
