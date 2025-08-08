@@ -5,9 +5,10 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: #f8f9fa;
+  background: transparent;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e9ecef;
+  border: none;
+  pointer-events: none; /* allow background to be clickable except for children */
 }
 
 
@@ -16,6 +17,8 @@
   font-weight: bold;
   color: #333;
   text-decoration: none;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .nav-brand a:hover {
@@ -25,12 +28,15 @@
 .nav-links {
   display: flex;
   align-items: center;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .auth-links {
   display: flex;
   gap: 1rem;
   align-items: center;
+  background: transparent;
 }
 
 .nav-link {
@@ -39,17 +45,21 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: all 0.2s;
+  background: rgba(0,0,0,0.2);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .nav-link:hover {
   color: #007bff;
-  background-color: #e9ecef;
+  background: rgba(0,0,0,0.4);
 }
 
 .user-section {
   display: flex;
   align-items: center;
   gap: 1rem;
+  background: transparent;
 }
 
 .username {
@@ -66,6 +76,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: background-color 0.2s;
+  background: rgba(0,0,0,0.2);
 }
 
 .logout-btn:hover {
