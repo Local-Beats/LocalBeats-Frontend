@@ -29,11 +29,12 @@ const Login = ({ setUser }) => {
 
   return (
     <div className="auth-container">
-      <h1> Discover What NYC is Vibing to!</h1>
+      <h1 className="landing-title" style={{ color: '#fff' }}> Discover What NYC is Vibing too!</h1>
       <div className="auth-form" style={{ textAlign: "center" }}>
-        <h2>Login with Spotify</h2>
+        <h2 className="landing-subtitle" style={{ color: '#fff' }}>Login with Spotify</h2>
 
         <button
+          className="spotify-login-btn"
           onClick={() => loginWithRedirect({
             authorizationParams: {
               prompt: "login",

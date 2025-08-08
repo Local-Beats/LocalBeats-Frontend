@@ -1,3 +1,59 @@
+/* Animated partial purple ring for Spotify button hover */
+.spotify-login-btn {
+  position: relative;
+  outline: none;
+}
+
+.spotify-login-btn img {
+  transition: transform 0.2s;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.spotify-login-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top: 3px solid #a259f7;
+  border-right: 3px solid #a259f7;
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.spotify-login-btn:hover img {
+  transform: scale(1.2);
+}
+
+.spotify-login-btn:hover::after {
+  opacity: 1;
+  animation: spin-ring 1s linear infinite;
+}
+
+@keyframes spin-ring {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+/* Spotify logo button hover effect */
+.spotify-login-btn img {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+}
+
+.spotify-login-btn:hover img {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 5px #a259f7;
+}
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -9,23 +65,14 @@
 }
 
 .auth-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: auto;
+  max-width: none;
 }
 
-.auth-form h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
 
 .form-group label {
   display: block;
