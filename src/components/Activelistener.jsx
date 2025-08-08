@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
 // import { API_URL } from "../shared";
@@ -9,10 +10,13 @@ const ActliveListener = ({ user }) => {
   // console.log("this is track", track)
   const [error, setError] = useState(null);
 
-  const [activeListeners, setActiveListeners] = useState([]);
-  console.log("This is active listener", activeListeners)
+  const [activeSession, setActiveSession] = useState(null);
+  console.log("This is active session", activeSession)
 
-  let currentTrack = activeListeners.song_id;
+  const oldSessionRef = useRef(null)
+  // oldSessionRef.ref.current = null
+  console.log("this is old session ref--->", oldSessionRef.current)
+
 
   useEffect(() => {
     const fetchTrackFromBackend = async () => {
@@ -33,7 +37,6 @@ const ActliveListener = ({ user }) => {
         if (data && data.title) {
           setTrack(data);
           setError(null);
-
         } else {
           setTrack(null);
         }
@@ -52,13 +55,30 @@ const ActliveListener = ({ user }) => {
 
 
   useEffect(() => {
-
     const createListeningSession = async () => {
 
       if (!user || !user.id) return;
 
+
+      if (oldSessionRef.current) {
+        const updateListeningSession = async () => {
+          try {
+            const listeningSession = await axios.patch("/api/listeners",
+              {
+                status: "stopped",
+                id: oldSessionRef.current
+              }
+            )
+          } catch (error) {
+            console.log("Failed to update listening session")
+          }
+        }
+        updateListeningSession();
+      }
+
+
       if (track) {
-        const createListeningSession = await axios.post("/api/listeners",
+        const listeningSession = await axios.post("/api/listeners",
           {
             status: "playing",
             user_id: user?.id,
@@ -69,18 +89,12 @@ const ActliveListener = ({ user }) => {
             withCredentials: true
           }
         );
-        setActiveListeners(createListeningSession.data)
+        setActiveSession(listeningSession.data)
+        oldSessionRef.current = listeningSession.data.id
       }
     }
     createListeningSession();
 
-    if (createListeningSession.data.id !== activeListeners.id) {
-      const updateListeningSession = async () => {
-        const listeningSession = await axios.patch("/api/listeners",
-          { status: "ended" }
-        )
-      }
-    }
 
   }, [track?.song_id])
 
