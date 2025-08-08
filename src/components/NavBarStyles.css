@@ -1,3 +1,42 @@
+.navbar-logo {
+  width: 75px;
+  height: 75px;
+  transition: width 0.3s, height 0.3s;
+}
+
+@media (min-width: 601px) {
+  .navbar {
+    justify-content: center;
+  }
+  .nav-brand {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+  .navbar-logo {
+    width: 94px; /* 75px * 1.25 = 93.75px */
+    height: 94px;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    justify-content: center;
+  }
+  .nav-brand {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+  .navbar-logo {
+    margin: 0 auto;
+    display: block;
+    width: 94px;
+    height: 94px;
+  }
+}
 .navbar {
   display: flex;
   justify-content: space-between;
