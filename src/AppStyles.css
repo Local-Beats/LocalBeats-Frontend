@@ -8,7 +8,26 @@
 body {
   background: url('https://coolbackgrounds.imgix.net/39sOStld2OCyNn3HmCpqco/21d339122a7cb417c83e6ebdc347ea5c/sea-edge-79ab30e2.png?w=3840&q=60&auto=format,compress') no-repeat center center fixed;
   background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
+
+html {
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Shift background 150px left on iPhone-sized screens */
+@media only screen and (max-width: 600px) {
+  body {
+    background-position: calc(50% - 350px) center !important;
+  }
+}
+
 
 .title {
   color: #ffffff;
