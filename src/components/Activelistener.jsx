@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-// import { API_URL } from "../shared";
+
+
 
 const ActliveListener = ({ user }) => {
   // console.log("this is user from Nowplaying--->", user)
@@ -11,74 +12,110 @@ const ActliveListener = ({ user }) => {
   const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
-  console.log("This is active session", activeSession)
+  // console.log("This is active session", activeSession)
 
-  const oldSessionRef = useRef(null)
-  // oldSessionRef.ref.current = null
-  console.log("this is old session ref--->", oldSessionRef.current)
+  const [allListeningSessions, setAllListeningSessions] = useState([]);
+  console.log("This is All Listening Sessions", allListeningSessions)
+
+
+  const lastSongIdRef = useRef(null);     // last seen song_id from polling
+  const openSessionIdRef = useRef(null);  // DB id of the currently-open session
+  const isSyncingRef = useRef(false);     // simple lock to prevent overlap
+  const aliveRef = useRef(true);
+
+  // oldSessionRef.current = null
+  // console.log("this is old session ref--->", oldSessionRef.current)
 
 
   useEffect(() => {
+    let alive = true;
+
     const fetchTrackFromBackend = async () => {
       try {
-        // console.log(
-        //   "Fetching current track from:",
-        //   `${API_URL.trim()}/spotify/current-track`
-        // );
-        const response = await axios.get("/api/spotify/current-track",
+        const { data } = await axios.get("/api/spotify/current-track",
           {
             withCredentials: true,
           }
         );
-
-        const data = response.data;
+        if (!alive) return;
 
         // Only set track if data is valid and has a title
-        if (data && data.title) {
-          setTrack(data);
+        if (data?.title) {
+          // only change state of track if we get a new track
+          if (data.song_id !== lastSongIdRef.current) {
+            setTrack(data);
+            lastSongIdRef.current = data.song_id;
+          }
           setError(null);
         } else {
-          setTrack(null);
+          // no song playing now
+          if (lastSongIdRef.current !== null) {
+            lastSongIdRef.current = null;
+            setTrack(null);
+          }
         }
       } catch (err) {
+        if (!alive) return;
         console.error("Error fetching current track:", err);
         setError("Unable to fetch currently playing track.");
       }
     };
 
-    fetchTrackFromBackend();
-    const interval = setInterval(fetchTrackFromBackend, 10000); // Refresh every 10s
+    // Initial fetch + interval
+    fetchCurrentTrack();
+    const intervalId = setInterval(fetchTrackFromBackend, 10000); // Refresh every 10s
 
-    return () => clearInterval(interval);
+    // Cleanup: stop interval
+    return () => {
+      alive = false;
+      clearInterval(intervalId);
+    }
   }, []);
 
 
+  // ===============================
+  // Sync a session whenever song_id OR user changes
+  //   - If no track -> stop existing session (if any) and clear ref
+  //   - If track   -> stop old (if any), then create a new session
+  // ===============================
 
   useEffect(() => {
-    const createListeningSession = async () => {
+    const syncListeningSession = async () => {
 
-      if (!user || !user.id) return;
-
-
-      if (oldSessionRef.current) {
-        const updateListeningSession = async () => {
-          try {
-            const listeningSession = await axios.patch("/api/listeners",
+      if (!user?.id) return;
+      if (isSyncingRef.current) return;
+      isSyncingRef.current = true;
+      try {
+        // if there is no track playing stop and clear then leave and do nothing
+        if (!track) {
+          if (oldSessionRef.current) {
+            await axios.patch("/api/listeners",
               {
-                status: "stopped",
-                id: oldSessionRef.current
+                id: oldSessionRef.current,
+                status: "stopped"
+              },
+              {
+                withCredentials: true
               }
-            )
-          } catch (error) {
-            console.log("Failed to update listening session")
+            );
+            oldSessionRef.current = null
+            setActiveSession(null);
           }
+          return;
         }
-        updateListeningSession();
-      }
 
+        // if track exist end old session first if any on memory
+        if (oldSessionRef.current) {
+          await axios.patch(
+            "/api/listeners",
+            { status: "stopped", id: oldSessionRef.current },
+            { withCredentials: true }
+          )
+        }
 
-      if (track) {
-        const listeningSession = await axios.post("/api/listeners",
+        // create a new session for this track
+        const newListeningSession = await axios.post(
+          "/api/listeners",
           {
             status: "playing",
             user_id: user?.id,
@@ -89,34 +126,81 @@ const ActliveListener = ({ user }) => {
             withCredentials: true
           }
         );
-        setActiveSession(listeningSession.data)
-        oldSessionRef.current = listeningSession.data.id
+
+
+        setActiveSession(newListeningSession.data)
+        oldSessionRef.current = newListeningSession.data.id
+      } catch (error) {
+        console.log(error?.response?.data || error.message || error);
+      } finally {
+        isSyncingRef.current = false;
       }
     }
-    createListeningSession();
+    syncListeningSession();
+  }, [track?.song_id, user?.id]);
 
 
-  }, [track?.song_id])
-
-  // useEffect(() => {
-  //   
-  //   
-  // }, [])
-
-
-
+  // end sessin on unmount
   useEffect(() => {
-    const getActiveListeners = async () => {
-      await axios.get("/api/listeners",
-        {
-          withCredentials: true,
+    return () => {
+      if (oldSessionRef.current) {
+        axios.patch(
+          "/api/listeners",
+          { id: oldSessionRef.current, status: "stopped" },
+          { withCredentials: true }
+        ).catch(() => { });
+      }
+    };
+  }, []);
+
+
+
+  const fetchAllActiveListeners = React.useCallback(async () => {
+    try {
+      const res = await axios.get("/api/listeners", { withCredentials: true });
+      if (!aliveRef.current) return;
+
+      setAllListeningSessions(prev => {
+        // same length + same ids in same order
+        if (
+          prev.length === res.data.length &&
+          prev.every((item, i) => item.id === res.data[i]?.id)
+        ) {
+          return prev; // no change → no re-render
         }
-      )
+        return res.data;
+      });
+    } catch (err) {
+      console.error("Error fetching active listeners:", err);
     }
-    getActiveListeners();
+  }, []);
 
-  }, [])
+  //keeps others’ updates flowing in
+  useEffect(() => {
+    aliveRef.current = true;
 
+    fetchAllActiveListeners();                 // immediate
+    const intervalId = setInterval(fetchAllActiveListeners, 8000);
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") fetchAllActiveListeners();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+
+    return () => {
+      aliveRef.current = false;
+      clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [fetchAllActiveListeners]);
+
+
+
+  //Instant refresh when change sessions
+  useEffect(() => {
+    if (!activeSession?.id) return;
+    fetchAllActiveListeners();
+  }, [activeSession?.id, fetchAllActiveListeners]);
   if (error)
     return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
   if (!track)
