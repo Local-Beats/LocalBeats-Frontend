@@ -36,13 +36,20 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        // This is the missing rule for handling images
+        //Rule for handling images
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: "asset/resource",
         generator: {
           filename: "images/[hash][ext][query]",
         }
       },
+      {
+        test: /\.(mp4|webm|ogg)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "videos/[hash][ext][query]",
+        }
+      }
     ],
   },
   resolve: {

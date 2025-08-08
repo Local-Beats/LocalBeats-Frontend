@@ -93,7 +93,6 @@ const App = () => {
   }, [isAuthenticated, auth0User, getIdTokenClaims]);
 
 
-
   const handleLogout = async () => {
     try {
       await axios.post('/auth/logout', {}, { withCredentials: true });
@@ -105,18 +104,17 @@ const App = () => {
 
   return (
     <div>
-      <NavBar user={user} onLogout={handleLogout} />
       <div className="app">
         <Routes>
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
           <Route path="/dashboard" element={
             <>
+              <NavBar user={user} onLogout={handleLogout} />
               <Dashboard user={user} />
               <NowPlaying />
             </>
           } />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
