@@ -5,7 +5,7 @@ import ListenerCard from "./ListenerCard";
 
 
 
-const ActliveListener = ({ user }) => {
+const ActiveListener = ({ user }) => {
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
   // console.log("this is track", track)
@@ -21,23 +21,22 @@ const ActliveListener = ({ user }) => {
   const lastSongIdRef = useRef(null);     // last seen song_id from polling
   const openSessionIdRef = useRef(null);  // DB id of the currently-open session
   const isSyncingRef = useRef(false);     // simple lock to prevent overlap
-  const aliveRef = useRef(true);
+  let aliveRef = useRef(true);
 
   // oldSessionRef.current = null
   // console.log("this is old session ref--->", oldSessionRef.current)
 
 
   useEffect(() => {
-    let alive = true;
 
-    const fetchTrackFromBackend = async () => {
+    const fetchCurrentTrack = async () => {
       try {
         const { data } = await axios.get("/api/spotify/current-track",
           {
             withCredentials: true,
           }
         );
-        if (!alive) return;
+        if (!aliveRef.current) return;
 
         // Only set track if data is valid and has a title
         if (data?.title) {
@@ -55,7 +54,7 @@ const ActliveListener = ({ user }) => {
           }
         }
       } catch (err) {
-        if (!alive) return;
+        if (!aliveRef.current) return;
         console.error("Error fetching current track:", err);
         setError("Unable to fetch currently playing track.");
       }
@@ -63,11 +62,11 @@ const ActliveListener = ({ user }) => {
 
     // Initial fetch + interval
     fetchCurrentTrack();
-    const intervalId = setInterval(fetchTrackFromBackend, 10000); // Refresh every 10s
+    const intervalId = setInterval(fetchCurrentTrack, 10000); // Refresh every 10s
 
     // Cleanup: stop interval
     return () => {
-      alive = false;
+      aliveRef.current = false;
       clearInterval(intervalId);
     }
   }, []);
@@ -88,27 +87,27 @@ const ActliveListener = ({ user }) => {
       try {
         // if there is no track playing stop and clear then leave and do nothing
         if (!track) {
-          if (oldSessionRef.current) {
+          if (openSessionIdRef.current) {
             await axios.patch("/api/listeners",
               {
-                id: oldSessionRef.current,
+                id: openSessionIdRef.current,
                 status: "stopped"
               },
               {
                 withCredentials: true
               }
             );
-            oldSessionRef.current = null
+            openSessionIdRef.current = null
             setActiveSession(null);
           }
           return;
         }
 
         // if track exist end old session first if any on memory
-        if (oldSessionRef.current) {
+        if (openSessionIdRef.current) {
           await axios.patch(
             "/api/listeners",
-            { status: "stopped", id: oldSessionRef.current },
+            { status: "stopped", id: openSessionIdRef.current },
             { withCredentials: true }
           )
         }
@@ -118,7 +117,6 @@ const ActliveListener = ({ user }) => {
           "/api/listeners",
           {
             status: "playing",
-            user_id: user?.id,
             song_id: track.song_id,
             ended_at: null,
           },
@@ -129,7 +127,7 @@ const ActliveListener = ({ user }) => {
 
 
         setActiveSession(newListeningSession.data)
-        oldSessionRef.current = newListeningSession.data.id
+        openSessionIdRef.current = newListeningSession.data.id;
       } catch (error) {
         console.log(error?.response?.data || error.message || error);
       } finally {
@@ -143,10 +141,10 @@ const ActliveListener = ({ user }) => {
   // end sessin on unmount
   useEffect(() => {
     return () => {
-      if (oldSessionRef.current) {
+      if (openSessionIdRef.current) {
         axios.patch(
           "/api/listeners",
-          { id: oldSessionRef.current, status: "stopped" },
+          { id: openSessionIdRef.current, status: "stopped" },
           { withCredentials: true }
         ).catch(() => { });
       }
@@ -161,14 +159,10 @@ const ActliveListener = ({ user }) => {
       if (!aliveRef.current) return;
 
       setAllListeningSessions(prev => {
-        // same length + same ids in same order
-        if (
-          prev.length === res.data.length &&
-          prev.every((item, i) => item.id === res.data[i]?.id)
-        ) {
-          return prev; // no change → no re-render
-        }
-        return res.data;
+        if (prev.length !== res.data.length) return res.data;
+        const prevIds = prev.map(x => x.id).sort().join(",");
+        const nextIds = res.data.map(x => x.id).sort().join(",");
+        return prevIds === nextIds ? prev : res.data;
       });
     } catch (err) {
       console.error("Error fetching active listeners:", err);
@@ -242,4 +236,4 @@ const ActliveListener = ({ user }) => {
   );
 };
 
-export default ActliveListener;
+export default ActiveListener;
