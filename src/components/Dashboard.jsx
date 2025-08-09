@@ -2,7 +2,7 @@
 // React and dependencies
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
-// import ActiveListener from './Activelistener'; // Optional: for future use
+import ActiveListener from './ActiveListener'
 
 
 
@@ -289,6 +289,7 @@ const Dashboard = ({ user }) => {
                     />
                 </div>
             )}
+            <ActiveListener />
         </main>
     );
 }
