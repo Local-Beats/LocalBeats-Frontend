@@ -8,6 +8,7 @@ import ActiveListener from './ActiveListener'
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 // Helper to load Google Maps script
+// Helper to load Google Maps script
 function loadGoogleMapsScript(apiKey, callback) {
     if (window.google && window.google.maps) {
         callback();
@@ -35,13 +36,13 @@ const Dashboard = ({ user }) => {
     const [geoError, setGeoError] = useState(null);
     const [address, setAddress] = useState("");
     const mapRef = useRef(null);
-    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [mapLoaded, setMapLoaded] = useState(false);
 
     useEffect(() => {
         if (user) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    async (position) => {
+                    (position) => {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         setCoords({ lat, lng });
@@ -104,39 +105,37 @@ const Dashboard = ({ user }) => {
                         }
                     ];
 
-                    // Create the map centered on the user's location
-                    const map = new window.google.maps.Map(mapRef.current, {
+                            const map = new window.google.maps.Map(mapRef.current, {
                         center: coords,
                         zoom: 12,
-                        mapTypeControl: false,
-                        streetViewControl: false,
-                        fullscreenControl: false,
-                        zoomControl: false,
+                        mapTypeControl: false, // Remove Map/Satellite icon
+                        streetViewControl: false, // Remove yellow man (Street View)
+                        fullscreenControl: false, // Remove fullscreen button
+                        zoomControl: false, // Remove zoom control (circle with arrows)
                         styles: customMapStyle,
                     });
 
-                    // Draw polygon for NYC 5 boroughs (approximate coordinates)
-                    const nycBoroughsCoords = [
-                        { lat: 40.917577, lng: -73.700272 },
-                        { lat: 40.915255, lng: -73.786137 },
-                        { lat: 40.849255, lng: -73.786137 },
-                        { lat: 40.5774, lng: -73.8371 },
-                        { lat: 40.5116, lng: -74.2556 },
-                        { lat: 40.639722, lng: -74.081667 },
-                        { lat: 40.8007, lng: -74.0256 },
-                        { lat: 40.917577, lng: -73.700272 },
-                    ];
+            // Draw polygon for NYC 5 boroughs (approximate coordinates)
+            const nycBoroughsCoords = [
+              { lat: 40.917577, lng: -73.700272 }, // NW Bronx
+              { lat: 40.915255, lng: -73.786137 }, // NE Bronx
+              { lat: 40.849255, lng: -73.786137 }, // SE Bronx
+              { lat: 40.5774, lng: -73.8371 },     // SE Brooklyn
+              { lat: 40.5116, lng: -74.2556 },     // SW Staten Island
+              { lat: 40.639722, lng: -74.081667 }, // NW Staten Island
+              { lat: 40.8007, lng: -74.0256 },     // NW Manhattan
+              { lat: 40.917577, lng: -73.700272 }, // Back to NW Bronx
+            ];
 
-                    // Draw NYC boundary polygon
-                    new window.google.maps.Polygon({
-                        paths: nycBoroughsCoords,
-                        strokeColor: "#2196f3",
-                        strokeOpacity: 0.6,
-                        strokeWeight: 2,
-                        fillColor: "#90caf9",
-                        fillOpacity: 0.25,
-                        map: map,
-                    });
+            new window.google.maps.Polygon({
+              paths: nycBoroughsCoords,
+              strokeColor: "#2196f3",
+              strokeOpacity: 0.6,
+              strokeWeight: 2,
+              fillColor: "#90caf9",
+              fillOpacity: 0.25,
+              map: map,
+            });
 
                     // Add a marker for each online user (except current geolocation)
                     (onlineUsers || []).forEach(u => {

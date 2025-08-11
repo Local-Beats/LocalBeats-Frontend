@@ -10,13 +10,7 @@
 }
 
 @media (max-width: 600px) {
-  .landing-title {
-    font-size: 3.243rem;
-    text-align: center;
-    width: 100vw;
-    display: block;
-  }
-  .landing-subtitle {
+  .landing-title, .landing-subtitle {
     text-align: center;
     width: 100vw;
     display: block;
