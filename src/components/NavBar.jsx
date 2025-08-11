@@ -1,54 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/LocalBeats.png";
 import "./NavBarStyles.css";
-import logo from '../assets/LocalBeats.png'
 
 const NavBar = ({ user, onLogout }) => {
+  if (!user) {
+    console.log("This is the current user:", user);
+    //return;
+  }
+  console.log("This is the current user:", user);
+
   return (
     <nav className="navbar">
-      <div className="nav-brand">
-        <Link to="/">
-          <img className="navbar-logo" src={logo} alt="Logo" />
+      <div className="navbar-logo">
+        <Link to="/dashboard">
+          <img src={logo} alt="LocalBeats logo" />
         </Link>
       </div>
 
-      <div className="nav-links">
-        {user ? (
-          <div className="user-section">
-            {/* Optional: Show profile picture if available */}
-            {user.picture && (
-              <img
-                src={user.picture}
-                alt="Profile"
-                className="profile-pic"
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  borderRadius: "50%",
-                  marginRight: "10px",
-                }}
-              />
-            )}
+      <div className="user-section">
+        {/* Welcome message using Spotify display name or username */}
+        <span className="username">Hi, {user.spotify_display_name || user.username}!</span>
 
-            {/* Welcome message using name or nickname */}
-            <span className="username">Welcome, {user.spotify_display_name || user.nickname}!</span>
+        {/* Optional: Show profile picture if available */}
+        {/* {user.spotify_image && (
+          <img
+            src={user.spotify_image}
+            alt="Profile picture icon"
+            className="profile-pic"
+            style={{
+              width: "35px",
+              height: "35px",
+              borderRadius: "50%",
+              marginRight: "10px",
+            }}
+          />
+        )} */}
 
-            {/* Logout button */}
-            <button onClick={onLogout} className="logout-btn">
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="auth-links">
-            {/* Links to login/signup when not authenticated */}
-            <Link to="/login" className="nav-link">
-              Login
-            </Link>
-            <Link to="/signup" className="nav-link">
-              Sign Up
-            </Link>
-          </div>
-        )}
+        {/* Logout button */}
+        <button onClick={onLogout} className="logout-btn">
+          Logout
+        </button>
       </div>
     </nav>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
-import NavBar from "./components/NavBar";
+// import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
 import NowPlaying from "./components/NowPlaying";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -22,8 +22,8 @@ const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const App = () => {
   const [user, setUser] = useState(null);
-  console.log("this is user--->", user)
   //const [token, setToken] = useState("");
+  console.log("this is user--->", user);
 
   const {
     isAuthenticated,
@@ -68,13 +68,11 @@ const App = () => {
             Authorization: `Bearer ${spotifyAccessToken}`,
           },
           withCredentials: true,
-        }
-        );
-
+        });
 
         // Fetch user info from DB (using session token)
         const res = await axios.get("/auth/me", { withCredentials: true });
-        console.log("this is data-->", res.data)
+        console.log("this is data-->", res.data);
         setUser(res.data.user);
       } catch (err) {
         console.error("Post-login sync failed:", err);
@@ -92,31 +90,28 @@ const App = () => {
     syncSpotifyAndFetchUser();
   }, [isAuthenticated, auth0User, getIdTokenClaims]);
 
-
-
   const handleLogout = async () => {
     try {
       await axios.post('/auth/logout', {}, { withCredentials: true });
       setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
-    }
+    } 
   };
 
   return (
     <div>
-      <NavBar user={user} onLogout={handleLogout} />
+      {/* <NavBar user={user} onLogout={handleLogout} /> */}
       <div className="app">
         <Routes>
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
           <Route path="/dashboard" element={
             <>
-              <Dashboard user={user} />
+              <Dashboard user={user} onLogout={handleLogout} />
               <NowPlaying />
             </>
           } />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
