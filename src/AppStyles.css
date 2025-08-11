@@ -1,3 +1,9 @@
+@media (max-width: 600px) {
+  body {
+    /* Adjust the pixel value below to move the background image up or down on mobile */
+    background-position: center calc(50% - 140px) !important;
+  }
+}
 .landing-title {
   color: #fff;
   font-size: 3.45rem;
@@ -9,13 +15,7 @@
 }
 
 @media (max-width: 600px) {
-  .landing-title {
-    font-size: 3.243rem;
-    text-align: center;
-    width: 100vw;
-    display: block;
-  }
-  .landing-subtitle {
+  .landing-title, .landing-subtitle {
     text-align: center;
     width: 100vw;
     display: block;
@@ -30,7 +30,7 @@
 }
 
 body {
-  background: url('https://coolbackgrounds.imgix.net/39sOStld2OCyNn3HmCpqco/21d339122a7cb417c83e6ebdc347ea5c/sea-edge-79ab30e2.png?w=3840&q=60&auto=format,compress') no-repeat center center fixed;
+  background: url('./assets/amy-background2.png') no-repeat center center fixed;
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
