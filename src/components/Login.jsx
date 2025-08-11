@@ -45,54 +45,35 @@ const Login = ({ setUser }) => {
 
   return (
     <div className="auth-container">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        style={{
-          borderRadius: "10px",
-          border: "2px solid #fff",
-        }}
-        // style={backgroundVideoStyle}
-      >
-        <source
-          src={video}
-          type="video/mp4"
-        />
-        Your browser does not support the video tag.
-      </video>
-
-      <h1>Discover What NYC is Vibing to!</h1>
-
+      <h1 className="landing-title" style={{ color: '#fff' }}> Discover What NYC is Vibing too!</h1>
       <div className="auth-form" style={{ textAlign: "center" }}>
-        <h2>Login with Spotify</h2>
+        <h2 className="landing-subtitle" style={{ color: '#fff' }}>Login with Spotify</h2>
 
-        {/* Replace button with clickable logo */}
-        <img
-          src={picture} // Update path if needed
-          alt="Login with Spotify"
-          onClick={() =>
-            loginWithRedirect({
-              authorizationParams: {
-                prompt: "login",
-              },
-              connection: "spotify-custom",
-              prompt: "consent",
-              scope:
-                "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access",
-            })
-          }
+        <button
+          className="spotify-login-btn"
+          onClick={() => loginWithRedirect({
+            authorizationParams: {
+              prompt: "login",
+            },
+            connection: "spotify-custom",
+            prompt: "consent", // to force refresh token prompt
+            scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access"
+          })}
           style={{
             marginTop: "20px",
-            width: "80px", // Adjust size as needed
-            height: "80px",
+            width: "100%",
+            padding: "12px 0",
+            backgroundColor: "transparent",
+            border: "none",
+            borderRadius: "4px",
             cursor: "pointer",
-            transition: "transform 0.2s",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          onMouseOver={e => (e.currentTarget.style.transform = "scale(1.1)")}
-          onMouseOut={e => (e.currentTarget.style.transform = "scale(1)")}
-        />
+        >
+          <img src={require("../assets/spotify-logo.png")} alt="Log in with Spotify" style={{ width: "60px", height: "60px" }} />
+        </button>
       </div>
     </div>
   );

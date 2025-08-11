@@ -4,7 +4,8 @@ import { createRoot } from "react-dom/client";
 import "./AppStyles.css";
 import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
-import NowPlaying from "./components/NowPlaying";
+// import NowPlaying from "./components/Activelistener";
+// import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -109,11 +110,7 @@ const App = () => {
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
           <Route path="/dashboard" element={
-            <>
-              <NavBar user={user} onLogout={handleLogout} />
-              <Dashboard user={user} />
-              <NowPlaying />
-            </>
+            <Dashboard user={user} />
           } />
           <Route path="*" element={<NotFound />} />
         </Routes>
