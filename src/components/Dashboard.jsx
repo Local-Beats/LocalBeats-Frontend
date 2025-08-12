@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
 import ActiveListener from './ActiveListener'
-import NowPlaying from './NowPlaying'
+//import NowPlaying from './NowPlaying'
 
 
 
@@ -266,7 +266,7 @@ const Dashboard = ({ user }) => {
                     />
                 </div>
             )}
-            <NowPlaying user={user} />
+            {/* <NowPlaying user={user} /> */}
             <ActiveListener />
         </main>
     );
