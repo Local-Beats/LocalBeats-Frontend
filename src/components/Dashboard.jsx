@@ -1,3 +1,5 @@
+
+// React and dependencies
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
 import ActiveListener from './ActiveListener'
@@ -5,10 +7,12 @@ import ActiveListener from './ActiveListener'
 
 
 
+// Google Maps API key from environment
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+console.log("Google Maps API Key:", apiKey);
 
-// Helper to load Google Maps script
-// Helper to load Google Maps script
+
+// Helper to dynamically load the Google Maps script if not already loaded
 function loadGoogleMapsScript(apiKey, callback) {
   if (window.google && window.google.maps) {
     callback();
@@ -21,31 +25,48 @@ function loadGoogleMapsScript(apiKey, callback) {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
     script.async = true;
     script.onload = callback;
+    script.onerror = function(e) {
+      console.error("Failed to load Google Maps script", e);
+      alert("Failed to load Google Maps. Check your API key and network.");
+    };
     document.body.appendChild(script);
   } else {
     existingScript.onload = callback;
   }
 }
 
+
+// Main Dashboard component
 const Dashboard = ({ user }) => {
+    // State for user's geolocation coordinates
     const [coords, setCoords] = useState(null);
+    // State for geolocation error
     const [geoError, setGeoError] = useState(null);
+    // State for user's address (reverse geocoded)
     const [address, setAddress] = useState("");
+    // State for all online users (with locations)
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    // Ref for the map container div
     const mapRef = useRef(null);
-    const [mapLoaded, setMapLoaded] = useState(false);
+    // const [mapLoaded, setMapLoaded] = useState(false); // Remove for debugging
     const [mapLoaded, setMapLoaded] = useState(false);
 
+    // On mount or when user changes:
+    // 1. Get current user's geolocation
+    // 2. Reverse geocode to get address
+    // 3. Post location to backend
+    // 4. Fetch all online users with locations
     useEffect(() => {
         if (user) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                    (position) => {
+                    async (position) => {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
                         setCoords({ lat, lng });
                         setGeoError(null);
-                        // Reverse geocode to get address
+                        console.log("Geolocation success:", lat, lng);
+                        // Reverse geocode to get address from coordinates
                         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`)
                           .then(res => res.json())
                           .then(data => {
@@ -56,23 +77,42 @@ const Dashboard = ({ user }) => {
                             }
                           })
                           .catch(() => setAddress(""));
+
+                        // Post location to backend (update user's location)
+                        try {
+                            await axios.post("/api/users/location", { latitude: lat, longitude: lng }, { withCredentials: true });
+                        } catch (err) {
+                            console.error("Failed to update location:", err);
+                        }
+
+                        // Fetch all online users (with locations)
+                        try {
+                            const res = await axios.get("/api/users/online", { withCredentials: true });
+                            setOnlineUsers(res.data.users || []);
+                            console.log("Fetched online users:", res.data.users);
+                        } catch (err) {
+                            console.error("Failed to fetch online users:", err);
+                        }
                     },
                     (error) => {
                         setGeoError(error.message);
+                        console.error("Geolocation error:", error);
                     }
                 );
             } else {
                 setGeoError("Geolocation is not supported by this browser.");
+                console.error("Geolocation is not supported by this browser.");
             }
         }
     }, [user]);
 
-    // Load Google Maps and render map when coords are available
+    // When user, coords, or onlineUsers change, load Google Maps and render all markers
     useEffect(() => {
-      if (user && coords && apiKey && mapRef.current && !mapLoaded) {
+      if (user && coords && apiKey && mapRef.current) {
+        console.log("Attempting to load Google Maps...");
         loadGoogleMapsScript(apiKey, () => {
           if (window.google && window.google.maps) {
-            // Custom map style to hide POI icons (landmarks, transit, etc.)
+            // Custom map style: hide POI and transit icons
             const customMapStyle = [
               {
                 featureType: "poi",
@@ -86,13 +126,14 @@ const Dashboard = ({ user }) => {
               }
             ];
 
+            // Create the map centered on the user's location
             const map = new window.google.maps.Map(mapRef.current, {
               center: coords,
               zoom: 12,
-              mapTypeControl: false, // Remove Map/Satellite icon
-              streetViewControl: false, // Remove yellow man (Street View)
-              fullscreenControl: false, // Remove fullscreen button
-              zoomControl: false, // Remove zoom control (circle with arrows)
+              mapTypeControl: false,
+              streetViewControl: false,
+              fullscreenControl: false,
+              zoomControl: false,
               styles: customMapStyle,
             });
 
@@ -138,25 +179,74 @@ const Dashboard = ({ user }) => {
               map: map,
             });
 
-            // Add marker for user location
-            new window.google.maps.Marker({
-              position: coords,
-              map,
-              title: "You are here!",
+            // Add a marker for each online user (except current geolocation)
+            (onlineUsers || []).forEach(u => {
+              if (typeof u.latitude === "number" && typeof u.longitude === "number") {
+                // Don't render your own marker from backend if it matches your geolocation (avoid duplicate pin)
+                if (u.username === user.username && u.latitude === coords.lat && u.longitude === coords.lng) return;
+                let markerOptions = {
+                  position: { lat: u.latitude, lng: u.longitude },
+                  map,
+                  title: u.username === user.username ? "You are here!" : u.username,
+                  label: {
+                    text: u.username === user.username ? "You" : u.username,
+                    color: u.username === user.username ? "#8e24aa" : "#d32f2f",
+                    fontWeight: "bold",
+                  },
+                };
+                // Use LocalBeats.png for your own marker, green pin for others
+                if (u.username === user.username) {
+                  markerOptions.icon = {
+                    url: require("../assets/LocalBeats.png"),
+                    scaledSize: new window.google.maps.Size(40, 40),
+                  };
+                } else {
+                  markerOptions.icon = {
+                    url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    scaledSize: new window.google.maps.Size(40, 40),
+                  };
+                }
+                new window.google.maps.Marker(markerOptions);
+              }
             });
-            setMapLoaded(true);
+
+            // Always render LocalBeats.png for the current user's geolocation (matching address box)
+            if (coords && typeof coords.lat === "number" && typeof coords.lng === "number") {
+              new window.google.maps.Marker({
+                position: { lat: coords.lat, lng: coords.lng },
+                map,
+                title: "You are here!",
+                icon: {
+                  url: require("../assets/LocalBeats.png"),
+                  scaledSize: new window.google.maps.Size(40, 40),
+                },
+                label: {
+                  text: "You",
+                  color: "#8e24aa",
+                  fontWeight: "bold",
+                },
+                zIndex: 9999,
+              });
+            }
+            console.log("Map rendered with users:", onlineUsers);
+          } else {
+            console.error("Google Maps JS API not available after script load.");
           }
         });
       }
-    }, [user, coords, apiKey, mapLoaded]);
+    }, [user, coords, apiKey, onlineUsers]);
 
+
+    // Positioning for the location info box
     const locationBoxTop = 20; // px from top
     const locationBoxRight = -270; // px from right
 
+
+    // Render the dashboard UI
     return (
       <main style={{ position: "relative" }}>
         <h1>Dashboard</h1>
-        {/* <ActiveListener user={user} /> */}
+        {/* Location info box for the current user */}
         {user && (
           <div
             style={{
@@ -168,6 +258,7 @@ const Dashboard = ({ user }) => {
               borderRadius: "8px",
               padding: "12px 18px",
               minWidth: "160px",
+              maxWidth: "260px",
               boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
               fontSize: "14px",
               zIndex: 10,
@@ -176,24 +267,27 @@ const Dashboard = ({ user }) => {
               alignItems: "flex-start",
               justifyContent: "flex-start",
               gap: "8px",
-              maxWidth: "260px"
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
             }}
           >
             <strong>Your Location</strong>
-            {coords ? (
-              address ? (
-                <div style={{ color: "#333", fontWeight: 500, wordBreak: "break-word" }}>{address}</div>
+            <div style={{ marginTop: "8px", width: "100%", display: "flex", flexDirection: "column" }}>
+              {coords ? (
+                address ? (
+                  <div style={{ color: "#333", fontWeight: 500, wordBreak: "break-word", whiteSpace: "pre-line" }}>{address}</div>
+                ) : (
+                  <div>Fetching address...</div>
+                )
+              ) : geoError ? (
+                <div style={{ color: "#c00" }}>{geoError}</div>
               ) : (
-                <div>Fetching address...</div>
-              )
-            ) : geoError ? (
-              <div style={{ color: "#c00" }}>{geoError}</div>
-            ) : (
-              <div>Fetching location...</div>
-            )}
+                <div>Fetching location...</div>
+              )}
+            </div>
           </div>
         )}
-        {/* Map Box */}
+        {/* Map container for Google Maps */}
         {user && coords && (
           <div
             style={{
