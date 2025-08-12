@@ -15,9 +15,3 @@
     box-sizing: border-box;
     padding: .3rem;
 }
-
-.profile-image {
-    border-radius: 1rem;
-    max-height: 70px;
-    max-width: 70px;
-}
