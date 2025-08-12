@@ -33,6 +33,10 @@ module.exports = {
         },
       },
       {
+        test: /\.(png|jpe?g|gif|svg)$/i,  /// properly handel images on vercel
+        type: 'asset/resource',
+      },
+      {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
