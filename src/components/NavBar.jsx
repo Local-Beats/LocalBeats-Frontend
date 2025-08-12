@@ -38,17 +38,7 @@ const NavBar = ({ user, onLogout }) => {
               Logout
             </button>
           </div>
-        ) : (
-          <div className="auth-links">
-            {/* Links to login/signup when not authenticated */}
-            <Link to="/login" className="nav-link">
-              Login
-            </Link>
-            <Link to="/signup" className="nav-link">
-              Sign Up
-            </Link>
-          </div>
-        )}
+  ) : null}
       </div>
     </nav>
   );

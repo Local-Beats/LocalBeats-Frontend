@@ -1,17 +1,16 @@
 
-// React and dependencies
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
-import ActiveListener from './ActiveListener'
+import ActiveListener from './ActiveListener';
+import NowPlaying from './NowPlaying';
+import LocalBeatsImg from '../assets/LocalBeats.png';
+import './Dashboard.css';
 
 
 
-// Google Maps API key from environment
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-console.log("Google Maps API Key:", apiKey);
 
-
-// Helper to dynamically load the Google Maps script if not already loaded
+// Helper to load Google Maps script
 function loadGoogleMapsScript(apiKey, callback) {
     if (window.google && window.google.maps) {
         callback();
@@ -35,25 +34,17 @@ function loadGoogleMapsScript(apiKey, callback) {
 }
 
 
-// Main Dashboard component
 const Dashboard = ({ user }) => {
-    // State for user's geolocation coordinates
+    // Guard: don't render anything if user is not loaded
+    if (!user) return null;
     const [coords, setCoords] = useState(null);
-    // State for geolocation error
     const [geoError, setGeoError] = useState(null);
-    // State for user's address (reverse geocoded)
     const [address, setAddress] = useState("");
-    // State for all online users (with locations)
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    // Ref for the map container div
     const mapRef = useRef(null);
-    // const [mapLoaded, setMapLoaded] = useState(false); // Remove for debugging
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [showResults, setShowResults] = useState(false);
+    // const [mapLoaded, setMapLoaded] = useState(false);
 
-    // On mount or when user changes:
-    // 1. Get current user's geolocation
-    // 2. Reverse geocode to get address
-    // 3. Post location to backend
-    // 4. Fetch all online users with locations
     useEffect(() => {
         if (user) {
             if (navigator.geolocation) {
@@ -63,8 +54,7 @@ const Dashboard = ({ user }) => {
                         const lng = position.coords.longitude;
                         setCoords({ lat, lng });
                         setGeoError(null);
-                        console.log("Geolocation success:", lat, lng);
-                        // Reverse geocode to get address from coordinates
+                        // Reverse geocode to get address
                         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`)
                             .then(res => res.json())
                             .then(data => {
@@ -94,17 +84,15 @@ const Dashboard = ({ user }) => {
                     },
                     (error) => {
                         setGeoError(error.message);
-                        console.error("Geolocation error:", error);
                     }
                 );
             } else {
                 setGeoError("Geolocation is not supported by this browser.");
-                console.error("Geolocation is not supported by this browser.");
             }
         }
     }, [user]);
 
-    // When user, coords, or onlineUsers change, load Google Maps and render all markers
+    // Load Google Maps and render map when coords are available
     useEffect(() => {
         if (user && coords && apiKey && mapRef.current) {
             console.log("Attempting to load Google Maps...");
@@ -137,17 +125,15 @@ const Dashboard = ({ user }) => {
 
                     // Draw polygon for NYC 5 boroughs (approximate coordinates)
                     const nycBoroughsCoords = [
-                        { lat: 40.917577, lng: -73.700272 },
-                        { lat: 40.915255, lng: -73.786137 },
-                        { lat: 40.849255, lng: -73.786137 },
-                        { lat: 40.5774, lng: -73.8371 },
-                        { lat: 40.5116, lng: -74.2556 },
-                        { lat: 40.639722, lng: -74.081667 },
-                        { lat: 40.8007, lng: -74.0256 },
-                        { lat: 40.917577, lng: -73.700272 },
+                        { lat: 40.917577, lng: -73.700272 }, // NW Bronx
+                        { lat: 40.915255, lng: -73.786137 }, // NE Bronx
+                        { lat: 40.849255, lng: -73.786137 }, // SE Bronx
+                        { lat: 40.5774, lng: -73.8371 },     // SE Brooklyn
+                        { lat: 40.5116, lng: -74.2556 },     // SW Staten Island
+                        { lat: 40.639722, lng: -74.081667 }, // NW Staten Island
+                        { lat: 40.8007, lng: -74.0256 },     // NW Manhattan
+                        { lat: 40.917577, lng: -73.700272 }, // Back to NW Bronx
                     ];
-
-                    // Draw NYC boundary polygon
                     new window.google.maps.Polygon({
                         paths: nycBoroughsCoords,
                         strokeColor: "#2196f3",
@@ -176,7 +162,7 @@ const Dashboard = ({ user }) => {
                             // Use LocalBeats.png for your own marker, green pin for others
                             if (u.username === user.username) {
                                 markerOptions.icon = {
-                                    url: require("../assets/LocalBeats.png"),
+                                    url: LocalBeatsImg,
                                     scaledSize: new window.google.maps.Size(40, 40),
                                 };
                             } else {
@@ -196,7 +182,7 @@ const Dashboard = ({ user }) => {
                             map,
                             title: "You are here!",
                             icon: {
-                                url: require("../assets/LocalBeats.png"),
+                                url: LocalBeatsImg,
                                 scaledSize: new window.google.maps.Size(40, 40),
                             },
                             label: {
@@ -216,80 +202,60 @@ const Dashboard = ({ user }) => {
     }, [user, coords, apiKey, onlineUsers]);
 
 
-    // Positioning for the location info box
-    const locationBoxTop = 20; // px from top
-    const locationBoxRight = -270; // px from right
 
-
-    // Render the dashboard UI
     return (
-        <main style={{ position: "relative" }}>
-            <h1>Dashboard</h1>
-            {/* Location info box for the current user */}
-            {user && (
-                <div
-                    style={{
-                        position: "absolute",
-                        top: locationBoxTop,
-                        right: locationBoxRight,
-                        background: "#f5f5f5",
-                        border: "1px solid #ddd",
-                        borderRadius: "8px",
-                        padding: "12px 18px",
-                        minWidth: "160px",
-                        maxWidth: "260px",
-                        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                        fontSize: "14px",
-                        zIndex: 10,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                        justifyContent: "flex-start",
-                        gap: "8px",
-                        wordBreak: "break-word",
-                        overflowWrap: "break-word",
-                    }}
-                >
+        <main className="dashboard-main">
+            <h1 className="dashboard-title">Dashboard</h1>
+            {/* Location info box for the current user (hidden on mobile) */}
+            {user && !showResults && (
+                <div className="dashboard-location-box">
                     <strong>Your Location</strong>
                     <div style={{ marginTop: "8px", width: "100%", display: "flex", flexDirection: "column" }}>
                         {coords ? (
                             address ? (
-                                <div style={{ color: "#333", fontWeight: 500, wordBreak: "break-word", whiteSpace: "pre-line" }}>{address}</div>
+                                <div className="dashboard-address">{address}</div>
                             ) : (
                                 <div>Fetching address...</div>
                             )
                         ) : geoError ? (
-                            <div style={{ color: "#c00" }}>{geoError}</div>
+                            <div className="dashboard-error">{geoError}</div>
                         ) : (
                             <div>Fetching location...</div>
                         )}
                     </div>
                 </div>
             )}
-            {/* Map container for Google Maps */}
-            {user && coords && (
-                <div
-                    style={{
-                        width: "600px",
-                        height: "400px",
-                        margin: "40px auto",
-                        border: "2px solid #333",
-                        borderRadius: "16px",
-                        boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-                        overflow: "hidden",
-                        background: "#eaeaea",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
+            {/* Map container for Google Maps, covers full screen on mobile */}
+            {user && coords && !showResults && (
+                <div className="dashboard-map-container">
                     <div
                         ref={mapRef}
-                        style={{ width: "100%", height: "100%" }}
+                        className="dashboard-map"
                     />
+                    {/* Bubble button at bottom center */}
+                    <button
+                        className="dashboard-bubble-btn"
+                        onClick={() => setShowResults(true)}
+                    >
+                        See Results
+                    </button>
                 </div>
             )}
-            <ActiveListener />
+            {/* Results section: show after clicking bubble button */}
+            {showResults && (
+                <section className="dashboard-results-section">
+                    <button
+                        className="dashboard-back-btn"
+                        onClick={() => setShowResults(false)}
+                        aria-label="Back to Map"
+                    >
+                        Back to Map
+                    </button>
+                    <h2 className="dashboard-results-title">Your Currently Playing:</h2>
+                    <NowPlaying user={user} />
+                    <ActiveListener />
+                </section>
+            )}
         </main>
     );
 }

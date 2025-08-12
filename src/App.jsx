@@ -7,11 +7,10 @@ import Dashboard from "./components/Dashboard";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import LandingPage from "./components/LandingPage";
 import Signup from "./components/Signup";
 // import Home from "./components/Home";
 import NotFound from "./components/NotFound";
-// import CallBack from "./components/CallBack";
 // import { jwtDecode } from "jwt-decode";
 // import { API_URL } from "./shared";
 import axios from './utils/axiosInstance';
@@ -106,18 +105,24 @@ const App = () => {
   };
 
   return (
-    <div>
-      <NavBar user={user} onLogout={handleLogout} />
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Login setUser={setUser} />} />
-          <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/dashboard" element={
-            <Dashboard user={user} />
-          } />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
+    <div className="app">
+      <Routes>
+        <Route path="/" element={<LandingPage setUser={setUser} />} />
+        <Route path="/signup" element={<Signup setUser={setUser} />} />
+        <Route path="/dashboard" element={
+          user === null ? (
+            <div style={{ textAlign: "center", marginTop: 60 }}>
+              Loading your profile...
+            </div>
+          ) : (
+            <>
+              <NavBar user={user} onLogout={handleLogout} />
+              <Dashboard user={user} />
+            </>
+          )
+        } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 };

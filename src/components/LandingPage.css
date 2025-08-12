@@ -1,0 +1,105 @@
+
+/*
+	--logo-size: Controls the width of the LocalBeats logo (desktop)
+	--logo-height: Controls the height of the LocalBeats logo (desktop)
+	--logo-size-mobile: Controls the width of the LocalBeats logo (mobile)
+	--logo-height-mobile: Controls the height of the LocalBeats logo (mobile)
+	Edit these values below to resize the logo as needed.
+*/
+:root {
+	--logo-size: 160px;      /* <-- Edit for desktop width */
+	--logo-height: 160px;    /* <-- Edit for desktop height */
+	--logo-size-mobile: 140px; /* <-- Edit for mobile width */
+	--logo-height-mobile: 140px; /* <-- Edit for mobile height */
+}
+
+.localbeats-main-logo {
+	display: block;
+	margin: -60px auto 48px auto; /* Moved up by 60px, 48px gap below logo (edit for desktop gap) */
+	width: var(--logo-size);
+	height: var(--logo-height);
+	/* To move logo up/down, adjust margin-top. To change gap below logo, edit margin-bottom. */
+}
+
+@media (max-width: 600px) {
+	.localbeats-main-logo {
+		width: var(--logo-size-mobile);
+		height: var(--logo-height-mobile);
+		margin: -30px auto 32px auto; /* Moved up by 30px, 32px gap below logo (edit for mobile gap) */
+	}
+}
+@import url('https://fonts.googleapis.com/css?family=Rubik:900&display=swap');
+
+body, .landing-spotify-container, .landing-headline, .login-title, .spotify-logo-btn {
+	font-family: 'Rubik', sans-serif !important;
+}
+
+.landing-headline {
+	color: #fff;
+	font-size: 44px;
+	font-weight: 900;
+	margin-bottom: 18px;
+	text-align: center;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+	letter-spacing: 0.5px;
+	line-height: 1.15;
+}
+
+@media (max-width: 600px) {
+	.landing-headline {
+		font-size: 45px;
+		margin-bottom: 14px;
+	}
+	.login-title {
+		font-size: 20px;
+		margin-bottom: 22px;
+	}
+}
+
+.landing-spotify-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+
+.login-title {
+	color: #fff;
+	font-size: 28px;
+	font-weight: 700;
+	margin-bottom: 32px;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+	letter-spacing: 0.5px;
+}
+
+.spotify-logo-btn {
+	background: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 24px rgba(30,215,96,0.18), 0 1.5px 8px rgba(0,0,0,0.10);
+	border-radius: 50%;
+	transition: transform 0.15s, box-shadow 0.15s;
+	margin-bottom: 0;
+}
+
+.spotify-logo-btn:hover {
+	transform: scale(1.08);
+	box-shadow: 0 8px 32px rgba(30,215,96,0.28), 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.spotify-logo-img {
+	width: 80px;
+	height: 80px;
+	object-fit: contain;
+	display: block;
+}

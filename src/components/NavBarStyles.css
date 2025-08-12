@@ -1,3 +1,89 @@
+@keyframes logo-dance-run {
+  0% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+  }
+  5% {
+    transform: translateX(-50%) scale(1.08) rotate(8deg);
+  }
+  10% {
+    transform: translateX(-50%) scale(1.12) rotate(-8deg);
+  }
+  15% {
+    transform: translateX(-50%) scale(1.08) rotate(8deg);
+  }
+  20% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+  }
+  40% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+  }
+  60% {
+    transform: translateX(120vw) scale(1) rotate(0deg);
+    opacity: 0;
+  }
+  61% {
+    transform: translateX(-120vw) scale(1) rotate(0deg);
+    opacity: 0;
+  }
+  62% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+    opacity: 1;
+  }
+}
+.navbar-logo {
+  width: 55px;
+  height: 55px;
+  transition: width 0.3s, height 0.3s, margin 0.3s;
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: none;
+  margin: 0 0 0 0;
+  z-index: 200;
+  display: block;
+}
+
+@media (min-width: 601px) {
+  .navbar {
+    justify-content: flex-start;
+  }
+  .nav-brand {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .navbar-logo {
+    width: 85px; /* 75px * 1.4 = 105px */
+    height: 85px;
+    margin: 0 0 0 0;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    justify-content: flex-start;
+  }
+  .nav-brand {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .navbar-logo {
+    width: 94px;
+    height: 94px;
+    margin: 0 0 0 0;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+}
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -5,9 +91,10 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: #f8f9fa;
+  background: transparent;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e9ecef;
+  border: none;
+  pointer-events: none; /* allow background to be clickable except for children */
 }
 
 
@@ -16,6 +103,8 @@
   font-weight: bold;
   color: #333;
   text-decoration: none;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .nav-brand a:hover {
@@ -25,12 +114,15 @@
 .nav-links {
   display: flex;
   align-items: center;
+  background: transparent;
+  pointer-events: auto;
 }
 
 .auth-links {
   display: flex;
   gap: 1rem;
   align-items: center;
+  background: transparent;
 }
 
 .nav-link {
@@ -39,17 +131,21 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: all 0.2s;
+  background: rgba(0,0,0,0.2);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .nav-link:hover {
   color: #007bff;
-  background-color: #e9ecef;
+  background: rgba(0,0,0,0.4);
 }
 
 .user-section {
   display: flex;
   align-items: center;
   gap: 1rem;
+  background: transparent;
 }
 
 .username {
@@ -66,6 +162,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: background-color 0.2s;
+  background: rgba(0,0,0,0.2);
 }
 
 .logout-btn:hover {

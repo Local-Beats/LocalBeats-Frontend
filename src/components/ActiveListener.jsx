@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
-import ListenerCard from "./ListenerCard";
-
-
+import ListenerCard from "./LIstenerCard";
 
 const ActiveListener = ({ user }) => {
   // console.log("this is user from Nowplaying--->", user)
@@ -15,27 +12,22 @@ const ActiveListener = ({ user }) => {
   // console.log("This is active session", activeSession)
 
   const [allListeningSessions, setAllListeningSessions] = useState([]);
-  console.log("This is All Listening Sessions", allListeningSessions)
+  console.log("This is All Listening Sessions", allListeningSessions);
 
-
-  const lastSongIdRef = useRef(null);     // last seen song_id from polling
-  const openSessionIdRef = useRef(null);  // DB id of the currently-open session
-  const isSyncingRef = useRef(false);     // simple lock to prevent overlap
+  const lastSongIdRef = useRef(null); // last seen song_id from polling
+  const openSessionIdRef = useRef(null); // DB id of the currently-open session
+  const isSyncingRef = useRef(false); // simple lock to prevent overlap
   let aliveRef = useRef(true);
 
   // oldSessionRef.current = null
   // console.log("this is old session ref--->", oldSessionRef.current)
 
-
   useEffect(() => {
-
     const fetchCurrentTrack = async () => {
       try {
-        const { data } = await axios.get("/api/spotify/current-track",
-          {
-            withCredentials: true,
-          }
-        );
+        const { data } = await axios.get("/api/spotify/current-track", {
+          withCredentials: true,
+        });
         if (!aliveRef.current) return;
 
         // Only set track if data is valid and has a title
@@ -68,9 +60,8 @@ const ActiveListener = ({ user }) => {
     return () => {
       aliveRef.current = false;
       clearInterval(intervalId);
-    }
+    };
   }, []);
-
 
   // ===============================
   // Sync a session whenever song_id OR user changes
@@ -80,7 +71,6 @@ const ActiveListener = ({ user }) => {
 
   useEffect(() => {
     const syncListeningSession = async () => {
-
       if (!user?.id) return;
       if (isSyncingRef.current) return;
       isSyncingRef.current = true;
@@ -88,16 +78,17 @@ const ActiveListener = ({ user }) => {
         // if there is no track playing stop and clear then leave and do nothing
         if (!track) {
           if (openSessionIdRef.current) {
-            await axios.patch("/api/listeners",
+            await axios.patch(
+              "/api/listeners",
               {
                 id: openSessionIdRef.current,
-                status: "stopped"
+                status: "stopped",
               },
               {
-                withCredentials: true
+                withCredentials: true,
               }
             );
-            openSessionIdRef.current = null
+            openSessionIdRef.current = null;
             setActiveSession(null);
           }
           return;
@@ -109,7 +100,7 @@ const ActiveListener = ({ user }) => {
             "/api/listeners",
             { status: "stopped", id: openSessionIdRef.current },
             { withCredentials: true }
-          )
+          );
         }
 
         // create a new session for this track
@@ -121,47 +112,51 @@ const ActiveListener = ({ user }) => {
             ended_at: null,
           },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
 
-
-        setActiveSession(newListeningSession.data)
+        setActiveSession(newListeningSession.data);
         openSessionIdRef.current = newListeningSession.data.id;
       } catch (error) {
         console.log(error?.response?.data || error.message || error);
       } finally {
         isSyncingRef.current = false;
       }
-    }
+    };
     syncListeningSession();
   }, [track?.song_id, user?.id]);
-
 
   // end sessin on unmount
   useEffect(() => {
     return () => {
       if (openSessionIdRef.current) {
-        axios.patch(
-          "/api/listeners",
-          { id: openSessionIdRef.current, status: "stopped" },
-          { withCredentials: true }
-        ).catch(() => { });
+        axios
+          .patch(
+            "/api/listeners",
+            { id: openSessionIdRef.current, status: "stopped" },
+            { withCredentials: true }
+          )
+          .catch(() => {});
       }
     };
   }, []);
-
-
 
   const fetchAllActiveListeners = React.useCallback(async () => {
     try {
       const res = await axios.get("/api/listeners", { withCredentials: true });
       if (!aliveRef.current) return;
 
-      setAllListeningSessions(prev => {
+      setAllListeningSessions((prev) => {
         if (prev.length !== res.data.length) return res.data;
-        const prevIds = prev.map(x => x.id).sort().join(",");
-        const nextIds = res.data.map(x => x.id).sort().join(",");
+        const prevIds = prev
+          .map((x) => x.id)
+          .sort()
+          .join(",");
+        const nextIds = res.data
+          .map((x) => x.id)
+          .sort()
+          .join(",");
         return prevIds === nextIds ? prev : res.data;
       });
     } catch (err) {
@@ -173,7 +168,7 @@ const ActiveListener = ({ user }) => {
   useEffect(() => {
     aliveRef.current = true;
 
-    fetchAllActiveListeners();                 // immediate
+    fetchAllActiveListeners(); // immediate
     const intervalId = setInterval(fetchAllActiveListeners, 8000);
 
     const onVisible = () => {
@@ -187,8 +182,6 @@ const ActiveListener = ({ user }) => {
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, [fetchAllActiveListeners]);
-
-
 
   //Instant refresh when change sessions
   useEffect(() => {
@@ -206,33 +199,22 @@ const ActiveListener = ({ user }) => {
 
   return (
     <main>
-      <h1>
-        Active Listeners
-      </h1>
+      <h1>Active Listeners</h1>
+      {/* Current user */}
       <ListenerCard user={user} track={track} />
+      {/* Other active listeners */}
       <div className="active-listener-cards">
+        {allListeningSessions
+          .filter((session) => session.user_id !== user?.id)
+          .map((session) => (
+            <ListenerCard
+              key={session.id}
+              user={session.user}
+              track={session.track}
+            />
+          ))}
       </div>
     </main>
-    // <div
-    //   className="now-playing"
-    //   style={{ textAlign: "center", marginTop: "40px" }}
-    // >
-    //   <img
-    //     src={track.albumArt}
-    //     alt={track.title}
-    //     style={{ width: "200px", borderRadius: "12px" }}
-    //   />
-    //   <h2>{track.title}</h2>
-    //   <p>
-    //     {track.artist}
-    //     {track.albumArt && track.album ? (
-    //       <>
-    //         {" "}
-    //         — <em>{track.album}</em>
-    //       </>
-    //     ) : null}
-    //   </p>
-    // </div>
   );
 };
 
