@@ -31,7 +31,7 @@
 }
 
 body {
-  background: url('https://coolbackgrounds.imgix.net/39sOStld2OCyNn3HmCpqco/21d339122a7cb417c83e6ebdc347ea5c/sea-edge-79ab30e2.png?w=3840&q=60&auto=format,compress') no-repeat center center fixed;
+  background: url('./assets/amy-background2.png') no-repeat center center fixed;
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
