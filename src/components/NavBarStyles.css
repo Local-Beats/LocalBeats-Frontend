@@ -2,14 +2,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   background-color: #f8f9fa;
   padding: 1rem 2rem;
   border-bottom: 1px solid #e9ecef;
 }
-
 
 .nav-brand a {
   font-size: 1.5rem;

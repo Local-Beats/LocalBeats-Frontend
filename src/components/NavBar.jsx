@@ -5,10 +5,10 @@ import "./NavBarStyles.css";
 
 const NavBar = ({ user, onLogout }) => {
   if (!user) {
-    console.log("This is the current user:", user);
-    //return;
+    console.warn("No user found:", user);
+    // return;
   }
-  console.log("This is the current user:", user);
+  console.log("Current logged in user:", user);
 
   return (
     <nav className="navbar">
@@ -20,7 +20,7 @@ const NavBar = ({ user, onLogout }) => {
 
       <div className="user-section">
         {/* Welcome message using Spotify display name or username */}
-        <span className="username">Hi, {user.spotify_display_name || user.username}!</span>
+        {/* <span className="username">Hi, {user.spotify_display_name || user.username}!</span> */}
 
         {/* Optional: Show profile picture if available */}
         {/* {user.spotify_image && (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
-// import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
@@ -108,7 +108,10 @@ const App = () => {
           <Route path="/" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
           <Route path="/dashboard" element={
-            <Dashboard user={user} />
+            <>
+              <NavBar user={user} onLogout={handleLogout} />
+              <Dashboard user={user} />
+            </>
           } />
           <Route path="*" element={<NotFound />} />
         </Routes>
