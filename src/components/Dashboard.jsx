@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
-import ActiveListener from './ActiveListener'
-import NowPlaying from './NowPlaying'
+import ActiveListener from './ActiveListener';
+import NowPlaying from './NowPlaying';
+import LocalBeatsImg from '../assets/LocalBeats.png';
 
 
 
@@ -36,10 +37,7 @@ const Dashboard = ({ user }) => {
     const [address, setAddress] = useState("");
     const mapRef = useRef(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
-    // Ref for the map container div
-    const mapRef = useRef(null);
-    // const [mapLoaded, setMapLoaded] = useState(false); // Remove for debugging
-    const [mapLoaded, setMapLoaded] = useState(false);
+    // const [mapLoaded, setMapLoaded] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -119,47 +117,26 @@ const Dashboard = ({ user }) => {
                         styles: customMapStyle,
                     });
 
-            // Draw polygon for NYC 5 boroughs (approximate coordinates)
-            const nycBoroughsCoords = [
-              { lat: 40.917577, lng: -73.700272 }, // NW Bronx
-              { lat: 40.915255, lng: -73.786137 }, // NE Bronx
-              { lat: 40.849255, lng: -73.786137 }, // SE Bronx
-              { lat: 40.5774, lng: -73.8371 },     // SE Brooklyn
-              { lat: 40.5116, lng: -74.2556 },     // SW Staten Island
-              { lat: 40.639722, lng: -74.081667 }, // NW Staten Island
-              { lat: 40.8007, lng: -74.0256 },     // NW Manhattan
-              { lat: 40.917577, lng: -73.700272 }, // Back to NW Bronx
-            ];
-            // Draw polygon for NYC 5 boroughs (approximate coordinates)
-            const nycBoroughsCoords = [
-              { lat: 40.917577, lng: -73.700272 }, // NW Bronx
-              { lat: 40.915255, lng: -73.786137 }, // NE Bronx
-              { lat: 40.849255, lng: -73.786137 }, // SE Bronx
-              { lat: 40.5774, lng: -73.8371 },     // SE Brooklyn
-              { lat: 40.5116, lng: -74.2556 },     // SW Staten Island
-              { lat: 40.639722, lng: -74.081667 }, // NW Staten Island
-              { lat: 40.8007, lng: -74.0256 },     // NW Manhattan
-              { lat: 40.917577, lng: -73.700272 }, // Back to NW Bronx
-            ];
-
-            new window.google.maps.Polygon({
-              paths: nycBoroughsCoords,
-              strokeColor: "#2196f3",
-              strokeOpacity: 0.6,
-              strokeWeight: 2,
-              fillColor: "#90caf9",
-              fillOpacity: 0.25,
-              map: map,
-            });
-            new window.google.maps.Polygon({
-              paths: nycBoroughsCoords,
-              strokeColor: "#2196f3",
-              strokeOpacity: 0.6,
-              strokeWeight: 2,
-              fillColor: "#90caf9",
-              fillOpacity: 0.25,
-              map: map,
-            });
+                    // Draw polygon for NYC 5 boroughs (approximate coordinates)
+                    const nycBoroughsCoords = [
+                        { lat: 40.917577, lng: -73.700272 }, // NW Bronx
+                        { lat: 40.915255, lng: -73.786137 }, // NE Bronx
+                        { lat: 40.849255, lng: -73.786137 }, // SE Bronx
+                        { lat: 40.5774, lng: -73.8371 },     // SE Brooklyn
+                        { lat: 40.5116, lng: -74.2556 },     // SW Staten Island
+                        { lat: 40.639722, lng: -74.081667 }, // NW Staten Island
+                        { lat: 40.8007, lng: -74.0256 },     // NW Manhattan
+                        { lat: 40.917577, lng: -73.700272 }, // Back to NW Bronx
+                    ];
+                    new window.google.maps.Polygon({
+                        paths: nycBoroughsCoords,
+                        strokeColor: "#2196f3",
+                        strokeOpacity: 0.6,
+                        strokeWeight: 2,
+                        fillColor: "#90caf9",
+                        fillOpacity: 0.25,
+                        map: map,
+                    });
 
                     // Add a marker for each online user (except current geolocation)
                     (onlineUsers || []).forEach(u => {
@@ -179,7 +156,7 @@ const Dashboard = ({ user }) => {
                             // Use LocalBeats.png for your own marker, green pin for others
                             if (u.username === user.username) {
                                 markerOptions.icon = {
-                                    url: require("../assets/LocalBeats.png"),
+                                    url: LocalBeatsImg,
                                     scaledSize: new window.google.maps.Size(40, 40),
                                 };
                             } else {
@@ -199,7 +176,7 @@ const Dashboard = ({ user }) => {
                             map,
                             title: "You are here!",
                             icon: {
-                                url: require("../assets/LocalBeats.png"),
+                                url: LocalBeatsImg,
                                 scaledSize: new window.google.maps.Size(40, 40),
                             },
                             label: {

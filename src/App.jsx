@@ -111,10 +111,16 @@ const App = () => {
         <Route path="/" element={<LandingPage setUser={setUser} />} />
         <Route path="/signup" element={<Signup setUser={setUser} />} />
         <Route path="/dashboard" element={
-          <>
-            <NavBar user={user} onLogout={handleLogout} />
-            <Dashboard user={user} />
-          </>
+          user === null ? (
+            <div style={{ textAlign: "center", marginTop: 60 }}>
+              Loading your profile...
+            </div>
+          ) : (
+            <>
+              <NavBar user={user} onLogout={handleLogout} />
+              <Dashboard user={user} />
+            </>
+          )
         } />
         <Route path="*" element={<NotFound />} />
       </Routes>

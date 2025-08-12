@@ -1,5 +1,7 @@
-import React from "react";
-import ListenerCard from "./ListenerCard";
+
+import React, { useState, useEffect, useRef } from "react";
+import axios from "../utils/axiosInstance";
+import ListenerCard from "./LIstenerCard";
 
 const ActiveListener = ({ user }) => {
   // console.log("this is user from Nowplaying--->", user)
@@ -199,29 +201,21 @@ const ActiveListener = ({ user }) => {
   return (
     <main>
       <h1>Active Listeners</h1>
+      {/* Current user */}
       <ListenerCard user={user} track={track} />
-      <div className="active-listener-cards"></div>
+      {/* Other active listeners */}
+      <div className="active-listener-cards">
+        {allListeningSessions
+          .filter((session) => session.user_id !== user?.id)
+          .map((session) => (
+            <ListenerCard
+              key={session.id}
+              user={session.user}
+              track={session.track}
+            />
+          ))}
+      </div>
     </main>
-    // <div
-    //   className="now-playing"
-    //   style={{ textAlign: "center", marginTop: "40px" }}
-    // >
-    //   <img
-    //     src={track.albumArt}
-    //     alt={track.title}
-    //     style={{ width: "200px", borderRadius: "12px" }}
-    //   />
-    //   <h2>{track.title}</h2>
-    //   <p>
-    //     {track.artist}
-    //     {track.albumArt && track.album ? (
-    //       <>
-    //         {" "}
-    //         — <em>{track.album}</em>
-    //       </>
-    //     ) : null}
-    //   </p>
-    // </div>
   );
 };
 
