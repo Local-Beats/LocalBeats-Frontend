@@ -31,7 +31,10 @@ function loadGoogleMapsScript(apiKey, callback) {
     }
 }
 
+
 const Dashboard = ({ user }) => {
+    // Guard: don't render anything if user is not loaded
+    if (!user) return null;
     const [coords, setCoords] = useState(null);
     const [geoError, setGeoError] = useState(null);
     const [address, setAddress] = useState("");

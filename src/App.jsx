@@ -11,7 +11,6 @@ import LandingPage from "./components/LandingPage";
 import Signup from "./components/Signup";
 // import Home from "./components/Home";
 import NotFound from "./components/NotFound";
-// import CallBack from "./components/CallBack";
 // import { jwtDecode } from "jwt-decode";
 // import { API_URL } from "./shared";
 import axios from './utils/axiosInstance';
