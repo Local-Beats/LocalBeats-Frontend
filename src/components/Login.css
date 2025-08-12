@@ -1,0 +1,10 @@
+
+/* Edit the font size of the login text here */
+.spotify-login-text {
+	font-size: 2.5rem; /* Change this value to adjust the text size */
+	font-weight: 700;
+	letter-spacing: 1px;
+	cursor: pointer;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+	user-select: none;
+}

@@ -64,9 +64,3 @@ body {
     transform: rotate(360deg);
   }
 }
-
-.react-logo {
-  width: 100px;
-  height: 100px;
-  animation: spin 15s linear infinite;
-}
