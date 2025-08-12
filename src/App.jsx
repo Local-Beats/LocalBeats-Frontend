@@ -16,6 +16,7 @@ import NotFound from "./components/NotFound";
 // import { API_URL } from "./shared";
 import axios from './utils/axiosInstance';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+//test
 
 // AUTH0 CONFIGURATION
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
