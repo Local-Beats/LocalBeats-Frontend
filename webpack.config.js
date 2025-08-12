@@ -13,11 +13,11 @@ module.exports = {
   devtool: "source-map",
   plugins: [
     new webpack.EnvironmentPlugin({
-      API_URL: "http://localhost:8080",
+      API_URL: "http://127.0.0.1:8080",
       REACT_APP_AUTH0_DOMAIN: "",
       REACT_APP_AUTH0_CLIENT_ID: "",
       REACT_APP_AUTH0_AUDIENCE: "",
-      REACT_APP_GOOGLE_MAPS_API_KEY: "", 
+      REACT_APP_GOOGLE_MAPS_API_KEY: "",
     }),
   ],
   module: {
@@ -33,16 +33,15 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        // This is the missing rule for handling images
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: "asset/resource",
         generator: {
           filename: "images/[hash][ext][query]",
-        }
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
