@@ -56,30 +56,40 @@
 
 
 /* Map container: mobile first, covers full viewport */
+
+/*
+    === MAP DIMENSIONS (Mobile) ===
+    To adjust the map height/width on mobile, edit the values below.
+    Example: height: 70vh; (for 70% of viewport height)
+*/
 .dashboard-map-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    overflow: hidden;
-    background: #eaeaea;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 100;
+        position: fixed;
+        top: 130px;
+        left: 0;
+        width: 100vw;
+        height: 600px; /* <-- EDIT THIS for mobile map height */
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: hidden;
+        background: #eaeaea;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 100;
 }
 
+
+/*
+    To adjust the map itself (not the container), edit below.
+*/
 .dashboard-map {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
+        width: 100vw;
+        height: 600px; /* <-- EDIT THIS for mobile map height */
+        position: absolute;
+        top: 0;
+        left: 0;
 }
 
 /* Bubble button at bottom center */
@@ -155,13 +165,19 @@
     color: #1976d2;
 }
 
+
 @media (min-width: 600px) {
     .dashboard-title {
         font-size: 2.5rem;
     }
+    /*
+      === MAP DIMENSIONS (Desktop) ===
+      To adjust the map height/width on desktop, edit the values below.
+      Example: width: 800px; height: 500px;
+    */
     .dashboard-map-container {
-        width: 600px;
-        height: 400px;
+        width: 700px;   /* <-- EDIT THIS for desktop map width */
+        height: 350px;  /* <-- EDIT THIS for desktop map height */
         position: relative;
         border: 2px solid #333;
         border-radius: 16px;
@@ -182,7 +198,7 @@
     .dashboard-results-section {
         width: 100vw;
         height: 100vh;
-        max-width: 600px;
+        max-width: 700px;
         left: 50%;
         transform: translateX(-50%);
         border-radius: 16px;

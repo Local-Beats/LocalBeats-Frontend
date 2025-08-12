@@ -76,14 +76,15 @@
     justify-content: flex-start;
   }
   .navbar-logo {
-    width: 94px;
-    height: 94px;
+    width: 75px;
+    height: 75px;
     margin: 0 0 0 0;
     top: 0;
     left: 0;
     display: block;
   }
 }
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -91,10 +92,85 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: transparent;
-  padding: 1rem 2rem;
+  background: #fff;
+  padding: 1rem 2rem 0.5rem 2rem;
   border: none;
-  pointer-events: none; /* allow background to be clickable except for children */
+  pointer-events: none;
+  min-height: 70px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 2px;
+}
+.nav-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.hamburger-container {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+/* Hamburger Menu */
+.McButton {
+  width: 44px;
+  height: 33px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 300;
+  padding: 0;
+}
+.McButton b {
+  display: block;
+  width: 44px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(.4,2.3,.3,1);
+  position: relative;
+}
+.McButton b:nth-child(1) {
+  top: 0;
+}
+.McButton b:nth-child(2) {
+  top: 0;
+}
+.McButton b:nth-child(3) {
+  top: 0;
+}
+.McButton.active b:nth-child(1) {
+  transform: translateY(15px) rotate(45deg);
+}
+.McButton.active b:nth-child(2) {
+  opacity: 0;
+}
+.McButton.active b:nth-child(3) {
+  transform: translateY(-15px) rotate(-45deg);
+}
+
+.hamburger-dropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  padding: 0.5rem 1rem;
+  min-width: 120px;
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 
