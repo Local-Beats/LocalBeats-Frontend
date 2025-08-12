@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
-import ListenerCard from "./LIstenerCard";
+import ListenerCard from "./ListenerCard";
 
 const ActiveListener = ({ user }) => {
   // console.log("this is user from Nowplaying--->", user)
@@ -137,7 +137,7 @@ const ActiveListener = ({ user }) => {
             { id: openSessionIdRef.current, status: "stopped" },
             { withCredentials: true }
           )
-          .catch(() => {});
+          .catch(() => { });
       }
     };
   }, []);
