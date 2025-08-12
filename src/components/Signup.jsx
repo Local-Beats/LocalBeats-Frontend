@@ -147,7 +147,7 @@ const Signup = ({ setUser }) => {
         </form>
 
         <p className="auth-link">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account? <Link to="/">Landing Page</Link>
         </p>
       </div>
     </div>

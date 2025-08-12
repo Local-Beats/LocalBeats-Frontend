@@ -4,9 +4,10 @@ import { createRoot } from "react-dom/client";
 import "./AppStyles.css";
 import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
-import NowPlaying from "./components/NowPlaying";
+// import NowPlaying from "./components/Activelistener";
+// import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import LandingPage from "./components/LandingPage";
 import Signup from "./components/Signup";
 // import Home from "./components/Home";
 import NotFound from "./components/NotFound";
@@ -104,22 +105,18 @@ const App = () => {
   };
 
   return (
-    <div>
-      <NavBar user={user} onLogout={handleLogout} />
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Login setUser={setUser} />} />
-          <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/dashboard" element={
-            <>
-              <Dashboard user={user} />
-              <NowPlaying user={user} />
-            </>
-          } />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
+    <div className="app">
+      <Routes>
+        <Route path="/" element={<LandingPage setUser={setUser} />} />
+        <Route path="/signup" element={<Signup setUser={setUser} />} />
+        <Route path="/dashboard" element={
+          <>
+            <NavBar user={user} onLogout={handleLogout} />
+            <Dashboard user={user} />
+          </>
+        } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 };
