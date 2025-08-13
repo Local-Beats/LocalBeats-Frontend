@@ -144,7 +144,7 @@
     box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10);
     padding: 0.45em 1.3em;
     cursor: pointer;
-    z-index: 210;
+    /* z-index removed to prevent hovering above navbar */
     transition: background 0.18s, color 0.18s, border 0.18s;
 }
 .dashboard-back-btn:active {
