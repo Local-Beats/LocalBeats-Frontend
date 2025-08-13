@@ -3,27 +3,29 @@ import logo from "../assets/LocalBeats.png"
 import "./ListenerCard.css"
 
 
-const ListenerCard = ({ user, track, location, status }) => {
+const ListenerCard = ({ user, track }) => {
     // Fallbacks for missing data
-    const displayName = user?.spotify_display_name || user?.nickname || user?.username || "Unknown";
-    const songTitle = track?.title || "No song playing";
-    const songArtist = track?.artist || "";
-    const songAlbum = track?.album || "";
-    const loc = location || user?.location || "Unknown location";
-    const stat = status || track?.status || "Idle";
+    // const displayName = user?.spotify_display_name || user?.nickname || user?.username || "Unknown";
+    // const songTitle = track?.title || "No song playing";
+    // const songArtist = track?.artist || "";
+    // const songAlbumArt = track?.albumArt || "";
+    // const loc = location || user?.location || "Unknown location";
 
     return (
         <main className="listener-card-container">
+
             <div className="listener-card-image">
-                <img className="profile-image" src={user?.picture || logo} alt="Profile" />
+                <img className="listener-card-album-art" src={track.album_art} />
+                {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
             </div>
             <div className="listener-card-info">
-                <p className="listener-card-name">{displayName}</p>
-                <p className="listener-card-song">{songTitle}{songArtist ? ` — ${songArtist}` : ""}</p>
-                {songAlbum && <p className="listener-card-album"><em>{songAlbum}</em></p>}
-                <p className="listener-card-location">{loc}</p>
+                <p className="listener-card-name">{user.spotify_display_name}</p>
+                <p className="listener-card-song">{track.title}{track.artist ? ` — ${track.artist}` : ""}</p>
+
+                {/* <p className="listener-card-location">{loc}</p> */}
             </div>
-            <div className="listener-card-status">{stat}</div>
+
+
         </main>
     );
 }
