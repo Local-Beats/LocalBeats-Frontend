@@ -262,7 +262,7 @@ const Dashboard = ({ user }) => {
                             <h2 className="dashboard-results-title">Your Currently Playing:</h2>
                         </div>
                     </div>
-                    <NowPlaying user={user} />
+                    {/* <NowPlaying user={user} /> */}
                     <ActiveListener />
                 </section>
             )}
