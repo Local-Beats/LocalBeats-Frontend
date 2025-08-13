@@ -203,6 +203,10 @@
 /*
   Hamburger dropdown in portal: fixed to top right, always above all content.
 */
+/*
+  Hamburger dropdown in portal: fixed to top right, always above all content.
+  To adjust the left padding (space between button and left edge), change padding-left below.
+*/
 .hamburger-dropdown-portal {
   position: fixed;
   top: 80px;
@@ -210,12 +214,13 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 0.5rem 1rem;
+  padding: 8px 8px 8px 6px; /* <-- left padding reduced by 10px (was 16px) */
   min-width: 120px;
   z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  height: 48px; /* <-- Set dropdown height to match button height */
 }
 
 
@@ -274,18 +279,36 @@
   font-weight: 500;
 }
 
+/*
+  Logout button always fills the vertical height of the dropdown container.
+  On mobile, the button always shows the hover color.
+  To adjust the height, edit height below. To adjust color, edit background-color.
+*/
+
+/*
+  Logout button always shows #c82333 on mobile (no hover), and changes on hover for desktop browsers only.
+*/
+/*
+  Logout button is solid #c82333 (no overlay) on all devices, with white text.
+  To adjust color, edit background-color below.
+*/
 .logout-btn {
-  background-color: #dc3545;
-  color: white;
+  background-color: #c82333;
+  color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 6px 28px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.875rem;
   transition: background-color 0.2s;
-  background: rgba(0,0,0,0.2);
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
-.logout-btn:hover {
-  background-color: #c82333;
+@media (hover: hover) and (pointer: fine) {
+  .logout-btn:hover {
+    background-color: #c82333;
+  }
 }
