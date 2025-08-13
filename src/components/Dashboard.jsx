@@ -244,13 +244,16 @@ const Dashboard = ({ user }) => {
             {/* Results section: show after clicking bubble button */}
             {showResults && (
                 <section className="dashboard-results-section">
-                    <button
-                        className="dashboard-back-btn"
-                        onClick={() => setShowResults(false)}
-                        aria-label="Back to Map"
-                    >
-                        Back to Map
-                    </button>
+                                        <button
+                                                className="dashboard-back-btn"
+                                                onClick={() => {
+                                                    setShowResults(false);
+                                                    window.location.reload(); // <-- Also refresh the page
+                                                }}
+                                                aria-label="Back to Map"
+                                        >
+                                                Back to Map
+                                        </button>
                     <h2 className="dashboard-results-title">Your Currently Playing:</h2>
                     <NowPlaying user={user} />
                     <ActiveListener />
