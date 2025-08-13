@@ -99,6 +99,8 @@ const App = () => {
     try {
       await axios.post('/auth/logout', {}, { withCredentials: true });
       setUser(null);
+      // Redirect to Auth0 logout, which will also redirect to your landing page
+      window.location.href = `https://${AUTH0_DOMAIN}/v2/logout?client_id=${AUTH0_CLIENT_ID}&returnTo=${encodeURIComponent(window.location.origin + "/")}`;
     } catch (error) {
       console.error("Logout error:", error);
     }
