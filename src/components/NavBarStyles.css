@@ -85,6 +85,11 @@
   }
 }
 
+/*
+  === NAVBAR BACKGROUND COLOR ===
+  To change the navbar color, edit the background property below.
+  Example: background: #e3f2fd; (baby blue)
+*/
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -92,7 +97,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #fff;
+  background: #f5fdff; /* <-- NAVBAR COLOR (baby blue) */
   padding: 1rem 2rem 0.5rem 2rem;
   border: none;
   pointer-events: none;
@@ -106,6 +111,10 @@
   To move the username left, right, or center on mobile, edit the justify-content property below.
   Example: justify-content: center; (centered), flex-start (left), flex-end (right)
 */
+/*
+  === USERNAME CONTAINER POSITIONING ===
+  To move the username container up/down or adjust spacing, edit top, transform, and gap below.
+*/
 .nav-user-info {
   display: flex;
   align-items: center;
@@ -116,29 +125,59 @@
   width: 100%;
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 46%; /* <-- Move up/down (was 50%) */
+  transform: translateY(-34%); /* <-- Move up/down (was -50%) */
   z-index: 201;
+}
+
+/*
+  === USERNAME STACK (Welcome + Username) ===
+  To adjust vertical spacing between 'Welcome:' and username, edit gap and margin below.
+*/
+/*
+  === USERNAME STACK HORIZONTAL POSITION (Mobile) ===
+  To move the welcome/username stack right or left on mobile, edit margin-left below.
+  Example: margin-left: 12px; (moves right), 0 (default)
+*/
+.username-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem; /* <-- Space between Welcome and username */
+  margin-left: 26px; /* <-- Move welcome/username 12px to the right (Mobile) */
+}
+
+.username-welcome {
+  font-size: 0.95rem;
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 0.1rem; /* <-- Space below Welcome */
+  letter-spacing: 0.01em;
 }
 @media (min-width: 601px) {
   /*
     === USERNAME PLACEMENT (Desktop) ===
-    To center the username horizontally in the navbar on desktop, use left: 50% and transform: translateX(-50%).
-    You can adjust left or transform for fine-tuning.
+    To center the username container horizontally in the navbar on desktop, use left/top/transform below.
+    To move up/down, edit top/transform. To move left/right, edit left.
   */
   .nav-user-info {
     position: absolute;
     left: 50%; /* <-- USERNAME CENTER (Desktop) */
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 46%; /* <-- Move up/down (was 50%) */
+    transform: translate(-50%, -46%);
     width: max-content;
     margin-left: 0;
   }
 }
 
+/*
+  === HAMBURGER ICON POSITION ===
+  To move the hamburger icon further right, edit the right property below.
+  Example: right: 2rem; (default), right: 2rem + 12px = calc(2rem - -12px)
+*/
 .hamburger-container {
   position: absolute;
-  right: 2rem;
+  right: calc(2rem - 28px); /* <-- Move hamburger 12px more to the right */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: auto;
@@ -148,9 +187,14 @@
 /*
   The hamburger button is now fully clickable. To adjust the clickable area, edit width/height below.
 */
+/*
+  === HAMBURGER BUTTON CLICKABLE AREA ===
+  To make the hamburger fully clickable, ensure width/height cover the whole icon and remove any gaps.
+  You can adjust width/height below for a larger or smaller clickable area.
+*/
 .McButton {
-  width: 54px; /* Increased clickable area */
-  height: 54px; /* Increased clickable area */
+  width: 60px; /* <-- Clickable area width */
+  height: 60px; /* <-- Clickable area height */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -162,6 +206,7 @@
   z-index: 300;
   padding: 0;
   gap: 0;
+  touch-action: manipulation;
 }
 /*
   To change the color of the 3 lines (hamburger icon), edit the 'background' property below:
@@ -274,9 +319,24 @@
   background: transparent;
 }
 
+/*
+  === USERNAME FONT SIZE (Mobile) ===
+  To change the username font size on mobile, edit font-size below.
+*/
 .username {
   color: #666;
   font-weight: 500;
+  font-size: 1.33rem; /* <-- USERNAME FONT SIZE (Mobile) */
+}
+
+@media (min-width: 601px) {
+  /*
+    === USERNAME FONT SIZE (Desktop) ===
+    To change the username font size on desktop, edit font-size below.
+  */
+  .username {
+    font-size: 1.55rem; /* <-- USERNAME FONT SIZE (Desktop) */
+  }
 }
 
 /*

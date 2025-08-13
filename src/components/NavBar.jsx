@@ -41,7 +41,10 @@ const NavBar = ({ user, onLogout }) => {
                 }}
               />
             )}
-            <span className="username">{user.spotify_display_name || user.nickname}</span>
+            <div className="username-stack">
+              <span className="username-welcome">Welcome:</span>
+              <span className="username">{user.spotify_display_name || user.nickname}</span>
+            </div>
           </div>
           <div className="hamburger-container">
             <button
