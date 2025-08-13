@@ -62,34 +62,47 @@
     To adjust the map height/width on mobile, edit the values below.
     Example: height: 70vh; (for 70% of viewport height)
 */
+/*
+    === MAP VERTICAL POSITION (Mobile) ===
+    To move the map higher or lower on mobile, edit the 'top' value below.
+    Example: top: 60px; (moves map closer to navbar)
+*/
+/*
+    === MAP HEIGHT (Mobile) ===
+    To make the map extend lower, increase the height below.
+    Example: height: 700px; (makes map container and map taller)
+*/
 .dashboard-map-container {
-        position: fixed;
-        top: 130px;
-        left: 0;
-        width: 100vw;
-        height: 600px; /* <-- EDIT THIS for mobile map height */
-        margin: 0;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        overflow: hidden;
-        background: #eaeaea;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        z-index: 100;
+                position: fixed;
+                top: 106px; /* <-- MAP TOP OFFSET (Mobile) */
+                left: 0;
+                width: 100vw;
+                height: 650px; /* <-- MAP HEIGHT (Mobile, container) */
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                overflow: hidden;
+                background: #eaeaea;
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+                z-index: 100;
 }
 
 
 /*
     To adjust the map itself (not the container), edit below.
 */
+/*
+    To make the map itself extend lower, increase the height below.
+*/
 .dashboard-map {
-        width: 100vw;
-        height: 600px; /* <-- EDIT THIS for mobile map height */
-        position: absolute;
-        top: 0;
-        left: 0;
+                width: 100vw;
+                height: 635px; /* <-- MAP HEIGHT (Mobile, actual map) */
+                position: absolute;
+                top: 0;
+                left: 0;
 }
 
 /* Bubble button at bottom center */
