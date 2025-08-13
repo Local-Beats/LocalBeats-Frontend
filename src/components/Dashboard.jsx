@@ -263,7 +263,7 @@ const Dashboard = ({ user }) => {
                         </div>
                     </div>
                     {/* <NowPlaying user={user} /> */}
-                    <ActiveListener />
+                    <ActiveListener user={user} />
                 </section>
             )}
         </main>
