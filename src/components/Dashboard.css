@@ -131,10 +131,10 @@
 /* Results section: covers full viewport, scrollable */
 .dashboard-results-section {
 /* Back to Map button at top of results section */
+/* Center the Back to Map button in results section */
 .dashboard-back-btn {
-    position: absolute;
-    top: 18px;
-    left: 18px;
+    display: block;
+    margin: 0 auto 1.2rem auto;
     background: #fff;
     color: #1976d2;
     font-weight: 600;
@@ -152,6 +152,7 @@
     color: #0d47a1;
     border-color: #0d47a1;
 }
+/* Results section: covers full viewport, scrollable */
 .dashboard-results-section {
     position: fixed;
     top: 0;
@@ -167,6 +168,29 @@
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
     box-sizing: border-box;
+}
+
+/* Header container for results section */
+.dashboard-results-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.2rem;
+}
+
+.dashboard-header-texts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.dashboard-title-results {
+    margin-bottom: 0.5rem;
+    /* To move the Dashboard title closer to the Back to Map button, decrease margin-top below. */
+    /* Example: margin-top: 0.5rem;  (default)  To bring it up by 12px, use margin-top: -12px; */
+    margin-top: -34px;
 }
 }
 .dashboard-results-title {
