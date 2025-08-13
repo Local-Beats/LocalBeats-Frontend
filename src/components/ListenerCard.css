@@ -3,10 +3,11 @@
     border-style: solid;
     border-color: black;
     border-radius: 1rem;
-    gap: 3rem;
+    border-width: 2px;
+    gap: 1rem;
     align-items: center;
     background-color: rgb(204, 203, 203);
-
+    justify-content: space-around;
 }
 
 .listener-card-status {
@@ -14,4 +15,9 @@
     border-radius: .5rem;
     box-sizing: border-box;
     padding: .3rem;
+}
+
+.listener-card-album-art {
+    min-height: 50px;
+    max-width: 50px;
 }

@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import "./NavBarStyles.css";
 import logo from '../assets/LocalBeats.png'
 
+
 const NavBar = ({ user, onLogout }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    onLogout();
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-brand">
@@ -12,10 +25,9 @@ const NavBar = ({ user, onLogout }) => {
         </Link>
       </div>
 
-      <div className="nav-links">
-        {user ? (
-          <div className="user-section">
-            {/* Optional: Show profile picture if available */}
+      {user && (
+        <>
+          <div className="nav-user-info">
             {user.picture && (
               <img
                 src={user.picture}
@@ -29,17 +41,33 @@ const NavBar = ({ user, onLogout }) => {
                 }}
               />
             )}
-
-            {/* Welcome message using name or nickname */}
-            <span className="username">Welcome, {user.spotify_display_name || user.nickname}!</span>
-
-            {/* Logout button */}
-            <button onClick={onLogout} className="logout-btn">
-              Logout
+            <div className="username-stack">
+              <span className="username-welcome">Welcome:</span>
+              <span className="username">{user.spotify_display_name || user.nickname}</span>
+            </div>
+          </div>
+          <div className="hamburger-container">
+            <button
+              className={`McButton${menuOpen ? " active" : ""}`}
+              aria-label="Open menu"
+              onClick={handleMenuToggle}
+              data-hamburger-menu
+            >
+              <b></b>
+              <b></b>
+              <b></b>
             </button>
           </div>
-  ) : null}
-      </div>
+          {menuOpen && createPortal(
+            <div className="hamburger-dropdown hamburger-dropdown-portal">
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>,
+            document.body
+          )}
+        </>
+      )}
     </nav>
   );
 };

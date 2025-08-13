@@ -3,9 +3,10 @@ import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
 
 const ActiveListener = ({ user }) => {
+  console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
-  // console.log("this is track", track)
+  console.log("this is track--->", track)
   const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
@@ -25,9 +26,8 @@ const ActiveListener = ({ user }) => {
   useEffect(() => {
     const fetchCurrentTrack = async () => {
       try {
-        const { data } = await axios.get("/api/spotify/current-track", {
-          withCredentials: true,
-        });
+        const { data } = await axios.get("/api/spotify/current-track")
+
         if (!aliveRef.current) return;
 
         // Only set track if data is valid and has a title
@@ -63,14 +63,16 @@ const ActiveListener = ({ user }) => {
     };
   }, []);
 
-  // ===============================
+  // 
   // Sync a session whenever song_id OR user changes
   //   - If no track -> stop existing session (if any) and clear ref
   //   - If track   -> stop old (if any), then create a new session
-  // ===============================
+  // 
 
   useEffect(() => {
+    console.log("Entered useEffect for syncListeningSession")
     const syncListeningSession = async () => {
+      // console.log("This is user ID --->", user.id)
       if (!user?.id) return;
       if (isSyncingRef.current) return;
       isSyncingRef.current = true;
@@ -78,6 +80,7 @@ const ActiveListener = ({ user }) => {
         // if there is no track playing stop and clear then leave and do nothing
         if (!track) {
           if (openSessionIdRef.current) {
+            console.log("ending any pending session")
             await axios.patch(
               "/api/listeners",
               {
@@ -90,16 +93,17 @@ const ActiveListener = ({ user }) => {
             );
             openSessionIdRef.current = null;
             setActiveSession(null);
+            isSyncingRef.current = false;
           }
           return;
         }
 
         // if track exist end old session first if any on memory
         if (openSessionIdRef.current) {
+          console.log("found track closing old")
           await axios.patch(
             "/api/listeners",
             { status: "stopped", id: openSessionIdRef.current },
-            { withCredentials: true }
           );
         }
 
@@ -111,9 +115,6 @@ const ActiveListener = ({ user }) => {
             song_id: track.song_id,
             ended_at: null,
           },
-          {
-            withCredentials: true,
-          }
         );
 
         setActiveSession(newListeningSession.data);
@@ -135,9 +136,8 @@ const ActiveListener = ({ user }) => {
           .patch(
             "/api/listeners",
             { id: openSessionIdRef.current, status: "stopped" },
-            { withCredentials: true }
           )
-          .catch(() => { });
+          .catch(() => {});
       }
     };
   }, []);
@@ -201,18 +201,16 @@ const ActiveListener = ({ user }) => {
     <main>
       <h1>Active Listeners</h1>
       {/* Current user */}
-      <ListenerCard user={user} track={track} />
+      {/* <ListenerCard sessions={allListeningSessions} /> */}
       {/* Other active listeners */}
       <div className="active-listener-cards">
-        {allListeningSessions
-          .filter((session) => session.user_id !== user?.id)
-          .map((session) => (
-            <ListenerCard
-              key={session.id}
-              user={session.user}
-              track={session.track}
-            />
-          ))}
+        {allListeningSessions?.map((session) => (
+          <ListenerCard
+            key={session.id}
+            user={session.user}
+            track={session.song}
+          />
+        ))}
       </div>
     </main>
   );
