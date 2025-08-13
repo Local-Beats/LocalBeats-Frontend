@@ -43,6 +43,7 @@ const Dashboard = ({ user }) => {
     const mapRef = useRef(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [showResults, setShowResults] = useState(false);
+    const [mapKey, setMapKey] = useState(0); // Used to force remount of map
     // const [mapLoaded, setMapLoaded] = useState(false);
 
     useEffect(() => {
@@ -199,13 +200,14 @@ const Dashboard = ({ user }) => {
                 }
             });
         }
-    }, [user, coords, apiKey, onlineUsers]);
+    }, [user, coords, apiKey, onlineUsers, mapKey]);
 
 
 
     return (
         <main className="dashboard-main">
-            <h1 className="dashboard-title">Dashboard</h1>
+            {/* Dashboard title only shown in map view, not in results view */}
+            {!showResults && <h1 className="dashboard-title">Dashboard</h1>}
             {/* Location info box for the current user (hidden on mobile) */}
             {user && !showResults && (
                 <div className="dashboard-location-box">
@@ -227,7 +229,7 @@ const Dashboard = ({ user }) => {
             )}
             {/* Map container for Google Maps, covers full screen on mobile */}
             {user && coords && !showResults && (
-                <div className="dashboard-map-container">
+                <div className="dashboard-map-container" key={mapKey}>
                     <div
                         ref={mapRef}
                         className="dashboard-map"
@@ -244,14 +246,22 @@ const Dashboard = ({ user }) => {
             {/* Results section: show after clicking bubble button */}
             {showResults && (
                 <section className="dashboard-results-section">
-                    <button
-                        className="dashboard-back-btn"
-                        onClick={() => setShowResults(false)}
-                        aria-label="Back to Map"
-                    >
-                        Back to Map
-                    </button>
-                    <h2 className="dashboard-results-title">Your Currently Playing:</h2>
+                    <div className="dashboard-results-header">
+                        <button
+                            className="dashboard-back-btn"
+                            onClick={() => {
+                                setShowResults(false);
+                                setMapKey(prev => prev + 1); // Force map remount
+                            }}
+                            aria-label="Back to Map"
+                        >
+                            Back to Map
+                        </button>
+                        <div className="dashboard-header-texts">
+                            <h1 className="dashboard-title dashboard-title-results">Dashboard</h1>
+                            <h2 className="dashboard-results-title">Your Currently Playing:</h2>
+                        </div>
+                    </div>
                     <NowPlaying user={user} />
                     <ActiveListener />
                 </section>
