@@ -4,7 +4,8 @@ import ActiveListener from "./ActiveListener";
 import NowPlaying from "./NowPlaying";
 import LocalBeatsImg from "../assets/LocalBeats.png";
 import "./Dashboard.css";
-//import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import MapIcon from "@mui/icons-material/Map";
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -259,7 +260,7 @@ const Dashboard = ({ user }) => {
             className="dashboard-bubble-btn"
             onClick={() => setShowResults(true)}
           >
-            List
+            <FormatListBulletedIcon className="ListIcon" /> List
           </button>
         </div>
       )}
@@ -278,16 +279,16 @@ const Dashboard = ({ user }) => {
           </div>
           {/* <NowPlaying user={user} /> */}
           <ActiveListener user={user} />
-            <button
-              className="dashboard-back-btn"
-              onClick={() => {
-                setShowResults(false);
-                setMapKey((prev) => prev + 1); // Force map remount
-              }}
-              aria-label="Map"
-            >
-              Map
-            </button>
+          <button
+            className="dashboard-back-btn"
+            onClick={() => {
+              setShowResults(false);
+              setMapKey((prev) => prev + 1); // Force map remount
+            }}
+            aria-label="Map"
+          >
+            <MapIcon className="MapIcon" /> Map
+          </button>
         </section>
       )}
     </main>

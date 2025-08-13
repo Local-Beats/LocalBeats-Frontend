@@ -4,6 +4,7 @@ import "./ListenerCard.css";
 import spotifyLogo from "../assets/spotify-logo.png";
 
 const ListenerCard = ({ user, track }) => {
+  console.log("track data:", track);
   // Fallbacks for missing data
   // const displayName = user?.spotify_display_name || user?.nickname || user?.username || "Unknown";
   // const songTitle = track?.title || "No song playing";
@@ -24,7 +25,13 @@ const ListenerCard = ({ user, track }) => {
         {/* <p className="listener-card-location">{loc}</p> */}
       </div>
       <div className="listener-card-spotify-container">
-        <img className="listener-card-spotify" src={spotifyLogo}/>
+        <a
+          href={`https://open.spotify.com/track/${track.spotify_track_id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="listener-card-spotify" src={spotifyLogo} />
+        </a>
       </div>
     </main>
   );

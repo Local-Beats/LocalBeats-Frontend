@@ -124,10 +124,15 @@
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
     z-index: 101;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
 .dashboard-bubble-btn:active {
     background: #e3f2fd;
     color: #0d47a1;
+    align-items: center;
+    gap:0.5em;
 }
 
 /* Results section: covers full viewport, scrollable */
@@ -152,6 +157,9 @@
     cursor: pointer;
     /* z-index removed to prevent hovering above navbar */
     transition: background 0.18s, color 0.18s, border 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
 .dashboard-back-btn:active {
     background: #e3f2fd;
@@ -258,3 +266,9 @@
         display: none;
     }
 }
+
+/* .css-1umw9bq-MuiSvgIcon-root  {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+} */
