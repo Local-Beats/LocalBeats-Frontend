@@ -137,7 +137,7 @@ const ActiveListener = ({ user }) => {
             "/api/listeners",
             { id: openSessionIdRef.current, status: "stopped" },
           )
-          .catch(() => { });
+          .catch(() => {});
       }
     };
   }, []);
