@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
 import ActiveListener from './ActiveListener';
-import NowPlaying from './NowPlaying';
+//import NowPlaying from './NowPlaying';
 import LocalBeatsImg from '../assets/LocalBeats.png';
 import './Dashboard.css';
 
@@ -186,11 +186,7 @@ const Dashboard = ({ user }) => {
                                 url: LocalBeatsImg,
                                 scaledSize: new window.google.maps.Size(40, 40),
                             },
-                            label: {
-                                text: "You",
-                                color: "#8e24aa",
-                                fontWeight: "bold",
-                            },
+                            // No label for your own marker
                             zIndex: 9999,
                         });
                     }
