@@ -99,7 +99,7 @@ const Dashboard = ({ user }) => {
         }
     }, [user]);
 
-    // Load map once coords are set
+    // Load map once coords are set OR when mapKey changes
     useEffect(() => {
         if (coords && apiKey && mapRef.current) {
             loadGoogleMapsScript(apiKey, () => {
@@ -142,7 +142,7 @@ const Dashboard = ({ user }) => {
                 }
             });
         }
-    }, [coords, apiKey]);
+    }, [coords, apiKey, mapKey]); // <-- added mapKey here
 
     // Update markers whenever onlineUsers changes
     useEffect(() => {
@@ -158,10 +158,10 @@ const Dashboard = ({ user }) => {
                         u.latitude === coords?.lat &&
                         u.longitude === coords?.lng;
 
-                                let markerOptions = {
-                                    position: { lat: u.latitude, lng: u.longitude },
-                                    map: mapInstanceRef.current,
-                                };
+                    let markerOptions = {
+                        position: { lat: u.latitude, lng: u.longitude },
+                        map: mapInstanceRef.current,
+                    };
 
                     if (isCurrentUser) {
                         markerOptions.icon = {
