@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from "../utils/axiosInstance";
-import ActiveListener from './ActiveListener';
-// import NowPlaying from './NowPlaying';
-import LocalBeatsImg from '../assets/LocalBeats.png';
-import './Dashboard.css';
+
+import ActiveListener from "./ActiveListener";
+// import NowPlaying from "./NowPlaying";
+import LocalBeatsImg from "../assets/LocalBeats.png";
+import "./Dashboard.css";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import MapIcon from "@mui/icons-material/Map";
+
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -12,10 +16,10 @@ function loadGoogleMapsScript(apiKey, callback) {
         callback();
         return;
     }
-    const existingScript = document.getElementById('google-maps-script');
+    const existingScript = document.getElementById("google-maps-script");
     if (!existingScript) {
-        const script = document.createElement('script');
-        script.id = 'google-maps-script';
+        const script = document.createElement("script");
+        script.id = "google-maps-script";
         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
         script.async = true;
         script.onload = callback;
