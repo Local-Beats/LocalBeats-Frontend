@@ -100,12 +100,40 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   margin-bottom: 2px;
 }
+
+/*
+  === USERNAME PLACEMENT (Mobile) ===
+  To move the username left, right, or center on mobile, edit the justify-content property below.
+  Example: justify-content: center; (centered), flex-start (left), flex-end (right)
+*/
 .nav-user-info {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: transparent;
   pointer-events: auto;
+  justify-content: center; /* <-- USERNAME PLACEMENT (Mobile) */
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 201;
+}
+@media (min-width: 601px) {
+  /*
+    === USERNAME PLACEMENT (Desktop) ===
+    To center the username horizontally in the navbar on desktop, use left: 50% and transform: translateX(-50%).
+    You can adjust left or transform for fine-tuning.
+  */
+  .nav-user-info {
+    position: absolute;
+    left: 50%; /* <-- USERNAME CENTER (Desktop) */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    margin-left: 0;
+  }
 }
 
 .hamburger-container {
@@ -117,27 +145,37 @@
 }
 
 /* Hamburger Menu */
+/*
+  The hamburger button is now fully clickable. To adjust the clickable area, edit width/height below.
+*/
 .McButton {
-  width: 44px;
-  height: 33px;
+  width: 54px; /* Increased clickable area */
+  height: 54px; /* Increased clickable area */
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
   z-index: 300;
   padding: 0;
+  gap: 0;
 }
+/*
+  To change the color of the 3 lines (hamburger icon), edit the 'background' property below:
+  Example: background: #000; for black lines, background: #fff; for white lines
+*/
 .McButton b {
   display: block;
   width: 44px;
   height: 3px;
-  background: #fff;
+  background: black; /* <-- HAMBURGER LINES COLOR */
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(.4,2.3,.3,1);
   position: relative;
+  margin: 6px 0; /* Ensures lines are spaced but button is fully clickable */
 }
 .McButton b:nth-child(1) {
   top: 0;
