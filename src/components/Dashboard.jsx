@@ -35,6 +35,7 @@ const Dashboard = ({ user }) => {
     const [coords, setCoords] = useState(null);
     const [geoError, setGeoError] = useState(null);
     const [address, setAddress] = useState("");
+    const [mapKey, setMapKey] = useState(0);
     const mapRef = useRef(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -202,7 +203,7 @@ const Dashboard = ({ user }) => {
 
             {user && coords && !showResults && (
                 <div className="dashboard-map-container">
-                    <div ref={mapRef} className="dashboard-map" />
+                    <div ref={mapRef} className="dashboard-map" key={mapKey} />
                     <button className="dashboard-bubble-btn" onClick={() => setShowResults(true)}>
                         See Results
                     </button>
@@ -214,7 +215,10 @@ const Dashboard = ({ user }) => {
                     <div className="dashboard-results-header">
                         <button
                             className="dashboard-back-btn"
-                            onClick={() => setShowResults(false)}
+                            onClick={() => {
+                                setShowResults(false);
+                                setMapKey(prev => prev + 1); // Force map remount
+                            }}
                             aria-label="Back to Map"
                         >
                             Back to Map
