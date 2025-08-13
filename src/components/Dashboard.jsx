@@ -252,8 +252,8 @@ const Dashboard = ({ user }) => {
                         Back to Map
                     </button>
                     <h2 className="dashboard-results-title">Your Currently Playing:</h2>
-                    <NowPlaying user={user} />
-                    <ActiveListener />
+                    {/* <NowPlaying user={user} /> */}
+                    <ActiveListener user={user} />
                 </section>
             )}
         </main>
