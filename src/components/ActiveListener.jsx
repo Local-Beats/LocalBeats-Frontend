@@ -137,7 +137,7 @@ const ActiveListener = ({ user }) => {
             "/api/listeners",
             { id: openSessionIdRef.current, status: "stopped" },
           )
-          .catch(() => {});
+          .catch(() => { });
       }
     };
   }, []);
@@ -145,7 +145,7 @@ const ActiveListener = ({ user }) => {
   const fetchAllActiveListeners = React.useCallback(async () => {
     try {
       const res = await axios.get("/api/listeners", { withCredentials: true });
-      if (!aliveRef.current) return;
+      // if (!aliveRef.current) return;
 
       setAllListeningSessions((prev) => {
         if (prev.length !== res.data.length) return res.data;
@@ -188,14 +188,16 @@ const ActiveListener = ({ user }) => {
     if (!activeSession?.id) return;
     fetchAllActiveListeners();
   }, [activeSession?.id, fetchAllActiveListeners]);
-  if (error)
-    return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
-  if (!track)
-    return (
-      <p style={{ textAlign: "center", marginTop: "40px" }}>
-        No song is currently playing.
-      </p>
-    );
+
+
+  // if (error)
+  //   return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
+  // if (!track)
+  //   return (
+  //     <p style={{ textAlign: "center", marginTop: "40px" }}>
+  //       No song is currently playing.
+  //     </p>
+  //   );
 
   return (
     <main>
