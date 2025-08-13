@@ -157,14 +157,10 @@ const Dashboard = ({ user }) => {
                         u.latitude === coords?.lat &&
                         u.longitude === coords?.lng;
 
-                    let markerOptions = {
-                        position: { lat: u.latitude, lng: u.longitude },
-                        map: mapInstanceRef.current,
-                        title: isCurrentUser ? "You are here!" : u.username,
-                        label: isCurrentUser
-                            ? { text: "You", color: "#8e24aa", fontWeight: "bold" }
-                            : { text: u.username, color: "#d32f2f", fontWeight: "bold" }
-                    };
+                                let markerOptions = {
+                                    position: { lat: u.latitude, lng: u.longitude },
+                                    map: mapInstanceRef.current,
+                                };
 
                     if (isCurrentUser) {
                         markerOptions.icon = {
