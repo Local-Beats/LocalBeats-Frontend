@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
+import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user }) => {
-  console.log("this is user--->", user)
+  console.log("this is user--->", user);
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
-  console.log("this is track--->", track)
+  console.log("this is track--->", track);
   const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
@@ -26,7 +27,7 @@ const ActiveListener = ({ user }) => {
   useEffect(() => {
     const fetchCurrentTrack = async () => {
       try {
-        const { data } = await axios.get("/api/spotify/current-track")
+        const { data } = await axios.get("/api/spotify/current-track");
 
         if (!aliveRef.current) return;
 
@@ -63,14 +64,14 @@ const ActiveListener = ({ user }) => {
     };
   }, []);
 
-  // 
+  //
   // Sync a session whenever song_id OR user changes
   //   - If no track -> stop existing session (if any) and clear ref
   //   - If track   -> stop old (if any), then create a new session
-  // 
+  //
 
   useEffect(() => {
-    console.log("Entered useEffect for syncListeningSession")
+    console.log("Entered useEffect for syncListeningSession");
     const syncListeningSession = async () => {
       // console.log("This is user ID --->", user.id)
       if (!user?.id) return;
@@ -80,7 +81,7 @@ const ActiveListener = ({ user }) => {
         // if there is no track playing stop and clear then leave and do nothing
         if (!track) {
           if (openSessionIdRef.current) {
-            console.log("ending any pending session")
+            console.log("ending any pending session");
             await axios.patch(
               "/api/listeners",
               {
@@ -100,22 +101,19 @@ const ActiveListener = ({ user }) => {
 
         // if track exist end old session first if any on memory
         if (openSessionIdRef.current) {
-          console.log("found track closing old")
-          await axios.patch(
-            "/api/listeners",
-            { status: "stopped", id: openSessionIdRef.current },
-          );
+          console.log("found track closing old");
+          await axios.patch("/api/listeners", {
+            status: "stopped",
+            id: openSessionIdRef.current,
+          });
         }
 
         // create a new session for this track
-        const newListeningSession = await axios.post(
-          "/api/listeners",
-          {
-            status: "playing",
-            song_id: track.song_id,
-            ended_at: null,
-          },
-        );
+        const newListeningSession = await axios.post("/api/listeners", {
+          status: "playing",
+          song_id: track.song_id,
+          ended_at: null,
+        });
 
         setActiveSession(newListeningSession.data);
         openSessionIdRef.current = newListeningSession.data.id;
@@ -133,11 +131,11 @@ const ActiveListener = ({ user }) => {
     return () => {
       if (openSessionIdRef.current) {
         axios
-          .patch(
-            "/api/listeners",
-            { id: openSessionIdRef.current, status: "stopped" },
-          )
-          .catch(() => { });
+          .patch("/api/listeners", {
+            id: openSessionIdRef.current,
+            status: "stopped",
+          })
+          .catch(() => {});
       }
     };
   }, []);
@@ -189,7 +187,6 @@ const ActiveListener = ({ user }) => {
     fetchAllActiveListeners();
   }, [activeSession?.id, fetchAllActiveListeners]);
 
-
   // if (error)
   //   return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
   // if (!track)
@@ -200,7 +197,7 @@ const ActiveListener = ({ user }) => {
   //   );
 
   return (
-    <main>
+    <main className="active-listener-container">
       <h1>Active Listeners</h1>
       {/* Current user */}
       {/* <ListenerCard sessions={allListeningSessions} /> */}
@@ -213,6 +210,31 @@ const ActiveListener = ({ user }) => {
             track={session.song}
           />
         ))}
+      </div>
+
+      <div className="listener-card-container">
+        <div className="listener-card-image">
+          <img
+            className="listener-card-album-art"
+            src="https://i.scdn.co/image/ab67616d0000b2739d706d33e975dfa107e11b1e"
+          />
+          {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
+        </div>
+        <div className="listener-card-info">
+          <p className="listener-card-name">Local Beats</p>
+          <p className="listener-card-song">Le Onde</p>
+          <p className="listener-card-artist">Ludovico Einaudi</p>
+          {/* <p className="listener-card-location">{loc}</p> */}
+        </div>
+        <div className="listener-card-spotify-container">
+          <a
+            href={"https://open.spotify.com/track/4B4riAIJPMtP81ePFVAsG4"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="listener-card-spotify" src={spotifyLogo} />
+          </a>
+        </div>
       </div>
     </main>
   );

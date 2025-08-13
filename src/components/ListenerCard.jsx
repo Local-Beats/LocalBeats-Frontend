@@ -27,7 +27,6 @@ const ListenerCard = ({ user, track }) => {
       <div className="listener-card-spotify-container">
         <a
           href={`https://open.spotify.com/track/${track.spotify_track_id}`}
-          // href={"https://open.spotify.com/track/7FOgcfdz9Nx5V9lCNXdBYv"}
           target="_blank"
           rel="noopener noreferrer"
         >
