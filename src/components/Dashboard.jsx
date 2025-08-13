@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "../utils/axiosInstance";
+
 import ActiveListener from "./ActiveListener";
-import NowPlaying from "./NowPlaying";
+// import NowPlaying from "./NowPlaying";
 import LocalBeatsImg from "../assets/LocalBeats.png";
 import "./Dashboard.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MapIcon from "@mui/icons-material/Map";
+
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -191,26 +193,25 @@ const Dashboard = ({ user }) => {
             }
           });
 
-          // Always render LocalBeats.png for the current user's geolocation (matching address box)
-          if (
-            coords &&
-            typeof coords.lat === "number" &&
-            typeof coords.lng === "number"
-          ) {
-            new window.google.maps.Marker({
-              position: { lat: coords.lat, lng: coords.lng },
-              map,
-              title: "You are here!",
-              icon: {
-                url: LocalBeatsImg,
-                scaledSize: new window.google.maps.Size(40, 40),
-              },
-              label: {
-                text: "You",
-                color: "#8e24aa",
-                fontWeight: "bold",
-              },
-              zIndex: 9999,
+
+                    // Always render LocalBeats.png for the current user's geolocation (matching address box)
+                    if (coords && typeof coords.lat === "number" && typeof coords.lng === "number") {
+                        new window.google.maps.Marker({
+                            position: { lat: coords.lat, lng: coords.lng },
+                            map,
+                            title: "You are here!",
+                            icon: {
+                                url: LocalBeatsImg,
+                                scaledSize: new window.google.maps.Size(40, 40),
+                            },
+                            // No label for your own marker
+                            zIndex: 9999,
+                        });
+                    }
+                    console.log("Map rendered with users:", onlineUsers);
+                } else {
+                    console.error("Google Maps JS API not available after script load.");
+              
             });
           }
           console.log("Map rendered with users:", onlineUsers);
