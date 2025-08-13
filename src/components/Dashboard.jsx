@@ -286,7 +286,7 @@ const Dashboard = ({ user }) => {
               }}
               aria-label="Map"
             >
-              <Icon>Map</Icon>;
+              Map
             </button>
         </section>
       )}
