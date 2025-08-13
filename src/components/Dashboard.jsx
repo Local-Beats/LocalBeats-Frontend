@@ -4,6 +4,7 @@ import ActiveListener from "./ActiveListener";
 import NowPlaying from "./NowPlaying";
 import LocalBeatsImg from "../assets/LocalBeats.png";
 import "./Dashboard.css";
+//import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -31,16 +32,16 @@ function loadGoogleMapsScript(apiKey, callback) {
 }
 
 const Dashboard = ({ user }) => {
-    // Guard: don't render anything if user is not loaded
-    if (!user) return null;
-    const [coords, setCoords] = useState(null);
-    const [geoError, setGeoError] = useState(null);
-    const [address, setAddress] = useState("");
-    const mapRef = useRef(null);
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    const [showResults, setShowResults] = useState(false);
-    const [mapKey, setMapKey] = useState(0); // Used to force remount of map
-    // const [mapLoaded, setMapLoaded] = useState(false);
+  // Guard: don't render anything if user is not loaded
+  if (!user) return null;
+  const [coords, setCoords] = useState(null);
+  const [geoError, setGeoError] = useState(null);
+  const [address, setAddress] = useState("");
+  const mapRef = useRef(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const [mapKey, setMapKey] = useState(0); // Used to force remount of map
+  // const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -189,98 +190,108 @@ const Dashboard = ({ user }) => {
             }
           });
 
-                    // Always render LocalBeats.png for the current user's geolocation (matching address box)
-                    if (coords && typeof coords.lat === "number" && typeof coords.lng === "number") {
-                        new window.google.maps.Marker({
-                            position: { lat: coords.lat, lng: coords.lng },
-                            map,
-                            title: "You are here!",
-                            icon: {
-                                url: LocalBeatsImg,
-                                scaledSize: new window.google.maps.Size(40, 40),
-                            },
-                            label: {
-                                text: "You",
-                                color: "#8e24aa",
-                                fontWeight: "bold",
-                            },
-                            zIndex: 9999,
-                        });
-                    }
-                    console.log("Map rendered with users:", onlineUsers);
-                } else {
-                    console.error("Google Maps JS API not available after script load.");
-                }
+          // Always render LocalBeats.png for the current user's geolocation (matching address box)
+          if (
+            coords &&
+            typeof coords.lat === "number" &&
+            typeof coords.lng === "number"
+          ) {
+            new window.google.maps.Marker({
+              position: { lat: coords.lat, lng: coords.lng },
+              map,
+              title: "You are here!",
+              icon: {
+                url: LocalBeatsImg,
+                scaledSize: new window.google.maps.Size(40, 40),
+              },
+              label: {
+                text: "You",
+                color: "#8e24aa",
+                fontWeight: "bold",
+              },
+              zIndex: 9999,
             });
+          }
+          console.log("Map rendered with users:", onlineUsers);
+        } else {
+          console.error("Google Maps JS API not available after script load.");
         }
-    }, [user, coords, apiKey, onlineUsers, mapKey]);
+      });
+    }
+  }, [user, coords, apiKey, onlineUsers, mapKey]);
 
-
-
-    return (
-        <main className="dashboard-main">
-            {/* Dashboard title only shown in map view, not in results view */}
-            {!showResults && <h1 className="dashboard-title">Dashboard</h1>}
-            {/* Location info box for the current user (hidden on mobile) */}
-            {user && !showResults && (
-                <div className="dashboard-location-box">
-                    <strong>Your Location</strong>
-                    <div style={{ marginTop: "8px", width: "100%", display: "flex", flexDirection: "column" }}>
-                        {coords ? (
-                            address ? (
-                                <div className="dashboard-address">{address}</div>
-                            ) : (
-                                <div>Fetching address...</div>
-                            )
-                        ) : geoError ? (
-                            <div className="dashboard-error">{geoError}</div>
-                        ) : (
-                            <div>Fetching location...</div>
-                        )}
-                    </div>
-                </div>
+  return (
+    <main className="dashboard-main">
+      {/* Dashboard title only shown in map view, not in results view */}
+      {!showResults && <h1 className="dashboard-title">Dashboard</h1>}
+      {/* Location info box for the current user (hidden on mobile) */}
+      {user && !showResults && (
+        <div className="dashboard-location-box">
+          <strong>Your Location</strong>
+          <div
+            style={{
+              marginTop: "8px",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {coords ? (
+              address ? (
+                <div className="dashboard-address">{address}</div>
+              ) : (
+                <div>Fetching address...</div>
+              )
+            ) : geoError ? (
+              <div className="dashboard-error">{geoError}</div>
+            ) : (
+              <div>Fetching location...</div>
             )}
-            {/* Map container for Google Maps, covers full screen on mobile */}
-            {user && coords && !showResults && (
-                <div className="dashboard-map-container" key={mapKey}>
-                    <div
-                        ref={mapRef}
-                        className="dashboard-map"
-                    />
-                    {/* Bubble button at bottom center */}
-                    <button
-                        className="dashboard-bubble-btn"
-                        onClick={() => setShowResults(true)}
-                    >
-                        See Results
-                    </button>
-                </div>
-            )}
-            {/* Results section: show after clicking bubble button */}
-            {showResults && (
-                <section className="dashboard-results-section">
-                    <div className="dashboard-results-header">
-                        <button
-                            className="dashboard-back-btn"
-                            onClick={() => {
-                                setShowResults(false);
-                                setMapKey(prev => prev + 1); // Force map remount
-                            }}
-                            aria-label="Back to Map"
-                        >
-                            Back to Map
-                        </button>
-                        <div className="dashboard-header-texts">
-                            <h1 className="dashboard-title dashboard-title-results">Dashboard</h1>
-                            <h2 className="dashboard-results-title">Your Currently Playing:</h2>
-                        </div>
-                    </div>
-                    {/* <NowPlaying user={user} /> */}
-                    <ActiveListener user={user} />
-                </section>
-            )}
-        </main>
-    );
-}
+          </div>
+        </div>
+      )}
+      {/* Map container for Google Maps, covers full screen on mobile */}
+      {user && coords && !showResults && (
+        <div className="dashboard-map-container" key={mapKey}>
+          <div ref={mapRef} className="dashboard-map" />
+          {/* Bubble button at bottom center */}
+          <button
+            className="dashboard-bubble-btn"
+            onClick={() => setShowResults(true)}
+          >
+            List
+          </button>
+        </div>
+      )}
+      {/* Results section: show after clicking bubble button */}
+      {showResults && (
+        <section className="dashboard-results-section">
+          <div className="dashboard-results-header">
+            <div className="dashboard-header-texts">
+              <h1 className="dashboard-title dashboard-title-results">
+                {/* Dashboard */}
+              </h1>
+              <h2 className="dashboard-results-title">
+                {/* Your Currently Playing: */}
+              </h2>
+            </div>
+          </div>
+          {/* <NowPlaying user={user} /> */}
+          <ActiveListener user={user} />
+            <button
+              className="dashboard-back-btn"
+              onClick={() => {
+                setShowResults(false);
+                setMapKey((prev) => prev + 1); // Force map remount
+              }}
+              aria-label="Map"
+            >
+              <Icon>Map</Icon>;
+            </button>
+        </section>
+      )}
+    </main>
+  );
+};
 
 export default Dashboard;
