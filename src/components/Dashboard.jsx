@@ -103,7 +103,7 @@ const Dashboard = ({ user }) => {
         }
     }, [user]);
 
-    // Load map once coords are set
+    // Load map once coords are set OR when mapKey changes
     useEffect(() => {
         if (coords && apiKey && mapRef.current) {
             loadGoogleMapsScript(apiKey, () => {
@@ -146,9 +146,9 @@ const Dashboard = ({ user }) => {
                 }
             });
         }
-    }, [coords, apiKey]);
+    }, [coords, apiKey, mapKey]);
 
-    // Update markers whenever onlineUsers changes
+    // Update markers whenever onlineUsers changes or map reloads
     useEffect(() => {
         if (mapInstanceRef.current) {
             // Clear old markers
@@ -158,33 +158,28 @@ const Dashboard = ({ user }) => {
             // Add markers for users
             onlineUsers.forEach(u => {
                 if (typeof u.latitude === "number" && typeof u.longitude === "number") {
-                    const isCurrentUser = u.username === user.username &&
-                        u.latitude === coords?.lat &&
-                        u.longitude === coords?.lng;
+                    const isCurrentUser = u.username === user.username;
 
-                                let markerOptions = {
-                                    position: { lat: u.latitude, lng: u.longitude },
-                                    map: mapInstanceRef.current,
-                                };
-
-                    if (isCurrentUser) {
-                        markerOptions.icon = {
-                            url: LocalBeatsImg,
-                            scaledSize: new window.google.maps.Size(40, 40),
-                        };
-                    } else {
-                        markerOptions.icon = {
-                            url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
-                            scaledSize: new window.google.maps.Size(40, 40),
-                        };
-                    }
+                    const markerOptions = {
+                        position: { lat: u.latitude, lng: u.longitude },
+                        map: mapInstanceRef.current,
+                        icon: isCurrentUser
+                            ? {
+                                  url: LocalBeatsImg,
+                                  scaledSize: new window.google.maps.Size(40, 40),
+                              }
+                            : {
+                                  url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                                  scaledSize: new window.google.maps.Size(40, 40),
+                              },
+                    };
 
                     const marker = new window.google.maps.Marker(markerOptions);
                     markersRef.current.push(marker);
                 }
             });
         }
-    }, [onlineUsers, coords, user]);
+    }, [onlineUsers, mapKey, user]);
 
     return (
         <main className="dashboard-main">
