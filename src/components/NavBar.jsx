@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import "./NavBarStyles.css";
 import logo from '../assets/LocalBeats.png'
@@ -53,14 +54,15 @@ const NavBar = ({ user, onLogout }) => {
               <b></b>
               <b></b>
             </button>
-            {menuOpen && (
-              <div className="hamburger-dropdown">
-                <button className="logout-btn" onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            )}
           </div>
+          {menuOpen && createPortal(
+            <div className="hamburger-dropdown hamburger-dropdown-portal">
+              <button className="logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>,
+            document.body
+          )}
         </>
       )}
     </nav>

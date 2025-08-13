@@ -200,16 +200,19 @@
   Hamburger dropdown uses absolute positioning and a very high z-index so it appears above the map but within the navbar area.
   Adjust z-index if needed.
 */
-.hamburger-dropdown {
-  position: absolute;
-  top: 110%;
-  right: 0;
+/*
+  Hamburger dropdown in portal: fixed to top right, always above all content.
+*/
+.hamburger-dropdown-portal {
+  position: fixed;
+  top: 80px;
+  right: 2rem;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   padding: 0.5rem 1rem;
   min-width: 120px;
-  z-index: 9999; /* <-- Always above the map and other content */
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
