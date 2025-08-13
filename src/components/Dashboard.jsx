@@ -39,6 +39,7 @@ const Dashboard = ({ user }) => {
     const [coords, setCoords] = useState(null);
     const [geoError, setGeoError] = useState(null);
     const [address, setAddress] = useState("");
+    const [mapKey, setMapKey] = useState(0);
     const mapRef = useRef(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -161,14 +162,10 @@ const Dashboard = ({ user }) => {
                         u.latitude === coords?.lat &&
                         u.longitude === coords?.lng;
 
-                    let markerOptions = {
-                        position: { lat: u.latitude, lng: u.longitude },
-                        map: mapInstanceRef.current,
-                        title: isCurrentUser ? "You are here!" : u.username,
-                        label: isCurrentUser
-                            ? { text: "You", color: "#8e24aa", fontWeight: "bold" }
-                            : { text: u.username, color: "#d32f2f", fontWeight: "bold" }
-                    };
+                                let markerOptions = {
+                                    position: { lat: u.latitude, lng: u.longitude },
+                                    map: mapInstanceRef.current,
+                                };
 
                     if (isCurrentUser) {
                         markerOptions.icon = {
@@ -210,7 +207,7 @@ const Dashboard = ({ user }) => {
 
             {user && coords && !showResults && (
                 <div className="dashboard-map-container">
-                    <div ref={mapRef} className="dashboard-map" />
+                    <div ref={mapRef} className="dashboard-map" key={mapKey} />
                     <button className="dashboard-bubble-btn" onClick={() => setShowResults(true)}>
                         See Results
                     </button>
@@ -222,7 +219,10 @@ const Dashboard = ({ user }) => {
                     <div className="dashboard-results-header">
                         <button
                             className="dashboard-back-btn"
-                            onClick={() => setShowResults(false)}
+                            onClick={() => {
+                                setShowResults(false);
+                                setMapKey(prev => prev + 1); // Force map remount
+                            }}
                             aria-label="Back to Map"
                         >
                             Back to Map
