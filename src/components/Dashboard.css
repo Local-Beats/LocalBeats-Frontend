@@ -107,25 +107,32 @@
 
 /* Bubble button at bottom center */
 .dashboard-bubble-btn {
-    position: absolute;
+    position: fixed;
     left: 50%;
-    bottom: 32px;
+    bottom: 15px;
     transform: translateX(-50%);
-    background: #fff;
-    color: #1976d2;
-    font-weight: 700;
-    font-size: 1.1rem;
+    background: rgb(46, 45, 46);
+    color:lightgreen;
+    /* display: block; */
+    /* margin: 0 auto 1.2rem auto; */
+    font-weight: 600;
+    font-size: 1rem;
     border: none;
     border-radius: 999px;
-    box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18);
-    padding: 0.9em 2.2em;
+    /* box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); */
+    padding: 0.45em 1.3em;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
     z-index: 101;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
 .dashboard-bubble-btn:active {
     background: #e3f2fd;
     color: #0d47a1;
+    align-items: center;
+    gap:0.5em;
 }
 
 /* Results section: covers full viewport, scrollable */
@@ -133,19 +140,26 @@
 /* Back to Map button at top of results section */
 /* Center the Back to Map button in results section */
 .dashboard-back-btn {
-    display: block;
+    position: fixed;
+    bottom:1px;
+    left:50%;
+    transform:translateX(-50%); 
+    /* aligns horital in the middle */
     margin: 0 auto 1.2rem auto;
-    background: #fff;
-    color: #1976d2;
+    background: rgb(46, 45, 46);
+    color:lightgreen;
     font-weight: 600;
     font-size: 1rem;
-    border: 1px solid #1976d2;
+    border: none;
     border-radius: 999px;
-    box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10);
+    /* box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10); */
     padding: 0.45em 1.3em;
     cursor: pointer;
     /* z-index removed to prevent hovering above navbar */
     transition: background 0.18s, color 0.18s, border 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
 }
 .dashboard-back-btn:active {
     background: #e3f2fd;
@@ -252,3 +266,9 @@
         display: none;
     }
 }
+
+/* .css-1umw9bq-MuiSvgIcon-root  {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+} */

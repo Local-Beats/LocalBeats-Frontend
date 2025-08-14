@@ -4,10 +4,13 @@
     border-color: black;
     border-radius: 1rem;
     border-width: 2px;
-    gap: 1rem;
+    gap: .9rem;
     align-items: center;
-    background-color: rgb(204, 203, 203);
-    justify-content: space-around;
+    /* align-content: center; */
+    background-color: lightgreen;
+    /* justify-content: space-around; */
+    padding-left:10px;
+    padding-right:1px;
 }
 
 .listener-card-status {
@@ -18,6 +21,36 @@
 }
 
 .listener-card-album-art {
+    border-radius:.5rem;
     min-height: 50px;
     max-width: 50px;
 }
+
+.listener-card-name {
+    margin:5px 0px;
+    font-family: none;
+    font-size:small;
+}
+
+.listener-card-song {
+    margin:1px 0px;
+    font-family: none;
+    font-weight: bold;
+}
+
+.listener-card-artist {
+    margin:1px 0px;
+    font-family: none;
+    font-size:small;
+} 
+
+.listener-card-spotify {
+    height:30px;
+    width: 30px;
+}
+
+.listener-card-spotify-container {
+   position:absolute;
+   left:88%;
+}
+
