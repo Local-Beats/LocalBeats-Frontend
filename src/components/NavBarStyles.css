@@ -2,38 +2,48 @@
   0% {
     transform: translateX(-50%) scale(1) rotate(-5deg);
   }
+
   5% {
     transform: translateX(-50%) scale(1.08) rotate(8deg);
   }
+
   10% {
     transform: translateX(-50%) scale(1.12) rotate(-8deg);
   }
+
   15% {
     transform: translateX(-50%) scale(1.08) rotate(8deg);
   }
+
   20% {
     transform: translateX(-50%) scale(1) rotate(-5deg);
   }
+
   40% {
     transform: translateX(-50%) scale(1) rotate(0deg);
   }
+
   60% {
     transform: translateX(120vw) scale(1) rotate(0deg);
     opacity: 0;
   }
+
   61% {
     transform: translateX(-120vw) scale(1) rotate(0deg);
     opacity: 0;
   }
+
   62% {
     transform: translateX(-50%) scale(1) rotate(-5deg);
     opacity: 1;
   }
+
   100% {
     transform: translateX(-50%) scale(1) rotate(-5deg);
     opacity: 1;
   }
 }
+
 .navbar-logo {
   width: 55px;
   height: 55px;
@@ -51,13 +61,16 @@
   .navbar {
     justify-content: flex-start;
   }
+
   .nav-brand {
     width: auto;
     display: flex;
     justify-content: flex-start;
   }
+
   .navbar-logo {
-    width: 85px; /* 75px * 1.4 = 105px */
+    width: 85px;
+    /* 75px * 1.4 = 105px */
     height: 85px;
     margin: 0 0 0 0;
     top: 0;
@@ -70,11 +83,13 @@
   .navbar {
     justify-content: flex-start;
   }
+
   .nav-brand {
     width: auto;
     display: flex;
     justify-content: flex-start;
   }
+
   .navbar-logo {
     width: 75px;
     height: 75px;
@@ -97,12 +112,14 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #f5fdff; /* <-- NAVBAR COLOR (baby blue) */
-  padding: 1rem 2rem 0.5rem 2rem;
+  background: #f5fdff;
+  /* <-- NAVBAR COLOR (baby blue) */
+  /* padding: 1rem 2rem 0.5rem 2rem; */
+  padding: .5rem;
   border: none;
   pointer-events: none;
   min-height: 70px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   margin-bottom: 2px;
 }
 
@@ -121,12 +138,15 @@
   gap: 0.5rem;
   background: transparent;
   pointer-events: auto;
-  justify-content: center; /* <-- USERNAME PLACEMENT (Mobile) */
+  justify-content: center;
+  /* <-- USERNAME PLACEMENT (Mobile) */
   width: 100%;
   position: absolute;
   left: 0;
-  top: 46%; /* <-- Move up/down (was 50%) */
-  transform: translateY(-34%); /* <-- Move up/down (was -50%) */
+  top: 46%;
+  /* <-- Move up/down (was 50%) */
+  transform: translateY(-34%);
+  /* <-- Move up/down (was -50%) */
   z-index: 201;
 }
 
@@ -143,18 +163,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.1rem; /* <-- Space between Welcome and username */
-  margin-left: 26px; /* <-- Move welcome/username 12px to the right (Mobile) */
+  gap: 0.1rem;
+  /* <-- Space between Welcome and username */
+  margin-left: 26px;
+  /* <-- Move welcome/username 12px to the right (Mobile) */
 }
 
 .username-welcome {
   font-size: 0.95rem;
   color: #888;
   font-weight: 400;
-  margin-bottom: 0.1rem; /* <-- Space below Welcome */
+  margin-bottom: 0.1rem;
+  /* <-- Space below Welcome */
   letter-spacing: 0.01em;
 }
+
 @media (min-width: 601px) {
+
   /*
     === USERNAME PLACEMENT (Desktop) ===
     To center the username container horizontally in the navbar on desktop, use left/top/transform below.
@@ -162,8 +187,10 @@
   */
   .nav-user-info {
     position: absolute;
-    left: 50%; /* <-- USERNAME CENTER (Desktop) */
-    top: 46%; /* <-- Move up/down (was 50%) */
+    left: 50%;
+    /* <-- USERNAME CENTER (Desktop) */
+    top: 46%;
+    /* <-- Move up/down (was 50%) */
     transform: translate(-50%, -46%);
     width: max-content;
     margin-left: 0;
@@ -177,7 +204,8 @@
 */
 .hamburger-container {
   position: absolute;
-  right: calc(2rem - 28px); /* <-- Move hamburger 12px more to the right */
+  right: calc(2rem - 28px);
+  /* <-- Move hamburger 12px more to the right */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: auto;
@@ -193,8 +221,10 @@
   You can adjust width/height below for a larger or smaller clickable area.
 */
 .McButton {
-  width: 60px; /* <-- Clickable area width */
-  height: 60px; /* <-- Clickable area height */
+  width: 60px;
+  /* <-- Clickable area width */
+  height: 60px;
+  /* <-- Clickable area height */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -208,6 +238,7 @@
   gap: 0;
   touch-action: manipulation;
 }
+
 /*
   To change the color of the 3 lines (hamburger icon), edit the 'background' property below:
   Example: background: #000; for black lines, background: #fff; for white lines
@@ -216,27 +247,35 @@
   display: block;
   width: 44px;
   height: 3px;
-  background: black; /* <-- HAMBURGER LINES COLOR */
+  background: black;
+  /* <-- HAMBURGER LINES COLOR */
   border-radius: 2px;
-  transition: all 0.3s cubic-bezier(.4,2.3,.3,1);
+  transition: all 0.3s cubic-bezier(.4, 2.3, .3, 1);
   position: relative;
-  margin: 6px 0; /* Ensures lines are spaced but button is fully clickable */
+  margin: 6px 0;
+  /* Ensures lines are spaced but button is fully clickable */
 }
+
 .McButton b:nth-child(1) {
   top: 0;
 }
+
 .McButton b:nth-child(2) {
   top: 0;
 }
+
 .McButton b:nth-child(3) {
   top: 0;
 }
+
 .McButton.active b:nth-child(1) {
   transform: translateY(15px) rotate(45deg);
 }
+
 .McButton.active b:nth-child(2) {
   opacity: 0;
 }
+
 .McButton.active b:nth-child(3) {
   transform: translateY(-15px) rotate(-45deg);
 }
@@ -258,14 +297,16 @@
   right: 2rem;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  padding: 8px 8px 8px 6px; /* <-- left padding reduced by 10px (was 16px) */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 8px 8px 8px 6px;
+  /* <-- left padding reduced by 10px (was 16px) */
   min-width: 120px;
   z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  height: 48px; /* <-- Set dropdown height to match button height */
+  height: 48px;
+  /* <-- Set dropdown height to match button height */
 }
 
 
@@ -302,14 +343,14 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: all 0.2s;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .nav-link:hover {
   color: #007bff;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .user-section {
@@ -326,16 +367,19 @@
 .username {
   color: #666;
   font-weight: 500;
-  font-size: 1.33rem; /* <-- USERNAME FONT SIZE (Mobile) */
+  font-size: 1.25rem;
+  /* <-- USERNAME FONT SIZE (Mobile) */
 }
 
 @media (min-width: 601px) {
+
   /*
     === USERNAME FONT SIZE (Desktop) ===
     To change the username font size on desktop, edit font-size below.
   */
   .username {
-    font-size: 1.55rem; /* <-- USERNAME FONT SIZE (Desktop) */
+    font-size: 1.55rem;
+    /* <-- USERNAME FONT SIZE (Desktop) */
   }
 }
 

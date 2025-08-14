@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import "./NavBarStyles.css";
-import logo from '../assets/LocalBeats.png'
+import logo from '../assets/LocalBeats.png';
+import logo2 from "../assets/Beat-Nav.png";
 
 
 const NavBar = ({ user, onLogout }) => {
@@ -21,7 +22,7 @@ const NavBar = ({ user, onLogout }) => {
     <nav className="navbar">
       <div className="nav-brand">
         <Link to="/">
-          <img className="navbar-logo" src={logo} alt="Logo" />
+          <img className="navbar-logo" src={logo2} alt="Logo" />
         </Link>
       </div>
 
@@ -42,8 +43,9 @@ const NavBar = ({ user, onLogout }) => {
               />
             )}
             <div className="username-stack">
-              <span className="username-welcome">Welcome:</span>
-              <span className="username">{user.spotify_display_name || user.nickname}</span>
+              {/* <span className="username-welcome">Welcome:</span> */}
+              <span className="navbar-app-name">Local Beats</span>
+              {/* <span className="username">{user.spotify_display_name || user.nickname}</span> */}
             </div>
           </div>
           <div className="hamburger-container">
