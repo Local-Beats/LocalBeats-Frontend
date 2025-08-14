@@ -8,14 +8,14 @@
 }
 
 
-.dashboard-title {
+/* .dashboard-title {
     text-align: center;
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
     padding: 1.2rem 0 0.5rem 0;
     letter-spacing: 0.02em;
-}
+} */
 
 .dashboard-location-box {
     position: absolute;
@@ -27,7 +27,7 @@
     padding: 12px 18px;
     min-width: 160px;
     max-width: 260px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     font-size: 14px;
     z-index: 10;
     display: flex;
@@ -73,21 +73,23 @@
     Example: height: 700px; (makes map container and map taller)
 */
 .dashboard-map-container {
-                position: fixed;
-                top: 106px; /* <-- MAP TOP OFFSET (Mobile) */
-                left: 0;
-                width: 100vw;
-                height: 650px; /* <-- MAP HEIGHT (Mobile, container) */
-                margin: 0;
-                border: none;
-                border-radius: 0;
-                box-shadow: none;
-                overflow: hidden;
-                background: #eaeaea;
-                display: flex;
-                align-items: flex-end;
-                justify-content: center;
-                z-index: 100;
+    /* position: fixed; */
+    /* top: 106px; */
+    /* <-- MAP TOP OFFSET (Mobile) */
+    /* left: 0; */
+    width: 100vw;
+    height: 100%;
+    /* <-- MAP HEIGHT (Mobile, container) */
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    background: #eaeaea;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
 }
 
 
@@ -98,11 +100,12 @@
     To make the map itself extend lower, increase the height below.
 */
 .dashboard-map {
-                width: 100vw;
-                height: 635px; /* <-- MAP HEIGHT (Mobile, actual map) */
-                position: absolute;
-                top: 0;
-                left: 0;
+    width: 100vw;
+    height: 100%;
+    /* <-- MAP HEIGHT (Mobile, actual map) */
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* Bubble button at bottom center */
@@ -112,7 +115,7 @@
     bottom: 15px;
     transform: translateX(-50%);
     background: rgb(46, 45, 46);
-    color:lightgreen;
+    color: lightgreen;
     /* display: block; */
     /* margin: 0 auto 1.2rem auto; */
     font-weight: 600;
@@ -128,85 +131,90 @@
     align-items: center;
     gap: 0.2em;
 }
+
 .dashboard-bubble-btn:active {
     background: #e3f2fd;
     color: #0d47a1;
     align-items: center;
-    gap:0.5em;
+    gap: 0.5em;
 }
 
 /* Results section: covers full viewport, scrollable */
 .dashboard-results-section {
-/* Back to Map button at top of results section */
-/* Center the Back to Map button in results section */
-.dashboard-back-btn {
-    position: fixed;
-    bottom:1px;
-    left:50%;
-    transform:translateX(-50%); 
-    /* aligns horital in the middle */
-    margin: 0 auto 1.2rem auto;
-    background: rgb(46, 45, 46);
-    color:lightgreen;
-    font-weight: 600;
-    font-size: 1rem;
-    border: none;
-    border-radius: 999px;
-    /* box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10); */
-    padding: 0.45em 1.3em;
-    cursor: pointer;
-    /* z-index removed to prevent hovering above navbar */
-    transition: background 0.18s, color 0.18s, border 0.18s;
-    display: flex;
-    align-items: center;
-    gap: 0.2em;
-}
-.dashboard-back-btn:active {
-    background: #e3f2fd;
-    color: #0d47a1;
-    border-color: #0d47a1;
-}
-/* Results section: covers full viewport, scrollable */
-.dashboard-results-section {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #fff;
-    z-index: 200;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-    box-sizing: border-box;
+
+    /* Back to Map button at top of results section */
+    /* Center the Back to Map button in results section */
+    .dashboard-back-btn {
+        position: fixed;
+        bottom: 1px;
+        left: 50%;
+        transform: translateX(-50%);
+        /* aligns horital in the middle */
+        margin: 0 auto 1.2rem auto;
+        background: rgb(46, 45, 46);
+        color: lightgreen;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        border-radius: 999px;
+        /* box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10); */
+        padding: 0.45em 1.3em;
+        cursor: pointer;
+        /* z-index removed to prevent hovering above navbar */
+        transition: background 0.18s, color 0.18s, border 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 0.2em;
+    }
+
+    .dashboard-back-btn:active {
+        background: #e3f2fd;
+        color: #0d47a1;
+        border-color: #0d47a1;
+    }
+
+    /* Results section: covers full viewport, scrollable */
+    .dashboard-results-section {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+        z-index: 200;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+        box-sizing: border-box;
+    }
+
+    /* Header container for results section */
+    .dashboard-results-header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+
+    .dashboard-header-texts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+
+    .dashboard-title-results {
+        margin-bottom: 0.5rem;
+        /* To move the Dashboard title closer to the Back to Map button, decrease margin-top below. */
+        /* Example: margin-top: 0.5rem;  (default)  To bring it up by 12px, use margin-top: -12px; */
+        margin-top: -34px;
+    }
 }
 
-/* Header container for results section */
-.dashboard-results-header {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.2rem;
-}
-
-.dashboard-header-texts {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 0.5rem;
-}
-
-.dashboard-title-results {
-    margin-bottom: 0.5rem;
-    /* To move the Dashboard title closer to the Back to Map button, decrease margin-top below. */
-    /* Example: margin-top: 0.5rem;  (default)  To bring it up by 12px, use margin-top: -12px; */
-    margin-top: -34px;
-}
-}
 .dashboard-results-title {
     text-align: center;
     font-size: 1.3rem;
@@ -221,31 +229,37 @@
     .dashboard-title {
         font-size: 2.5rem;
     }
+
     /*
       === MAP DIMENSIONS (Desktop) ===
       To adjust the map height/width on desktop, edit the values below.
       Example: width: 800px; height: 500px;
     */
     .dashboard-map-container {
-        width: 700px;   /* <-- EDIT THIS for desktop map width */
-        height: 350px;  /* <-- EDIT THIS for desktop map height */
+        width: 700px;
+        /* <-- EDIT THIS for desktop map width */
+        height: 350px;
+        /* <-- EDIT THIS for desktop map height */
         position: relative;
         border: 2px solid #333;
         border-radius: 16px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         margin: 40px auto;
         left: unset;
         top: unset;
         z-index: 10;
     }
+
     .dashboard-map {
         width: 100%;
         height: 100%;
         position: static;
     }
+
     .dashboard-bubble-btn {
         bottom: 16px;
     }
+
     .dashboard-results-section {
         width: 100vw;
         height: 100vh;
@@ -253,9 +267,10 @@
         left: 50%;
         transform: translateX(-50%);
         border-radius: 16px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         margin: 40px auto;
     }
+
     .dashboard-location-box {
         display: flex;
     }
