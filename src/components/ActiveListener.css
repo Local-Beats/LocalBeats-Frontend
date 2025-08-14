@@ -1,0 +1,11 @@
+.active-listener-header {
+    margin: .7rem;
+    text-align: center;
+}
+
+.active-listener-cards {
+    display: flex;
+    padding: .3rem;
+    flex-direction: column;
+    gap: 1rem;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
+import "./ActiveListener.css";
 
 const ActiveListener = ({ user }) => {
   console.log("this is user--->", user)
@@ -200,8 +201,8 @@ const ActiveListener = ({ user }) => {
   //   );
 
   return (
-    <main>
-      <h1>Active Listeners</h1>
+    <main className="active-listener-container">
+      <h3 className="active-listener-header">Active Listeners</h3>
       {/* Current user */}
       {/* <ListenerCard sessions={allListeningSessions} /> */}
       {/* Other active listeners */}
