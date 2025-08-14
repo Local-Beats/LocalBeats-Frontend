@@ -1,5 +1,7 @@
 const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
+const { GenerateSW } = require('workbox-webpack-plugin')
 require("dotenv").config();
 
 module.exports = {
@@ -18,6 +20,13 @@ module.exports = {
       REACT_APP_AUTH0_CLIENT_ID: "",
       REACT_APP_AUTH0_AUDIENCE: "",
       REACT_APP_GOOGLE_MAPS_API_KEY: "",
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+    new GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
     }),
   ],
   module: {
