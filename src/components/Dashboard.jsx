@@ -211,18 +211,24 @@ const Dashboard = ({ user, onLogout }) => {
               infoWindowRef.current.close();
             }
 
+            // Try to get session for user, fallback to onlineUsers data
             let session = getSessionForUser(u, allListeningSessions);
-            const cardTrack = session && session.song ? session.song : {
+            let cardUser = u;
+            let cardTrack = {
               title: "No song playing",
               artist: "",
               album_art: "https://via.placeholder.com/80x80?text=No+Art",
               spotify_track_id: ""
             };
+            if (session) {
+              cardUser = session.user || u;
+              if (session.song) cardTrack = session.song;
+            }
 
             // Render ListenerCard as the only content, no extra box
             const contentHtml = ReactDOMServer.renderToString(
               <div className="custom-infowindow-content">
-                <ListenerCard user={u} track={cardTrack} />
+                <ListenerCard user={cardUser} track={cardTrack} />
               </div>
             );
 
