@@ -308,51 +308,46 @@ const Dashboard = ({ user, onLogout }) => {
 
           {/* ListenerCard popup over map, anchored to selected marker */}
           {selectedUser && selectedUserPos && (() => {
-            // Debug: log all relevant state
-            console.log('--- Marker Clicked ---');
-            console.log('selectedUser:', selectedUser);
-            console.log('selectedUserPos:', selectedUserPos);
-            console.log('selectedLatLng:', selectedLatLng);
-            console.log('allListeningSessions:', allListeningSessions);
-            // Log all onlineUsers and allListeningSessions IDs/usernames for comparison
-            if (Array.isArray(onlineUsers)) {
-              console.log('onlineUsers:', onlineUsers.map(u => ({ id: u.id, username: u.username })));
+            // Robust session lookup: match by id if possible, fallback to username
+            let session = null;
+            if (selectedUser.id) {
+              session = allListeningSessions.find(s => s.user && s.user.id === selectedUser.id);
             }
-            if (Array.isArray(allListeningSessions)) {
-              console.log('allListeningSessions users:', allListeningSessions.map(s => s.user ? { id: s.user.id, username: s.user.username } : s));
+            if (!session && selectedUser.username) {
+              session = allListeningSessions.find(s => s.user && s.user.username === selectedUser.username);
             }
-            const session = getSessionForUser(selectedUser, allListeningSessions);
-            console.log('getSessionForUser result:', session);
-            // Always render a popup for debugging
+            // Fallback: show ListenerCard with minimal info if no session/song
+            const cardTrack = session && session.song ? session.song : {
+              title: "No song playing",
+              artist: "",
+              album_art: "https://via.placeholder.com/80x80?text=No+Art",
+              spotify_track_id: ""
+            };
+            // Center the card horizontally above the marker (marker is 40px wide, card is ~180px wide)
+            // Place the card just above the marker (marker is 40px tall, card is ~80px tall)
+            const CARD_WIDTH = 180; // px, adjust to match your ListenerCard CSS
+            const CARD_HEIGHT = 80; // px, adjust to match your ListenerCard CSS
+            const MARKER_WIDTH = 40;
+            const MARKER_HEIGHT = 40;
+            // Only a 2px gap between card and marker
+            const left = selectedUserPos.x - CARD_WIDTH / 2 + MARKER_WIDTH / 2;
+            const top = selectedUserPos.y - CARD_HEIGHT - 2; // 2px gap above marker
             return (
               <div
                 className="dashboard-listenercard-popup"
                 style={{
                   position: "absolute",
-                  left: `${selectedUserPos.x - 20}px`,
-                  top: `${selectedUserPos.y - 100}px`,
+                  left: `${left}px`,
+                  top: `${top}px`,
                   zIndex: 999,
                   pointerEvents: "auto",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  // border removed for alignment
                   backgroundColor: session && session.song ? "rgba(255,255,255,0.9)" : "rgba(255,230,200,0.9)",
                 }}
               >
-                {session && session.song ? (
-                  <ListenerCard user={selectedUser} track={session.song} />
-                ) : (
-                  <div style={{ padding: 20, color: '#b71c1c', fontWeight: 'bold' }}>
-                    No session or song found for this user.<br />
-                    <div style={{ fontSize: 12, textAlign: 'left', marginTop: 8 }}>
-                      <strong>selectedUser:</strong>
-                      <pre>{JSON.stringify(selectedUser, null, 2)}</pre>
-                      <strong>session:</strong>
-                      <pre>{JSON.stringify(session, null, 2)}</pre>
-                    </div>
-                  </div>
-                )}
+                <ListenerCard user={selectedUser} track={cardTrack} />
                 {/* little pointer */}
                 <div
                   style={{
