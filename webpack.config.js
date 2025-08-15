@@ -1,7 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
-const { GenerateSW } = require('workbox-webpack-plugin')
+const { GenerateSW } = require('workbox-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 require("dotenv").config();
 
 module.exports = {
@@ -27,7 +28,15 @@ module.exports = {
     new GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // allow files up to 5MB
+
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public/manifest.json', to: 'manifest.json' },
+        { from: 'public/icons', to: 'icons' }
+      ]
+    })
   ],
   module: {
     rules: [
