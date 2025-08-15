@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
 
-const ActiveListener = ({ user }) => {
+const ActiveListener = ({ user, setCurrentUserTrack }) => {
   console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
@@ -37,18 +37,19 @@ const ActiveListener = ({ user }) => {
             setTrack(data);
             lastSongIdRef.current = data.song_id;
           }
-          // setError(null);
+          if (setCurrentUserTrack) setCurrentUserTrack(data);
         } else {
           // no song playing now
           if (lastSongIdRef.current !== null) {
             lastSongIdRef.current = null;
             setTrack(null);
           }
+          if (setCurrentUserTrack) setCurrentUserTrack(null);
         }
       } catch (err) {
         if (!aliveRef.current) return;
         console.error("Error fetching current track:", err);
-        // setError("Unable to fetch currently playing track.");
+        if (setCurrentUserTrack) setCurrentUserTrack(null);
       }
     };
 
@@ -61,7 +62,7 @@ const ActiveListener = ({ user }) => {
       aliveRef.current = false;
       clearInterval(intervalId);
     };
-  }, []);
+  }, [setCurrentUserTrack]);
 
   // 
   // Sync a session whenever song_id OR user changes

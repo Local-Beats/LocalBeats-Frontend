@@ -60,13 +60,19 @@ const Dashboard = ({ user, onLogout }) => {
   const [allListeningSessions, setAllListeningSessions] = useState([]);
   const infoWindowRef = useRef(null);
 
+  // Used as a fallback when the current user's session isn't found yet
+  const [currentUserTrack, setCurrentUserTrack] = useState(null);
+
+  // Poll all listening sessions
   useEffect(() => {
     let alive = true;
     async function fetchSessions() {
       try {
         const res = await axios.get("/api/listeners", { withCredentials: true });
         if (alive) setAllListeningSessions(res.data || []);
-      } catch {}
+      } catch {
+        // ignore
+      }
     }
     fetchSessions();
     const interval = setInterval(fetchSessions, 10000);
@@ -76,6 +82,7 @@ const Dashboard = ({ user, onLogout }) => {
     };
   }, []);
 
+  // Geolocation + reverse geocode + send location to server
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -117,6 +124,7 @@ const Dashboard = ({ user, onLogout }) => {
     }
   }, []);
 
+  // Poll online users
   const fetchOnlineUsers = async () => {
     try {
       const res = await axios.get("/api/users/online", { withCredentials: true });
@@ -134,6 +142,7 @@ const Dashboard = ({ user, onLogout }) => {
     }
   }, [user]);
 
+  // Initialize map
   useEffect(() => {
     if (coords && apiKey && mapRef.current) {
       loadGoogleMapsScript(apiKey, () => {
@@ -153,10 +162,19 @@ const Dashboard = ({ user, onLogout }) => {
             styles: customMapStyle,
           });
 
-          // Prevent default InfoWindows for POIs (parks, neighborhoods, etc.)
-          map.addListener("click", function(event) {
-            if (event.placeId) {
-              event.stop(); // Prevent default InfoWindow
+          // Close any open ListenerCard when clicking on the map.
+          // Also prevent default POI InfoWindows.
+          map.addListener("click", (event) => {
+            // Always close our custom card on any map click
+            setSelectedUser(null);
+            setSelectedLatLng(null);
+            if (infoWindowRef.current) {
+              infoWindowRef.current.close();
+              infoWindowRef.current = null;
+            }
+            // Prevent Google default POI InfoWindow if a placeId is present
+            if (event && event.placeId) {
+              event.stop();
             }
           });
 
@@ -166,11 +184,15 @@ const Dashboard = ({ user, onLogout }) => {
     }
 
     return () => {
+      // Cleanup
       markersRef.current.forEach((m) => m.setMap && m.setMap(null));
       markersRef.current = [];
       if (infoWindowRef.current) {
         infoWindowRef.current.close();
         infoWindowRef.current = null;
+      }
+      if (mapInstanceRef.current && window.google && window.google.maps && window.google.maps.event) {
+        window.google.maps.event.clearInstanceListeners(mapInstanceRef.current);
       }
       mapInstanceRef.current = null;
       setSelectedLatLng(null);
@@ -178,16 +200,31 @@ const Dashboard = ({ user, onLogout }) => {
     };
   }, [coords, apiKey, mapKey]);
 
+  // Render markers + attach click to open clean ListenerCard-only InfoWindow
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
+    // Clear previous markers
     markersRef.current.forEach((marker) => marker.setMap(null));
     markersRef.current = [];
 
     onlineUsers.forEach((u) => {
       if (typeof u.latitude === "number" && typeof u.longitude === "number") {
         const isCurrentUser = u.username === user.username;
+
+        // Find the exact session for this user, just like ActiveListener
+        const session = allListeningSessions.find(
+          (s) => s.user && (s.user.id === u.id || s.user.username === u.username)
+        );
+        const cardUser = session?.user || u;
+        const cardTrack =
+          session?.song || {
+            title: "No song playing",
+            artist: "",
+            album_art: "https://via.placeholder.com/80x80?text=No+Art",
+            spotify_track_id: "",
+          };
 
         const marker = new window.google.maps.Marker({
           position: { lat: u.latitude, lng: u.longitude },
@@ -206,23 +243,9 @@ const Dashboard = ({ user, onLogout }) => {
           if (latLng) {
             setSelectedLatLng({ lat: latLng.lat(), lng: latLng.lng() });
 
-            // close existing infoWindow if any
+            // Close existing infoWindow if any
             if (infoWindowRef.current) {
               infoWindowRef.current.close();
-            }
-
-            // Try to get session for user, fallback to onlineUsers data
-            let session = getSessionForUser(u, allListeningSessions);
-            let cardUser = u;
-            let cardTrack = {
-              title: "No song playing",
-              artist: "",
-              album_art: "https://via.placeholder.com/80x80?text=No+Art",
-              spotify_track_id: ""
-            };
-            if (session) {
-              cardUser = session.user || u;
-              if (session.song) cardTrack = session.song;
             }
 
             // Render ListenerCard as the only content, no extra box
@@ -234,31 +257,28 @@ const Dashboard = ({ user, onLogout }) => {
 
             const infoWindow = new window.google.maps.InfoWindow({
               content: `<div class="custom-infowindow-content">${contentHtml}</div>`,
-              position: { lat: latLng.lat(), lng: latLng.lng() }
+              position: { lat: latLng.lat(), lng: latLng.lng() },
             });
 
             infoWindow.open(map);
             infoWindowRef.current = infoWindow;
 
-            // Remove default InfoWindow background and close button after render
+            // Remove default InfoWindow background + close button
             setTimeout(() => {
-              const iw = document.querySelector('.gm-style-iw');
-              if (iw) {
-                iw.parentElement.style.background = 'none';
-                iw.parentElement.style.boxShadow = 'none';
-                iw.parentElement.style.border = 'none';
-                iw.style.background = 'none';
-                iw.style.boxShadow = 'none';
-                iw.style.border = 'none';
-                // Hide the close button
+              const iw = document.querySelector(".gm-style-iw");
+              if (iw && iw.parentElement) {
+                iw.parentElement.style.background = "none";
+                iw.parentElement.style.boxShadow = "none";
+                iw.parentElement.style.border = "none";
+                iw.style.background = "none";
+                iw.style.boxShadow = "none";
+                iw.style.border = "none";
                 const closeBtn = iw.parentElement.querySelector('button[aria-label="Close"]');
-                if (closeBtn) closeBtn.style.display = 'none';
-                // Hide the InfoWindow arrow (the white tip)
+                if (closeBtn) closeBtn.style.display = "none";
                 const arrow = iw.parentElement.querySelector('div[style*="transform: rotateZ(45deg)"]');
-                if (arrow) arrow.style.display = 'none';
-                // Hide the arrow background (sometimes Google uses a different structure)
+                if (arrow) arrow.style.display = "none";
                 const arrowBg = iw.parentElement.querySelector('div[style*="background-color: white"]');
-                if (arrowBg) arrowBg.style.display = 'none';
+                if (arrowBg) arrowBg.style.display = "none";
               }
             }, 0);
           }
@@ -267,22 +287,14 @@ const Dashboard = ({ user, onLogout }) => {
         markersRef.current.push(marker);
       }
     });
-
-    map.addListener("click", () => {
-      setSelectedUser(null);
-      setSelectedLatLng(null);
-      if (infoWindowRef.current) {
-        infoWindowRef.current.close();
-        infoWindowRef.current = null;
-      }
-    });
-  }, [onlineUsers, mapKey, user, allListeningSessions]);
+  }, [onlineUsers, mapKey, user, allListeningSessions, currentUserTrack]);
 
   return (
     <main className="dashboard-main">
       <div className="navbar-container">
         <NavBar user={user} onLogout={onLogout} />
       </div>
+
       {user && coords && !showResults && (
         <div className="dashboard-map-container" style={{ position: "relative" }}>
           <div ref={mapRef} className="dashboard-map" key={mapKey} />
@@ -307,7 +319,8 @@ const Dashboard = ({ user, onLogout }) => {
             </button>
             <div className="dashboard-header-texts"></div>
           </div>
-          <ActiveListener user={user} />
+          {/* Passing setter—ActiveListener may choose to update it; harmless if ignored */}
+          <ActiveListener user={user} setCurrentUserTrack={setCurrentUserTrack} />
         </section>
       )}
     </main>
