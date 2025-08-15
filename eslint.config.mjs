@@ -26,4 +26,10 @@ export default defineConfig([
       "react/no-unescaped-entities": "off",
     },
   },
+  {
+    plugins: ["react-hooks"],
+    rules: {
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
 ]);

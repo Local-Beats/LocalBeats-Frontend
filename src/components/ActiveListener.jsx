@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-import "./ActiveListener.css";
 
 const ActiveListener = ({ user }) => {
   console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
   console.log("this is track--->", track)
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
   // console.log("This is active session", activeSession)
@@ -38,7 +37,7 @@ const ActiveListener = ({ user }) => {
             setTrack(data);
             lastSongIdRef.current = data.song_id;
           }
-          setError(null);
+          // setError(null);
         } else {
           // no song playing now
           if (lastSongIdRef.current !== null) {
@@ -49,7 +48,7 @@ const ActiveListener = ({ user }) => {
       } catch (err) {
         if (!aliveRef.current) return;
         console.error("Error fetching current track:", err);
-        setError("Unable to fetch currently playing track.");
+        // setError("Unable to fetch currently playing track.");
       }
     };
 
@@ -201,8 +200,8 @@ const ActiveListener = ({ user }) => {
   //   );
 
   return (
-    <main className="active-listener-container">
-      <h3 className="active-listener-header">Active Listeners</h3>
+    <main>
+      <h1>Active Listeners</h1>
       {/* Current user */}
       {/* <ListenerCard sessions={allListeningSessions} /> */}
       {/* Other active listeners */}

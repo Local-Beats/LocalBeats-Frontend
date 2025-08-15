@@ -78,7 +78,7 @@
     /* <-- MAP TOP OFFSET (Mobile) */
     /* left: 0; */
     width: 100vw;
-    height: 100%;
+    height: 100vh; /* Changed from 100% to ensure full viewport height */
     /* <-- MAP HEIGHT (Mobile, container) */
     margin: 0;
     border: none;
@@ -90,6 +90,7 @@
     align-items: flex-end;
     justify-content: center;
     z-index: 100;
+    min-height: 300px; /* Ensure minimum height for mobile */
 }
 
 
