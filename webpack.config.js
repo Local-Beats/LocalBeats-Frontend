@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 require("dotenv").config();
 
 module.exports = {
+  watch: false,
   mode: "development",
   entry: "./src/App.jsx",
   output: {
