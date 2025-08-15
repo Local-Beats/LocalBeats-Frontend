@@ -8,6 +8,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MapIcon from "@mui/icons-material/Map";
 import NavBar from "./NavBar";
 import ReactDOMServer from "react-dom/server";
+import "./ListenerCard.css";
 
 function getSessionForUser(userObj, sessions) {
   if (!userObj || !sessions) return null;
@@ -218,17 +219,42 @@ const Dashboard = ({ user, onLogout }) => {
               spotify_track_id: ""
             };
 
+            // Render ListenerCard as the only content, no extra box
             const contentHtml = ReactDOMServer.renderToString(
-              <ListenerCard user={u} track={cardTrack} />
+              <div className="custom-infowindow-content">
+                <ListenerCard user={u} track={cardTrack} />
+              </div>
             );
 
             const infoWindow = new window.google.maps.InfoWindow({
-              content: `<div style="max-width:200px">${contentHtml}</div>`,
+              content: `<div class="custom-infowindow-content">${contentHtml}</div>`,
               position: { lat: latLng.lat(), lng: latLng.lng() }
             });
 
             infoWindow.open(map);
             infoWindowRef.current = infoWindow;
+
+            // Remove default InfoWindow background and close button after render
+            setTimeout(() => {
+              const iw = document.querySelector('.gm-style-iw');
+              if (iw) {
+                iw.parentElement.style.background = 'none';
+                iw.parentElement.style.boxShadow = 'none';
+                iw.parentElement.style.border = 'none';
+                iw.style.background = 'none';
+                iw.style.boxShadow = 'none';
+                iw.style.border = 'none';
+                // Hide the close button
+                const closeBtn = iw.parentElement.querySelector('button[aria-label="Close"]');
+                if (closeBtn) closeBtn.style.display = 'none';
+                // Hide the InfoWindow arrow (the white tip)
+                const arrow = iw.parentElement.querySelector('div[style*="transform: rotateZ(45deg)"]');
+                if (arrow) arrow.style.display = 'none';
+                // Hide the arrow background (sometimes Google uses a different structure)
+                const arrowBg = iw.parentElement.querySelector('div[style*="background-color: white"]');
+                if (arrowBg) arrowBg.style.display = 'none';
+              }
+            }, 0);
           }
         });
 

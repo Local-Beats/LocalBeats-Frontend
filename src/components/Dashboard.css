@@ -1,3 +1,25 @@
+/* Custom InfoWindow styling for Google Maps */
+.custom-infowindow-content {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Hide Google Maps InfoWindow close button and arrow, but not the content */
+.gm-ui-hover-effect[aria-label="Close"] {
+    display: none !important;
+}
+.gm-style-iw-d {
+    box-shadow: none !important;
+    background: none !important;
+    border: none !important;
+}
+/* Hide the arrow tip if present (Google may change class names, so this is best effort) */
+.gm-style-iw-c::after, .gm-style-iw-c::before {
+    display: none !important;
+}
 /* Dashboard.css - styles for Dashboard component only */
 
 
