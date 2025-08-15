@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ActiveListener from "./ActiveListener";
-import LocalBeatsImg from "../assets/LocalBeats.png";
+import BeatNavImg from "../assets/Beat-Nav.png";
 import ListenerCard from "./ListenerCard";
 import "./Dashboard.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -152,6 +152,13 @@ const Dashboard = ({ user, onLogout }) => {
             styles: customMapStyle,
           });
 
+          // Prevent default InfoWindows for POIs (parks, neighborhoods, etc.)
+          map.addListener("click", function(event) {
+            if (event.placeId) {
+              event.stop(); // Prevent default InfoWindow
+            }
+          });
+
           mapInstanceRef.current = map;
         }
       });
@@ -185,7 +192,7 @@ const Dashboard = ({ user, onLogout }) => {
           position: { lat: u.latitude, lng: u.longitude },
           map,
           icon: isCurrentUser
-            ? { url: LocalBeatsImg, scaledSize: new window.google.maps.Size(40, 40) }
+            ? { url: BeatNavImg, scaledSize: new window.google.maps.Size(40, 40) }
             : {
                 url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
                 scaledSize: new window.google.maps.Size(40, 40),
