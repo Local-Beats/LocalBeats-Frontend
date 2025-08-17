@@ -163,8 +163,8 @@
     /* position: fixed; */
     /* top: 106px; */
     /* <-- MAP TOP OFFSET (Mobile) */
-    /* left: 0; */
-    width: 100vw;
+        background: #e6e6fa;
+        color: #4b3c6e;
     height: 87.5vh; /* Changed from 100% to ensure full viewport height */
     /* <-- MAP HEIGHT (Mobile, container) */
     margin: 0;
@@ -202,15 +202,13 @@
     left: 50%;
     bottom: 15px;
     transform: translateX(-50%);
-    background: rgb(46, 45, 46);
-    color: lightgreen;
-    /* display: block; */
-    /* margin: 0 auto 1.2rem auto; */
+    background: #fff;
+    color: #0505A9;
     font-weight: 600;
     font-size: 1rem;
-    border: none;
+    border: 1.5px solid #0505A9;
     border-radius: 999px;
-    /* box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); */
+    box-shadow: none;
     padding: 0.45em 1.3em;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
@@ -221,10 +219,8 @@
 }
 
 .dashboard-bubble-btn:active {
-    background: #e3f2fd;
-    color: #0d47a1;
-    align-items: center;
-    gap: 0.5em;
+    background: #fff;
+    color: #0505A9;
 }
 
 /* Results section: covers full viewport, scrollable */
@@ -237,28 +233,25 @@
         bottom: 1px;
         left: 50%;
         transform: translateX(-50%);
-        /* aligns horital in the middle */
         margin: 0 auto 1.2rem auto;
-        background: rgb(46, 45, 46);
-        color: lightgreen;
+        background: #fff;
+        color: #0505A9;
         font-weight: 600;
         font-size: 1rem;
-        border: none;
+        border: 1.5px solid #0505A9;
         border-radius: 999px;
-        /* box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10); */
+        box-shadow: none;
         padding: 0.45em 1.3em;
         cursor: pointer;
-        /* z-index removed to prevent hovering above navbar */
-        transition: background 0.18s, color 0.18s, border 0.18s;
+        transition: background 0.2s, color 0.2s;
         display: flex;
         align-items: center;
         gap: 0.2em;
     }
 
     .dashboard-back-btn:active {
-        background: #e3f2fd;
-        color: #0d47a1;
-        border-color: #0d47a1;
+        background: #fff;
+        color: #0505A9;
     }
 
     /* Results section: covers full viewport, scrollable */
