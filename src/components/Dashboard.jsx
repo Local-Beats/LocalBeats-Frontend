@@ -120,7 +120,13 @@ const Dashboard = ({ user, onLogout }) => {
             console.error("Failed to update location:", err);
           }
         },
+<<<<<<< Updated upstream
         (error) => setGeoError(error.message || "Location permission denied.")
+=======
+        (error) => {
+          setGeoError(error.message || "Location permission denied.");
+        }
+>>>>>>> Stashed changes
       );
     } else {
       setGeoError("Geolocation is not supported by your browser.");
