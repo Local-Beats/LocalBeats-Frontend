@@ -1,3 +1,54 @@
+/* Force all SVG arrows, plus, and minus icons in Google Maps controls to blue */
+.gm-control svg,
+.gm-control button svg,
+.gm-control-active svg,
+.gm-control-active button svg,
+.gm-control *[aria-label],
+.gm-control button *[aria-label],
+.gm-control *[class*="icon"],
+.gm-control button *[class*="icon"] {
+    fill: #0505A9 !important;
+    stroke: #0505A9 !important;
+    color: #0505A9 !important;
+}
+/* Force all text and icon colors inside Google Maps controls to blue */
+.gm-control-active,
+.gm-svpc,
+.gm-style-mtc,
+.gm-control,
+.gm-control > div,
+.gm-control button,
+.gm-control-active button,
+.gm-control-active > div,
+.gm-control-active > div > button,
+.gm-control * {
+    color: #0505A9 !important;
+    fill: #0505A9 !important;
+    border-color: #0505A9 !important;
+}
+/* Style Google Maps controls to match List/Map button */
+.gm-control-active,
+.gm-svpc,
+.gm-style-mtc,
+.gm-control,
+.gm-control > div,
+.gm-control button,
+.gm-control-active button,
+.gm-control-active > div,
+.gm-control-active > div > button {
+    background: #fff !important;
+    color: #0505A9 !important;
+    border: 1.5px solid #0505A9 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    outline: none !important;
+}
+.gm-control button svg,
+.gm-control-active button svg {
+    fill: #0505A9 !important;
+}
 /* Make the InfoWindow arrow match the listener card color */
 .gm-style-iw-t, .gm-style-iw-t::after, .gm-style-iw-t::before {
     background: #e6e6fa !important;
