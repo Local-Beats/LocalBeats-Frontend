@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 require("dotenv").config();
 
 module.exports = {
+  watch: false,
   mode: "development",
   entry: "./src/App.jsx",
   output: {
@@ -68,13 +69,12 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, "dist"),
-    },
-    compress: true,
-    historyApiFallback: true,
+    host: "0.0.0.0",
     port: 3000,
-    host: "127.0.0.1",
-    open: true,         // Auto-open browser
+    allowedHosts: "all",
+    historyApiFallback: true,
+    server: {
+      type: "https"
+    }
   },
 };
