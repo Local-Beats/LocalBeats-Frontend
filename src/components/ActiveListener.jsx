@@ -222,7 +222,7 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
           {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
         </div>
         <div className="listener-card-info">
-          <p className="listener-card-name">Local Beats</p>
+          <p className="listener-card-name">LocalBeats</p>
           <p className="listener-card-song">Le Onde</p>
           <p className="listener-card-artist">Ludovico Einaudi</p>
           {/* <p className="listener-card-location">{loc}</p> */}
