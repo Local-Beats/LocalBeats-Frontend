@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
-import NavBar from "./components/NavBar";
+// import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
@@ -106,6 +106,29 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    // Prompt for location on mount
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        () => {},
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            alert("Location permission is required for full functionality.");
+          }
+        }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    const isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
+    if (isIos && !isInStandaloneMode) {
+      // Show your custom "Add to Home Screen" instructions
+      // e.g., set state to show a modal/banner
+    }
+  }, []);
+
   return (
     <div className="app">
       <Routes>
@@ -118,8 +141,8 @@ const App = () => {
             </div>
           ) : (
             <>
-              <NavBar user={user} onLogout={handleLogout} />
-              <Dashboard user={user} />
+              {/* <NavBar user={user} onLogout={handleLogout} /> */}
+              <Dashboard user={user} onLogout={handleLogout} />
             </>
           )
         } />

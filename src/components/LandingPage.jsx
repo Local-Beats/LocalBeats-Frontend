@@ -34,7 +34,10 @@ const LandingPage = ({ setUser }) => {
             console.warn("No user returned from /auth/me");
           }
         } catch (error) {
-          console.error("Error verifying session:", error.response?.data || error.message);
+          console.error(
+            "Error verifying session:",
+            error.response?.data || error.message
+          );
         }
       }
     };
@@ -49,17 +52,20 @@ const LandingPage = ({ setUser }) => {
         className="localbeats-main-logo"
       />
       <div className="landing-headline">Discover What NYC is Vibing To!</div>
-      <div className="login-title">Login with Spotify</div>
+      {/* <div className="login-title">Login with Spotify</div> */}
       <button
         className="spotify-logo-btn"
-        onClick={() => loginWithRedirect({
-          authorizationParams: {
-            prompt: "login",
-          },
-          connection: "spotify-custom",
-          prompt: "consent",
-          scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access"
-        })}
+        onClick={() =>
+          loginWithRedirect({
+            authorizationParams: {
+              prompt: "login",
+            },
+            connection: "spotify-custom",
+            prompt: "consent",
+            scope:
+              "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access",
+          })
+        }
         aria-label="Login with Spotify"
       >
         <img
@@ -67,6 +73,7 @@ const LandingPage = ({ setUser }) => {
           alt="Log in with Spotify"
           className="spotify-logo-img"
         />
+        Login with Spotify
       </button>
     </div>
   );

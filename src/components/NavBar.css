@@ -59,7 +59,7 @@
 
 @media (min-width: 601px) {
   .navbar {
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
   }
 
   .nav-brand {
@@ -72,10 +72,10 @@
     width: 85px;
     /* 75px * 1.4 = 105px */
     height: 85px;
-    margin: 0 0 0 0;
+    /* margin: 0 0 0 0;
     top: 0;
     left: 0;
-    display: block;
+    display: block; */
   }
 }
 
@@ -87,6 +87,7 @@
   .nav-brand {
     width: auto;
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
   }
 
@@ -98,6 +99,23 @@
     left: 0;
     display: block;
   }
+
+ .nav-user-info {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  pointer-events: auto;
+  justify-content: center;
+  /* <-- USERNAME PLACEMENT (Mobile) */
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 46%;
+  /* <-- Move up/down (was 50%) */
+  transform: translateY(-34%);
+  /* <-- Move up/down (was -50%) */
+  z-index: 201;
+}
 }
 
 /*
@@ -115,7 +133,7 @@
   background: #f5fdff;
   /* <-- NAVBAR COLOR (baby blue) */
   /* padding: 1rem 2rem 0.5rem 2rem; */
-  padding: .5rem;
+  /* padding: .5rem; */
   border: none;
   pointer-events: none;
   min-height: 70px;
@@ -133,21 +151,12 @@
   To move the username container up/down or adjust spacing, edit top, transform, and gap below.
 */
 .nav-user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  pointer-events: auto;
-  justify-content: center;
-  /* <-- USERNAME PLACEMENT (Mobile) */
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 46%;
-  /* <-- Move up/down (was 50%) */
-  transform: translateY(-34%);
-  /* <-- Move up/down (was -50%) */
-  z-index: 201;
+
+}
+
+.navbar-app-name {
+  /* margin-top: 35px; */
+  margin: auto;
 }
 
 /*
@@ -165,7 +174,7 @@
   align-items: center;
   gap: 0.1rem;
   /* <-- Space between Welcome and username */
-  margin-left: 26px;
+  margin-left: 100px;
   /* <-- Move welcome/username 12px to the right (Mobile) */
 }
 
@@ -206,7 +215,7 @@
   position: absolute;
   right: calc(2rem - 28px);
   /* <-- Move hamburger 12px more to the right */
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
   pointer-events: auto;
 }
@@ -416,3 +425,4 @@
     background-color: #c82333;
   }
 }
+
