@@ -1,19 +1,23 @@
+
 import React from "react";
 import logo from "../assets/LocalBeats.png";
 import "./ListenerCard.css";
+import "./ListenerCardMap.css";
 import spotifyLogo from "../assets/spotify-logo.png";
 
-const ListenerCard = ({ user, track }) => {
-  console.log("track data:", track);
-  // Fallbacks for missing data
-  // const displayName = user?.spotify_display_name || user?.nickname || user?.username || "Unknown";
-  // const songTitle = track?.title || "No song playing";
-  // const songArtist = track?.artist || "";
-  // const songAlbumArt = track?.albumArt || "";
-  // const loc = location || user?.location || "Unknown location";
+// variant: 'list' (default) or 'map'
+const ListenerCard = ({ user, track, variant = "list" }) => {
+  // For map variant, use special class and no scroll
+  const isMap = variant === "map";
+  const containerClass = isMap
+    ? "listener-card-container listener-card-map"
+    : "listener-card-container";
 
   return (
-    <main className="listener-card-container">
+    <main
+      className={containerClass}
+      style={isMap ? { overflow: "visible", maxHeight: "none" } : {}}
+    >
       <div className="listener-card-image">
         <img className="listener-card-album-art" src={track.album_art} />
         {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
@@ -27,7 +31,6 @@ const ListenerCard = ({ user, track }) => {
       <div className="listener-card-spotify-container">
         <a
           href={`https://open.spotify.com/track/${track.spotify_track_id}`}
-          // href={"https://open.spotify.com/track/7FOgcfdz9Nx5V9lCNXdBYv"}
           target="_blank"
           rel="noopener noreferrer"
         >

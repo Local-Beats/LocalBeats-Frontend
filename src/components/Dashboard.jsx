@@ -251,7 +251,7 @@ const Dashboard = ({ user, onLogout }) => {
             // Render ListenerCard as the only content, no extra box
             const contentHtml = ReactDOMServer.renderToString(
               <div className="custom-infowindow-content">
-                <ListenerCard user={cardUser} track={cardTrack} />
+                <ListenerCard user={cardUser} track={cardTrack} variant="map" />
               </div>
             );
 

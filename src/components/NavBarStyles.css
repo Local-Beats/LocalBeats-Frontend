@@ -1,3 +1,72 @@
+@media (max-width: 600px) {
+  .hamburger-container {
+    width: 85px;
+    height: 85px;
+    min-width: 75px;
+    min-height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Make the whole container clickable */
+    cursor: pointer;
+    z-index: 301;
+    /* Remove pointer-events: none if present */
+    pointer-events: auto;
+  }
+  .hamburger-container .McButton {
+    width: 100%;
+    height: 100%;
+    min-width: 60px;
+    min-height: 60px;
+    /* Remove margin/padding so button fills container */
+    margin: 0;
+    padding: 0;
+  }
+}
+@media (max-width: 600px) {
+  .McButton {
+    width: 75px;
+    height: 75px;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 300;
+    gap: 0;
+    /* Make sure the button is always on top and clickable */
+    pointer-events: auto;
+  }
+  .McButton b {
+    width: 54px;
+    height: 5px;
+    margin: 10px 0;
+    pointer-events: none;
+  }
+}
+@media (max-width: 600px) {
+  .McButton {
+    width: 75px;
+    height: 75px;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0;
+    /* Remove any gap between lines and button edge */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Optionally, increase the b line width for easier tap */
+  }
+  .McButton b {
+    width: 54px;
+    height: 5px;
+    margin: 10px 0;
+  }
+}
 @keyframes logo-dance-run {
   0% {
     transform: translateX(-50%) scale(1) rotate(-5deg);

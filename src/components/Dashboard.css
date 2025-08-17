@@ -1,3 +1,26 @@
+/* Make the InfoWindow arrow match the listener card color */
+.gm-style-iw-t, .gm-style-iw-t::after, .gm-style-iw-t::before {
+    background: #e6e6fa !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+/* Make InfoWindow scrollbars (vertical and horizontal) transparent */
+.gm-style-iw::-webkit-scrollbar,
+.gm-style-iw-c::-webkit-scrollbar,
+.gm-style-iw-d::-webkit-scrollbar {
+    background: transparent !important;
+    width: 8px !important;
+    height: 8px !important;
+}
+.gm-style-iw::-webkit-scrollbar-thumb,
+.gm-style-iw-c::-webkit-scrollbar-thumb,
+.gm-style-iw-d::-webkit-scrollbar-thumb {
+    background: transparent !important;
+}
+.gm-style-iw {
+    scrollbar-color: transparent transparent !important;
+    scrollbar-width: thin !important;
+}
 /* Force remove white background/padding/arrow below InfoWindow in desktop browsers */
 .gm-style-iw-c, .gm-style-iw-d {
     background: transparent !important;
@@ -353,3 +376,5 @@
     align-items: center;
     gap: 0.5em;
 } */
+
+
