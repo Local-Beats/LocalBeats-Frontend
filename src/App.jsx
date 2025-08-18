@@ -121,6 +121,29 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    // Prompt for location on mount
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        () => {},
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            alert("Location permission is required for full functionality.");
+          }
+        }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    const isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
+    if (isIos && !isInStandaloneMode) {
+      // Show your custom "Add to Home Screen" instructions
+      // e.g., set state to show a modal/banner
+    }
+  }, []);
+
   return (
     <div className="app">
       <Routes>

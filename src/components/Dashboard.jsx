@@ -102,7 +102,7 @@ const Dashboard = ({ user, onLogout }) => {
 
     // Geolocation + reverse geocode + send location to server
     useEffect(() => {
-        if (navigator.geolocation) {
+        if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     const lat = position.coords.latitude;
@@ -134,11 +134,11 @@ const Dashboard = ({ user, onLogout }) => {
                     }
                 },
                 (error) => {
-                    setGeoError(error.message);
+                    setGeoError(error.message || "Location permission denied.");
                 }
             );
         } else {
-            setGeoError("Geolocation is not supported by this browser.");
+            setGeoError("Geolocation is not supported by your browser.");
         }
     }, []);
 
