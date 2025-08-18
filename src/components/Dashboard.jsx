@@ -24,6 +24,7 @@ function loadGoogleMapsScript(apiKey, callback) {
         callback();
         return;
     }
+
     const existingScript = document.getElementById("google-maps-script");
     if (!existingScript) {
         const script = document.createElement("script");
@@ -38,6 +39,65 @@ function loadGoogleMapsScript(apiKey, callback) {
         document.body.appendChild(script);
     } else {
         existingScript.onload = callback;
+      
+    fetchSessions();
+    const interval = setInterval(fetchSessions, 10000);
+    return () => {
+      alive = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Geolocation + reverse geocode + send location to server
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setCoords({ lat, lng });
+          setGeoError(null);
+
+          fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.status === "OK" && data.results.length > 0) {
+                setAddress(data.results[0].formatted_address);
+              } else {
+                setAddress("");
+              }
+            })
+            .catch(() => setAddress(""));
+
+          try {
+            await axios.post(
+              "/api/users/location",
+              { latitude: lat, longitude: lng },
+              { withCredentials: true }
+            );
+          } catch (err) {
+            console.error("Failed to update location:", err);
+          }
+        },
+        (error) => {
+          setGeoError(error.message || "Location permission denied.");
+        }
+      );
+    } else {
+      setGeoError("Geolocation is not supported by your browser.");
+    }
+  }, []);
+
+  // Poll online users
+  const fetchOnlineUsers = async () => {
+    try {
+      const res = await axios.get("/api/users/online", { withCredentials: true });
+      setOnlineUsers(res.data.users || []);
+    } catch (err) {
+      console.error("Failed to fetch online users:", err);
+
     }
 }
 
