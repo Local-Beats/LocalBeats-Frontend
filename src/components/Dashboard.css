@@ -235,7 +235,7 @@
     /* <-- MAP TOP OFFSET (Mobile) */
         background: #e6e6fa;
         color: #4b3c6e;
-    height: 92.5vh; /* Changed from 100% to ensure full viewport height */
+    height: 94.5vh; /* Changed from 100% to ensure full viewport height */
     /* <-- MAP HEIGHT (Mobile, container) */
     margin: 0;
     border: none;

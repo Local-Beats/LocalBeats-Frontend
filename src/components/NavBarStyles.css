@@ -146,8 +146,8 @@
 /* === PROFILE IMAGE/LOGO SIZE ===
    To adjust the profile image or logo size, change width/height below. */
 .navbar-logo {
-  width: 38px; /* Smaller profile image/logo. Adjust here. */
-  height: 38px; /* Smaller profile image/logo. Adjust here. */
+  width: 56px; /* Bigger logo/profile image. Adjust here. */
+  height: 56px; /* Bigger logo/profile image. Adjust here. */
   transition: width 0.3s, height 0.3s, margin 0.3s;
   position: relative;
   left: 0;
@@ -172,8 +172,8 @@
   /* === PROFILE IMAGE/LOGO SIZE (Desktop) ===
      To adjust the desktop profile image/logo size, change width/height below. */
   .navbar-logo {
-    width: 48px; /* Desktop profile image/logo size. Adjust here. */
-    height: 48px; /* Desktop profile image/logo size. Adjust here. */
+    width: 68px; /* Bigger desktop logo/profile image. Adjust here. */
+    height: 68px; /* Bigger desktop logo/profile image. Adjust here. */
     margin: 0 0 0 0;
     top: 0;
     left: 0;
@@ -195,8 +195,8 @@
   /* === PROFILE IMAGE/LOGO SIZE (Mobile) ===
      To adjust the mobile profile image/logo size, change width/height below. */
   .navbar-logo {
-    width: 38px; /* Mobile profile image/logo size. Adjust here. */
-    height: 38px; /* Mobile profile image/logo size. Adjust here. */
+    width: 50px; /* Bigger mobile logo/profile image. Adjust here. */
+    height: 50px; /* Bigger mobile logo/profile image. Adjust here. */
     margin: 0 0 0 0;
     top: 0;
     left: 0;
@@ -424,8 +424,8 @@
 /* === HAMBURGER MENU BUTTONS ===
    Match styling to .logout-btn. Adjust padding, font-size, etc. as needed. */
 .hamburger-menu-btn {
-  background-color: #c82333;
-  color: #fff;
+  background-color: #bbd0ff;
+  color: #333;
   border: none;
   padding: 6px 28px;
   border-radius: 4px;
@@ -533,8 +533,8 @@
   To adjust color, edit background-color below.
 */
 .logout-btn {
-  background-color: #c82333;
-  color: #fff;
+  background-color: #bbd0ff;
+  color: black;
   border: none;
   padding: 6px 28px;
   border-radius: 4px;
