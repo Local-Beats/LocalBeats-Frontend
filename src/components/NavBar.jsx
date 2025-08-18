@@ -21,9 +21,19 @@ const NavBar = ({ user, onLogout }) => {
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <Link to="/">
-          <img className="navbar-logo" src={logo2} alt="Logo" />
-        </Link>
+        {user ? (
+          <img
+            className="navbar-logo"
+            src={logo2}
+            alt="Logo"
+            style={{ cursor: "pointer" }}
+            onClick={() => window.location.reload()}
+          />
+        ) : (
+          <Link to="/">
+            <img className="navbar-logo" src={logo2} alt="Logo" />
+          </Link>
+        )}
       </div>
 
       {user && (

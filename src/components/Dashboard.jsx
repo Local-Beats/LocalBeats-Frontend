@@ -131,7 +131,22 @@ const Dashboard = ({ user, onLogout }) => {
   const fetchOnlineUsers = async () => {
     try {
       const res = await axios.get("/api/users/online", { withCredentials: true });
-      setOnlineUsers(res.data.users || []);
+      let users = res.data.users || [];
+      // Ensure current user is present with latest coords
+      if (user && coords) {
+        const alreadyPresent = users.some((u) => u.username === user.username);
+        if (!alreadyPresent) {
+          users = [
+            ...users,
+            {
+              ...user,
+              latitude: coords.lat,
+              longitude: coords.lng,
+            },
+          ];
+        }
+      }
+      setOnlineUsers(users);
     } catch (err) {
       console.error("Failed to fetch online users:", err);
     }
