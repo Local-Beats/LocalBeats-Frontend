@@ -10,15 +10,9 @@ import NavBar from "./NavBar";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
 
-// function getSessionForUser(userObj, sessions) {
-//     if (!userObj || !sessions) return null;
-//     return sessions.find(
-//         (s) => s.user && (s.user.id === userObj.id || s.user.username === userObj.username)
-//     );
-// }
-
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
+// ✅ Utility function (this can be outside the component)
 function loadGoogleMapsScript(apiKey, callback) {
     if (window.google && window.google.maps) {
         callback();
@@ -39,79 +33,11 @@ function loadGoogleMapsScript(apiKey, callback) {
         document.body.appendChild(script);
     } else {
         existingScript.onload = callback;
-      
-    fetchSessions();
-    const interval = setInterval(fetchSessions, 10000);
-    return () => {
-      alive = false;
-      clearInterval(interval);
-    };
-  }, []);
-
-  // Geolocation + reverse geocode + send location to server
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          setCoords({ lat, lng });
-          setGeoError(null);
-
-          fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.status === "OK" && data.results.length > 0) {
-                setAddress(data.results[0].formatted_address);
-              } else {
-                setAddress("");
-              }
-            })
-            .catch(() => setAddress(""));
-
-          try {
-            await axios.post(
-              "/api/users/location",
-              { latitude: lat, longitude: lng },
-              { withCredentials: true }
-            );
-          } catch (err) {
-            console.error("Failed to update location:", err);
-          }
-        },
-        (error) => {
-          setGeoError(error.message || "Location permission denied.");
-        }
-      );
-    } else {
-      setGeoError("Geolocation is not supported by your browser.");
-    }
-  }, []);
-
-  // Poll online users
-  const fetchOnlineUsers = async () => {
-    try {
-      const res = await axios.get("/api/users/online", { withCredentials: true });
-      setOnlineUsers(res.data.users || []);
-    } catch (err) {
-      console.error("Failed to fetch online users:", err);
-
     }
 }
 
 const Dashboard = ({ user, onLogout }) => {
     if (!user) return null;
-
-    // const syncCurrentUserSession = async () => {
-    //     try {
-    //         await axios.post("/api/listeners", null, { withCredentials: true });
-    //         console.log(" Synced current user's session");
-    //     } catch (err) {
-    //         console.error(" Failed to sync current user's session:", err);
-    //     }
-    // };
 
     const [coords, setCoords] = useState(null);
     const [geoError, setGeoError] = useState(null);
@@ -127,40 +53,33 @@ const Dashboard = ({ user, onLogout }) => {
     const [selectedLatLng, setSelectedLatLng] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [allListeningSessions, setAllListeningSessions] = useState([]);
-    console.log("this is all listenins sessions from dashboard", allListeningSessions)
     const infoWindowRef = useRef(null);
-
-    // Used as a fallback when the current user's session isn't found yet
     const [currentUserTrack, setCurrentUserTrack] = useState(null);
-
-
 
     const fetchSessions = async () => {
         try {
             const res = await axios.get("/api/listeners", { withCredentials: true });
             const sessions = res.data;
 
-            // ✅ Only update if we got meaningful data
             if (Array.isArray(sessions) && sessions.length > 0) {
                 console.log("✅ Setting new sessions");
                 setAllListeningSessions(sessions);
             } else {
                 console.warn("⚠️ Skipped setting empty sessions");
             }
-
         } catch (err) {
             console.error("Failed to fetch sessions", err);
         }
     };
 
-    // Poll all listening sessions
+    // ✅ Poll all listening sessions
     useEffect(() => {
         fetchSessions();
         const interval = setInterval(fetchSessions, 8000);
         return () => clearInterval(interval);
     }, []);
 
-    // Geolocation + reverse geocode + send location to server
+    // ✅ Geolocation + reverse geocode + send location to server
     useEffect(() => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -202,7 +121,7 @@ const Dashboard = ({ user, onLogout }) => {
         }
     }, []);
 
-    // Poll online users
+    // ✅ Poll online users
     const fetchOnlineUsers = async () => {
         try {
             const res = await axios.get("/api/users/online", { withCredentials: true });
@@ -220,7 +139,7 @@ const Dashboard = ({ user, onLogout }) => {
         }
     }, [user]);
 
-    // Initialize map
+    // ✅ Initialize map
     useEffect(() => {
         if (coords && apiKey && mapRef.current) {
             loadGoogleMapsScript(apiKey, () => {
@@ -240,32 +159,24 @@ const Dashboard = ({ user, onLogout }) => {
                         styles: customMapStyle,
                     });
 
-                    // Close any open ListenerCard when clicking on the map.
-                    // Also prevent default POI InfoWindows.
                     map.addListener("click", (event) => {
-                        // Always close our custom card on any map click
                         setSelectedUser(null);
                         setSelectedLatLng(null);
                         if (infoWindowRef.current) {
                             infoWindowRef.current.close();
                             infoWindowRef.current = null;
                         }
-                        // Prevent Google default POI InfoWindow if a placeId is present
                         if (event && event.placeId) {
                             event.stop();
                         }
                     });
 
                     mapInstanceRef.current = map;
-                    // ✅ Trigger initial sync of current user's session
-                    // syncCurrentUserSession();
-                    // setTimeout(syncCurrentUserSession, 10000);
                 }
             });
         }
 
         return () => {
-            // Cleanup
             markersRef.current.forEach((m) => m.setMap && m.setMap(null));
             markersRef.current = [];
             if (infoWindowRef.current) {
@@ -281,20 +192,17 @@ const Dashboard = ({ user, onLogout }) => {
         };
     }, [coords, apiKey, mapKey]);
 
-    // Render markers + attach click to open clean ListenerCard-only InfoWindow
+    // ✅ Render user markers
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map) return;
 
-        // Clear previous markers
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
 
         onlineUsers.forEach((u) => {
             if (typeof u.latitude === "number" && typeof u.longitude === "number") {
                 const isCurrentUser = u.username === user.username;
-
-                // Find the exact session for this user, just like ActiveListener
                 const session = allListeningSessions.find(s => s.user.id === u.id);
 
                 const marker = new window.google.maps.Marker({
@@ -314,29 +222,25 @@ const Dashboard = ({ user, onLogout }) => {
                     if (latLng) {
                         setSelectedLatLng({ lat: latLng.lat(), lng: latLng.lng() });
 
-                        // Close existing infoWindow if any
                         if (infoWindowRef.current) {
                             infoWindowRef.current.close();
                         }
 
-                        // Refetch session for this user
                         const session = allListeningSessions.find((s) => s.user_id === u.id || s.user?.id === u.id);
                         const cardUser = session?.user || u;
                         const cardTrack = session?.song || {
                             title: "No song playing",
                             artist: "",
-                            album_art: "/images/no-art.png", // Use your local fallback or online placeholder
+                            album_art: "/images/no-art.png",
                             spotify_track_id: "",
                         };
 
-                        // Render ListenerCard to static HTML string
                         const contentHtml = ReactDOMServer.renderToString(
                             <div className="custom-infowindow-content">
                                 <ListenerCard user={cardUser} track={cardTrack} />
                             </div>
                         );
 
-                        // Create and show InfoWindow
                         const infoWindow = new window.google.maps.InfoWindow({
                             content: contentHtml,
                             position: { lat: latLng.lat(), lng: latLng.lng() },
@@ -345,7 +249,6 @@ const Dashboard = ({ user, onLogout }) => {
                         infoWindow.open(map);
                         infoWindowRef.current = infoWindow;
 
-                        // Fix styling: remove scroll, arrows, and background
                         setTimeout(() => {
                             const iwScrollWrapper = document.querySelector(".gm-style-iw-d");
                             if (iwScrollWrapper) {
@@ -374,7 +277,6 @@ const Dashboard = ({ user, onLogout }) => {
                         }, 0);
                     }
                 });
-
 
                 markersRef.current.push(marker);
             }
@@ -411,7 +313,6 @@ const Dashboard = ({ user, onLogout }) => {
                         </button>
                         <div className="dashboard-header-texts"></div>
                     </div>
-                    {/* Passing setter—ActiveListener may choose to update it; harmless if ignored */}
                     <ActiveListener user={user} setCurrentUserTrack={setCurrentUserTrack} />
                 </section>
             )}
