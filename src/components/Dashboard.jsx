@@ -252,8 +252,12 @@ const Dashboard = ({ user, onLogout }) => {
           icon: isCurrentUser
             ? // ? { url: BeatNavImg, scaledSize: new window.google.maps.Size(40, 40) }
               { url: UserIcon, scaledSize: new window.google.maps.Size(40, 40) }
-            : {
-                url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+            : // : {
+              //     url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+              //     scaledSize: new window.google.maps.Size(40, 40),
+              //   },
+              {
+                url: UserIcon,
                 scaledSize: new window.google.maps.Size(40, 40),
               },
         });
@@ -315,6 +319,19 @@ const Dashboard = ({ user, onLogout }) => {
       }
     });
   }, [onlineUsers, mapKey, user, allListeningSessions, currentUserTrack]);
+
+  // Set amy-background2.png as background only on this page
+  useEffect(() => {
+    const originalBg = document.body.style.background;
+    document.body.style.background = `url(${require("../assets/3.png")}) no-repeat center center fixed`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundAttachment = "fixed";
+    return () => {
+      document.body.style.background = originalBg;
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundAttachment = "";
+    };
+  }, []);
 
   return (
     <main className="dashboard-main">

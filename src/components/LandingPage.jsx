@@ -52,7 +52,7 @@ const LandingPage = ({ setUser }) => {
           alt="LocalBeats Logo"
           className="localbeats-main-logo"
         />
-        LocalBeats
+        <div className="localbeats-headline">LocalBeats</div>
       </div>
 
       <div className="landing-headline">Discover What NYC is Vibing To!</div>
@@ -77,7 +77,7 @@ const LandingPage = ({ setUser }) => {
           alt="Log in with Spotify"
           className="spotify-logo-img"
         />
-        Login with Spotify
+        <div className="login-title">Login with Spotify</div>
       </button>
     </div>
   );

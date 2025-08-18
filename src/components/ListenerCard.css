@@ -1,12 +1,12 @@
 .listener-card-container {
         display: flex;
         border-style: solid;
-        border-color: black;
+        border-color: #b39ddb;
         border-radius: 1rem;
         border-width: 2px;
         gap: .9rem;
         align-items: center;
-        background-color: lightgreen;
+        background-color: #e6e6fa;
         padding-left: 10px;
         padding-right: 12px;
         min-width: 0;

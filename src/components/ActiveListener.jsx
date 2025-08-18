@@ -4,10 +4,10 @@ import ListenerCard from "./ListenerCard";
 import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
-  console.log("this is user--->", user)
+  console.log("this is user--->", user);
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
-  console.log("this is track--->", track)
+  console.log("this is track--->", track);
   const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
@@ -229,7 +229,9 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
         </div>
         <div className="listener-card-spotify-container">
           <a
-            href={"https://open.spotify.com/track/4B4riAIJPMtP81ePFVAsG4"}
+            href={
+              "https://open.spotify.com/track/3jPGemJdr95abo520vyvVk?si=f28fc1bb6cfa409d"
+            }
             target="_blank"
             rel="noopener noreferrer"
           >

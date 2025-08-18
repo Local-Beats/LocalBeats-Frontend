@@ -353,3 +353,10 @@
     align-items: center;
     gap: 0.5em;
 } */
+
+.dashboard-main{
+    background: url("../assets/3.png") no-repeat center center fixed;
+    background-size:cover;
+    /* -webkit-mask: linear-gradient(to top,transparent 0%, black 100%);
+    mask:linear-gradient(to top,transparent 0%, black 100%); */
+} 
