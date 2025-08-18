@@ -46,15 +46,19 @@ const LandingPage = ({ setUser }) => {
 
   return (
     <div className="landing-spotify-container">
-      <img
-        src={require("../assets/LocalBeats.png")}
-        alt="LocalBeats Logo"
-        className="localbeats-main-logo"
-      />
+      <div className="localbeats-box">
+        <img
+          src={require("../assets/Beat-Nav.png")}
+          alt="LocalBeats Logo"
+          className="localbeats-main-logo"
+        />
+        LocalBeats
+      </div>
+
       <div className="landing-headline">Discover What NYC is Vibing To!</div>
-      {/* <div className="login-title">Login with Spotify</div> */}
       <button
         className="spotify-logo-btn"
+        role="button"
         onClick={() =>
           loginWithRedirect({
             authorizationParams: {
