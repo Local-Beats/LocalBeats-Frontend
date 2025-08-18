@@ -10,12 +10,12 @@ import NavBar from "./NavBar";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
 
-function getSessionForUser(userObj, sessions) {
-    if (!userObj || !sessions) return null;
-    return sessions.find(
-        (s) => s.user && (s.user.id === userObj.id || s.user.username === userObj.username)
-    );
-}
+// function getSessionForUser(userObj, sessions) {
+//     if (!userObj || !sessions) return null;
+//     return sessions.find(
+//         (s) => s.user && (s.user.id === userObj.id || s.user.username === userObj.username)
+//     );
+// }
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -44,6 +44,15 @@ function loadGoogleMapsScript(apiKey, callback) {
 const Dashboard = ({ user, onLogout }) => {
     if (!user) return null;
 
+    // const syncCurrentUserSession = async () => {
+    //     try {
+    //         await axios.post("/api/listeners", null, { withCredentials: true });
+    //         console.log(" Synced current user's session");
+    //     } catch (err) {
+    //         console.error(" Failed to sync current user's session:", err);
+    //     }
+    // };
+
     const [coords, setCoords] = useState(null);
     const [geoError, setGeoError] = useState(null);
     const [address, setAddress] = useState("");
@@ -51,7 +60,6 @@ const Dashboard = ({ user, onLogout }) => {
     const mapRef = useRef(null);
 
     const [onlineUsers, setOnlineUsers] = useState([]);
-    console.log("This is online users from Dash--->", onlineUsers)
     const [showResults, setShowResults] = useState(false);
 
     const mapInstanceRef = useRef(null);
@@ -59,29 +67,37 @@ const Dashboard = ({ user, onLogout }) => {
     const [selectedLatLng, setSelectedLatLng] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [allListeningSessions, setAllListeningSessions] = useState([]);
-    console.log("This is listening session Form Dash---->", allListeningSessions)
+    console.log("this is all listenins sessions from dashboard", allListeningSessions)
     const infoWindowRef = useRef(null);
 
     // Used as a fallback when the current user's session isn't found yet
     const [currentUserTrack, setCurrentUserTrack] = useState(null);
 
+
+
+    const fetchSessions = async () => {
+        try {
+            const res = await axios.get("/api/listeners", { withCredentials: true });
+            const sessions = res.data;
+
+            // ✅ Only update if we got meaningful data
+            if (Array.isArray(sessions) && sessions.length > 0) {
+                console.log("✅ Setting new sessions");
+                setAllListeningSessions(sessions);
+            } else {
+                console.warn("⚠️ Skipped setting empty sessions");
+            }
+
+        } catch (err) {
+            console.error("Failed to fetch sessions", err);
+        }
+    };
+
     // Poll all listening sessions
     useEffect(() => {
-        let alive = true;
-        async function fetchSessions() {
-            try {
-                const res = await axios.get("/api/listeners", { withCredentials: true });
-                if (alive) setAllListeningSessions(res.data || []);
-            } catch {
-                // ignore
-            }
-        }
         fetchSessions();
-        const interval = setInterval(fetchSessions, 10000);
-        return () => {
-            alive = false;
-            clearInterval(interval);
-        };
+        const interval = setInterval(fetchSessions, 8000);
+        return () => clearInterval(interval);
     }, []);
 
     // Geolocation + reverse geocode + send location to server
@@ -125,8 +141,6 @@ const Dashboard = ({ user, onLogout }) => {
             setGeoError("Geolocation is not supported by this browser.");
         }
     }, []);
-    console.log("test");
-
 
     // Poll online users
     const fetchOnlineUsers = async () => {
@@ -183,6 +197,9 @@ const Dashboard = ({ user, onLogout }) => {
                     });
 
                     mapInstanceRef.current = map;
+                    // ✅ Trigger initial sync of current user's session
+                    // syncCurrentUserSession();
+                    // setTimeout(syncCurrentUserSession, 10000);
                 }
             });
         }
@@ -218,17 +235,7 @@ const Dashboard = ({ user, onLogout }) => {
                 const isCurrentUser = u.username === user.username;
 
                 // Find the exact session for this user, just like ActiveListener
-                const session = allListeningSessions.find(
-                    (s) => s.user && (s.user_id === u.id || s.user.username === u.username)
-                );
-                const cardUser = session?.user || u;
-                const cardTrack =
-                    session?.song || {
-                        title: "No song playing",
-                        artist: "",
-                        album_art: "https://via.placeholder.com/80x80?text=No+Art",
-                        spotify_track_id: "",
-                    };
+                const session = allListeningSessions.find(s => s.user.id === u.id);
 
                 const marker = new window.google.maps.Marker({
                     position: { lat: u.latitude, lng: u.longitude },
@@ -252,23 +259,40 @@ const Dashboard = ({ user, onLogout }) => {
                             infoWindowRef.current.close();
                         }
 
-                        // Render ListenerCard as the only content, no extra box
+                        // Refetch session for this user
+                        const session = allListeningSessions.find((s) => s.user_id === u.id || s.user?.id === u.id);
+                        const cardUser = session?.user || u;
+                        const cardTrack = session?.song || {
+                            title: "No song playing",
+                            artist: "",
+                            album_art: "/images/no-art.png", // Use your local fallback or online placeholder
+                            spotify_track_id: "",
+                        };
+
+                        // Render ListenerCard to static HTML string
                         const contentHtml = ReactDOMServer.renderToString(
                             <div className="custom-infowindow-content">
                                 <ListenerCard user={cardUser} track={cardTrack} />
                             </div>
                         );
 
+                        // Create and show InfoWindow
                         const infoWindow = new window.google.maps.InfoWindow({
-                            content: `<div class="custom-infowindow-content">${contentHtml}</div>`,
+                            content: contentHtml,
                             position: { lat: latLng.lat(), lng: latLng.lng() },
                         });
 
                         infoWindow.open(map);
                         infoWindowRef.current = infoWindow;
 
-                        // Remove default InfoWindow background + close button
+                        // Fix styling: remove scroll, arrows, and background
                         setTimeout(() => {
+                            const iwScrollWrapper = document.querySelector(".gm-style-iw-d");
+                            if (iwScrollWrapper) {
+                                iwScrollWrapper.style.overflow = "visible";
+                                iwScrollWrapper.style.maxHeight = "unset";
+                            }
+
                             const iw = document.querySelector(".gm-style-iw");
                             if (iw && iw.parentElement) {
                                 iw.parentElement.style.background = "none";
@@ -277,16 +301,20 @@ const Dashboard = ({ user, onLogout }) => {
                                 iw.style.background = "none";
                                 iw.style.boxShadow = "none";
                                 iw.style.border = "none";
+
                                 const closeBtn = iw.parentElement.querySelector('button[aria-label="Close"]');
                                 if (closeBtn) closeBtn.style.display = "none";
+
                                 const arrow = iw.parentElement.querySelector('div[style*="transform: rotateZ(45deg)"]');
                                 if (arrow) arrow.style.display = "none";
+
                                 const arrowBg = iw.parentElement.querySelector('div[style*="background-color: white"]');
                                 if (arrowBg) arrowBg.style.display = "none";
                             }
                         }, 0);
                     }
                 });
+
 
                 markersRef.current.push(marker);
             }

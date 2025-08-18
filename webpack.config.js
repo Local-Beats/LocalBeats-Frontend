@@ -5,6 +5,9 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 require("dotenv").config();
 
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   watch: false,
   mode: "development",
@@ -26,12 +29,18 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // allow files up to 5MB
-
-    }),
+    ...(isProduction
+      ? [
+        new GenerateSW({
+          clientsClaim: true,
+          skipWaiting: true,
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          cleanupOutdatedCaches: true,
+          navigateFallback: '/index.html', // <-- key line for React Router!
+          exclude: [/index\.html/],         // Don't precache index.html manually
+        })
+      ]
+      : []),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'public/manifest.json', to: 'manifest.json' },
