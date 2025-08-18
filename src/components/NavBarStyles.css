@@ -142,9 +142,12 @@
   }
 }
 
+
+/* === PROFILE IMAGE/LOGO SIZE ===
+   To adjust the profile image or logo size, change width/height below. */
 .navbar-logo {
-  width: 55px;
-  height: 55px;
+  width: 38px; /* Smaller profile image/logo. Adjust here. */
+  height: 38px; /* Smaller profile image/logo. Adjust here. */
   transition: width 0.3s, height 0.3s, margin 0.3s;
   position: relative;
   left: 0;
@@ -166,10 +169,11 @@
     justify-content: flex-start;
   }
 
+  /* === PROFILE IMAGE/LOGO SIZE (Desktop) ===
+     To adjust the desktop profile image/logo size, change width/height below. */
   .navbar-logo {
-    width: 85px;
-    /* 75px * 1.4 = 105px */
-    height: 85px;
+    width: 48px; /* Desktop profile image/logo size. Adjust here. */
+    height: 48px; /* Desktop profile image/logo size. Adjust here. */
     margin: 0 0 0 0;
     top: 0;
     left: 0;
@@ -188,9 +192,11 @@
     justify-content: flex-start;
   }
 
+  /* === PROFILE IMAGE/LOGO SIZE (Mobile) ===
+     To adjust the mobile profile image/logo size, change width/height below. */
   .navbar-logo {
-    width: 75px;
-    height: 75px;
+    width: 38px; /* Mobile profile image/logo size. Adjust here. */
+    height: 38px; /* Mobile profile image/logo size. Adjust here. */
     margin: 0 0 0 0;
     top: 0;
     left: 0;
@@ -203,6 +209,8 @@
   To change the navbar color, edit the background property below.
   Example: background: #e3f2fd; (baby blue)
 */
+/* === NAVBAR HEIGHT & PADDING ===
+   To make the navbar thinner, adjust min-height and padding below. */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -210,15 +218,14 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #f5fdff;
+  background: #ffffff;
   /* <-- NAVBAR COLOR (baby blue) */
-  /* padding: 1rem 2rem 0.5rem 2rem; */
-  padding: .5rem;
+  padding: 0.15rem 0.5rem; /* Thinner navbar. Adjust here. */
   border: none;
   pointer-events: none;
-  min-height: 70px;
+  min-height: 50px; /* Thinner navbar. Adjust here. */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 2px;
+  margin-bottom: 0px;
 }
 
 /*
@@ -302,8 +309,8 @@
 */
 .hamburger-container {
   position: absolute;
-  right: calc(2rem - 28px);
-  /* <-- Move hamburger 12px more to the right */
+  right: -1.0rem; /* Move hamburger further right. Adjust here. */
+  /* <-- Move hamburger right by increasing right value */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: auto;
@@ -318,11 +325,11 @@
   To make the hamburger fully clickable, ensure width/height cover the whole icon and remove any gaps.
   You can adjust width/height below for a larger or smaller clickable area.
 */
+/* === HAMBURGER BUTTON SIZE ===
+   To adjust the hamburger button clickable area, change width/height below. */
 .McButton {
-  width: 60px;
-  /* <-- Clickable area width */
-  height: 60px;
-  /* <-- Clickable area height */
+  width: 38px; /* Hamburger clickable area. Adjust here. */
+  height: 38px; /* Hamburger clickable area. Adjust here. */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -341,16 +348,18 @@
   To change the color of the 3 lines (hamburger icon), edit the 'background' property below:
   Example: background: #000; for black lines, background: #fff; for white lines
 */
+/* === HAMBURGER LINES SIZE ===
+   To adjust the hamburger lines, change width/height below. */
 .McButton b {
   display: block;
-  width: 44px;
-  height: 3px;
+  width: 22px; /* Hamburger line width. Adjust here. */
+  height: 2px;  /* Hamburger line height. Adjust here. */
   background: black;
   /* <-- HAMBURGER LINES COLOR */
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(.4, 2.3, .3, 1);
   position: relative;
-  margin: 6px 0;
+  margin: 3px 0; /* Hamburger line spacing. Adjust here. */
   /* Ensures lines are spaced but button is fully clickable */
 }
 
@@ -367,7 +376,7 @@
 }
 
 .McButton.active b:nth-child(1) {
-  transform: translateY(15px) rotate(45deg);
+  transform: translateY(7px) rotate(45deg); /* Make X same size as hamburger lines. Adjust here. */
 }
 
 .McButton.active b:nth-child(2) {
@@ -375,7 +384,7 @@
 }
 
 .McButton.active b:nth-child(3) {
-  transform: translateY(-15px) rotate(-45deg);
+  transform: translateY(-7px) rotate(-45deg); /* Make X same size as hamburger lines. Adjust here. */
 }
 
 /*
@@ -389,6 +398,11 @@
   Hamburger dropdown in portal: fixed to top right, always above all content.
   To adjust the left padding (space between button and left edge), change padding-left below.
 */
+
+/* === HAMBURGER DROPDOWN MENU ===
+   To adjust the dropdown size, change min-width and min-height below. */
+/* === HAMBURGER DROPDOWN MENU ===
+   To adjust the dropdown size, change min-width and min-height below. */
 .hamburger-dropdown-portal {
   position: fixed;
   top: 80px;
@@ -396,15 +410,39 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  padding: 8px 8px 8px 6px;
-  /* <-- left padding reduced by 10px (was 16px) */
-  min-width: 120px;
+  padding: 12px 12px 12px 10px;
+  min-width: 180px; /* Popout width. Adjust here. */
+  min-height: 170px; /* Popout height. Adjust here. */
+  width: auto; /* Let content wrap nicely. Adjust as needed. */
   z-index: 99999;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  height: 48px;
-  /* <-- Set dropdown height to match button height */
+  align-items: stretch;
+  gap: 10px;
+}
+
+/* === HAMBURGER MENU BUTTONS ===
+   Match styling to .logout-btn. Adjust padding, font-size, etc. as needed. */
+.hamburger-menu-btn {
+  background-color: #c82333;
+  color: #fff;
+  border: none;
+  padding: 6px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hamburger-menu-btn:hover {
+    background-color: #c82333;
+  }
 }
 
 
