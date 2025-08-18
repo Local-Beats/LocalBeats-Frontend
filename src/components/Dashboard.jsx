@@ -9,6 +9,9 @@ import MapIcon from "@mui/icons-material/Map";
 import NavBar from "./NavBar";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
+import OtherUsersBeet from "../assets/Other_users_beet.png";
+import DummyMarkers from "./DummyMarkers"; // ✅ imported
+
 
 function getSessionForUser(userObj, sessions) {
   if (!userObj || !sessions) return null;
@@ -232,7 +235,7 @@ const Dashboard = ({ user, onLogout }) => {
           icon: isCurrentUser
             ? { url: BeatNavImg, scaledSize: new window.google.maps.Size(40, 40) }
             : {
-                url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                url: OtherUsersBeet, // ✅ imported
                 scaledSize: new window.google.maps.Size(40, 40),
               },
         });
@@ -298,6 +301,8 @@ const Dashboard = ({ user, onLogout }) => {
       {user && coords && !showResults && (
         <div className="dashboard-map-container" style={{ position: "relative" }}>
           <div ref={mapRef} className="dashboard-map" key={mapKey} />
+          {/* DUMMY MARKERS: comment out next line to hide test beets */}
+          <DummyMarkers map={mapInstanceRef.current} />
           <button className="dashboard-bubble-btn" onClick={() => setShowResults(true)}>
             <FormatListBulletedIcon className="ListIcon" /> List
           </button>
