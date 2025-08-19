@@ -3,6 +3,7 @@ import axios from "../utils/axiosInstance";
 import ActiveListener from "./ActiveListener";
 import BeatNavImg from "../assets/Beat-Nav.png";
 import UserIcon from "../assets/UserIcon.gif";
+import OtherUserIcon from "../assets/OtherUserIcon.png";
 import ListenerCard from "./ListenerCard";
 import "./Dashboard.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -257,7 +258,7 @@ const Dashboard = ({ user, onLogout }) => {
               //     scaledSize: new window.google.maps.Size(40, 40),
               //   },
               {
-                url: UserIcon,
+                url: OtherUserIcon,
                 scaledSize: new window.google.maps.Size(40, 40),
               },
         });
@@ -323,7 +324,7 @@ const Dashboard = ({ user, onLogout }) => {
   // Set amy-background2.png as background only on this page
   useEffect(() => {
     const originalBg = document.body.style.background;
-    document.body.style.background = `url(${require("../assets/3.png")}) no-repeat center center fixed`;
+    document.body.style.background = `url(${require("../assets/3.2.png")}) no-repeat center center fixed`;
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundAttachment = "fixed";
     return () => {

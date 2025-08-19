@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import "./NavBarStyles.css";
+import "./NavBar.css";
 import logo from '../assets/LocalBeats.png';
 import logo2 from "../assets/Beat-Nav.png";
 

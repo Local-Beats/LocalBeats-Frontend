@@ -77,7 +77,7 @@ const LandingPage = ({ setUser }) => {
           alt="Log in with Spotify"
           className="spotify-logo-img"
         />
-        <div className="login-title">Login with Spotify</div>
+        <div className="login-title">Try it now with Spotify</div>
       </button>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-import spotifyLogo from "../assets/Spotify-Listener.png";
+import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
   console.log("this is user--->", user);
@@ -232,6 +232,31 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
             href={
               "https://open.spotify.com/track/3jPGemJdr95abo520vyvVk?si=f28fc1bb6cfa409d"
             }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img className="listener-card-spotify" src={spotifyLogo} />
+          </a>
+        </div>
+      </div>
+
+      <div className="listener-card-container">
+        <div className="listener-card-image">
+          <img
+            className="listener-card-album-art"
+            src="https://i.scdn.co/image/ab67616d0000b2736219e9f7a37cdbf320829378"
+          />
+          {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
+        </div>
+        <div className="listener-card-info">
+          <p className="listener-card-name">LocalBeats2</p>
+          <p className="listener-card-song">Que Vuelva</p>
+          <p className="listener-card-artist">Alex Bueno</p>
+          {/* <p className="listener-card-location">{loc}</p> */}
+        </div>
+        <div className="listener-card-spotify-container">
+          <a
+            href={"https://open.spotify.com/track/0ndYI8UT0PMaJzKLJbFr35"}
             target="_blank"
             rel="noopener noreferrer"
           >

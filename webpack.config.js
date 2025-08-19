@@ -84,12 +84,9 @@ module.exports = {
     historyApiFallback: true,
     port: 3000,
     host: "127.0.0.1",
-    open: true,         // Auto-open browser
-
-
+    open: true, // Auto-open browser
   },
 };
-
 
 // const path = require("path");
 // const webpack = require("webpack");

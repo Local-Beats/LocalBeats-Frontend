@@ -182,6 +182,8 @@
     transform: translateX(-50%);
     background: rgb(46, 45, 46);
     color: lightgreen; 
+     /* background:rgb(133, 184, 133);
+        color: white; */
     /* display: block; */
     /* margin: 0 auto 1.2rem auto; */
     font-weight: 600;
@@ -217,9 +219,12 @@
         transform: translateX(-50%);
         /* aligns horital in the middle */
         margin: 0 auto 1.2rem auto;
-        /* background: rgb(46, 45, 46); */
-        background: rgb(58, 57, 57);
-        color: lightgreen;
+        
+        /* background: #c1d7c1; */
+          background: rgb(46, 45, 46);
+    color: lightgreen; 
+        /* background:rgb(133, 184, 133);
+        color: white; */
             /* background: #e6e6fa; */
         font-weight: 600;
         font-size: 1rem;
@@ -358,7 +363,7 @@
 } */
 
 .dashboard-main{
-    background: url("../assets/3.png") no-repeat center center fixed;
+    background: url("../assets/0.png") no-repeat center center fixed;
     background-size:cover;
     /* -webkit-mask: linear-gradient(to top,transparent 0%, black 100%);
     mask:linear-gradient(to top,transparent 0%, black 100%); */

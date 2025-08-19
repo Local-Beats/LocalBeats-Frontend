@@ -130,7 +130,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #f5fdff;
+  background-color: #c4ffdf;
   /* background:grey; */
   /* <-- NAVBAR COLOR (baby blue) */
   /* padding: 1rem 2rem 0.5rem 2rem; */
@@ -151,9 +151,7 @@
   === USERNAME CONTAINER POSITIONING ===
   To move the username container up/down or adjust spacing, edit top, transform, and gap below.
 */
-.nav-user-info {
 
-}
 
 .navbar-app-name {
   /* margin-top: 35px; */
