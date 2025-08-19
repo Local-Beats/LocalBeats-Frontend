@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
+import './ActiveListener.css'
 import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
@@ -127,6 +128,8 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     syncListeningSession();
   }, [track?.song_id, user?.id]);
 
+
+
   // end sessin on unmount
   useEffect(() => {
     return () => {
@@ -198,11 +201,9 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
   //   );
 
   return (
-    <main className="active-listener-container">
-      <h1>Active Listeners</h1>
-      {/* Current user */}
-      {/* <ListenerCard sessions={allListeningSessions} /> */}
-      {/* Other active listeners */}
+    <main className="active-listener-wrapper">
+      <h1 className="active-listener-header">Active Listeners</h1>
+
       <div className="active-listener-cards">
         {allListeningSessions?.map((session) => (
           <ListenerCard
@@ -266,6 +267,5 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
       </div>
     </main>
   );
-};
-
+}
 export default ActiveListener;
