@@ -7,6 +7,7 @@ require("dotenv").config();
 
 
 const isProduction = process.env.NODE_ENV === 'production';
+const useHttps = process.env.USE_HTTPS === 'true';
 
 module.exports = {
   watch: false,
@@ -78,12 +79,11 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   devServer: {
-    host: "0.0.0.0",
+    host: "127.0.0.1",
     port: 3000,
     allowedHosts: "all",
     historyApiFallback: true,
-    server: {
-      type: "https"
-    }
-  },
+    server: useHttps ? "https" : "http",
+    hot: true,
+  }
 };
