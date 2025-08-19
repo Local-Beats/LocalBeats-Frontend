@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-import spotifyLogo from "../assets/spotify-logo.png";
+import spotifyLogo from "../assets/Spotify-Listener.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
   console.log("this is user--->", user);

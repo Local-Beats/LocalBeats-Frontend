@@ -48,11 +48,11 @@ const LandingPage = ({ setUser }) => {
     <div className="landing-spotify-container">
       <div className="localbeats-box">
         <img
-          src={require("../assets/Beat-Nav.png")}
+          src={require("../assets/Local-Beats.png")}
           alt="LocalBeats Logo"
           className="localbeats-main-logo"
         />
-        <div className="localbeats-headline">LocalBeats</div>
+        {/* <div className="localbeats-headline">LocalBeats</div> */}
       </div>
 
       <div className="landing-headline">Discover What NYC is Vibing To!</div>

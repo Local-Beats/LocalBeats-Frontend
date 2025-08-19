@@ -15,13 +15,16 @@
   .active-listener-cards {
     align-items: center;
     justify-content: center;
+    /* gap:0.2rem; */
   }
 }
 .active-listener-container {
   /* flex create a box, easy to manage */
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-left:50%;
 }
 
 /* .active-listener-card {

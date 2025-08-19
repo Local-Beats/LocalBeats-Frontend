@@ -68,7 +68,8 @@
 .dashboard-main {
     position: relative;
     min-height: 100vh;
-    background: #fff;
+    /* background: #fff; */
+    background: #e6e6fa;
 }
 
 
@@ -180,7 +181,7 @@
     bottom: 15px;
     transform: translateX(-50%);
     background: rgb(46, 45, 46);
-    color: lightgreen;
+    color: lightgreen; 
     /* display: block; */
     /* margin: 0 auto 1.2rem auto; */
     font-weight: 600;
@@ -216,8 +217,10 @@
         transform: translateX(-50%);
         /* aligns horital in the middle */
         margin: 0 auto 1.2rem auto;
-        background: rgb(46, 45, 46);
+        /* background: rgb(46, 45, 46); */
+        background: rgb(58, 57, 57);
         color: lightgreen;
+            /* background: #e6e6fa; */
         font-weight: 600;
         font-size: 1rem;
         border: none;

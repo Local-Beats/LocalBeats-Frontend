@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../assets/LocalBeats.png";
 import "./ListenerCard.css";
-import spotifyLogo from "../assets/spotify-logo.png";
+import spotifyLogo from "../assets/Spotify-Listener.png";
 
 const ListenerCard = ({ user, track }) => {
   console.log("track data:", track);
