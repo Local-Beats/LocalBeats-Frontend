@@ -3,6 +3,23 @@ import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
+  // Favorites state (persisted in localStorage)
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem("favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Add to favorites (freeze card)
+  const handleFavorite = (card) => {
+    // Allow multiple favorites, even for same user/track
+    const updated = [...favorites, card];
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
   console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
@@ -212,6 +229,7 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
             key={session.id}
             user={session.user}
             track={session.song}
+            onFavorite={handleFavorite}
           />
         ))}
       </div>
