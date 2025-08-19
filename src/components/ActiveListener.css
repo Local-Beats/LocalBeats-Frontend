@@ -1,100 +1,19 @@
-/* Outer wrapper for Active Listeners */
-.active-listener-wrapper {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 16px;
-    box-sizing: border-box;
-}
-
-/* Header */
 .active-listener-header {
-    margin: 0 0 1rem;
+    margin: .7rem;
     text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
 }
 
-/* Card list container */
 .active-listener-cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0px;
+        display: flex;
+        padding: .3rem;
+        flex-direction: column;
+        gap: 0.6rem;
+        align-items: center;
 }
 
 @media (max-width: 600px) {
-  .active-listener-cards {
-    align-items: center;
-    justify-content: center;
-    /* gap:0.2rem; */
-  }
-}
-.active-listener-container {
-  /* flex create a box, easy to manage */
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-left:50%;
-}
-
-/* .active-listener-card {
-} */
-
-.listener-card-container {
-  display: flex;
-  border-style: solid;
-  border-color: black;
-  border-radius: 1rem;
-  border-width: 2px;
-  gap: 0.9rem;
-  align-items: center;
-  /* align-content: center; */
-  background-color: lightgreen; 
-  /* justify-content: space-around; */
-  padding-left: 10px;
-  padding-right: 1px;
-}
-
-.listener-card-status {
-  border-style: solid;
-  border-radius: 0.5rem;
-  box-sizing: border-box;
-  padding: 0.3rem;
-}
-
-.listener-card-album-art {
-  border-radius: 0.5rem;
-  min-height: 50px;
-  max-width: 50px;
-}
-
-.listener-card-name {
-  margin: 5px 0px;
-  font-family: none;
-  font-size: small;
-}
-
-.listener-card-song {
-  margin: 1px 0px;
-  font-family: none;
-  font-weight: bold;
-}
-
-.listener-card-artist {
-  margin: 1px 0px;
-  font-family: none;
-  font-size: small;
-}
-
-.listener-card-spotify {
-  height: 30px;
-  width: 30px;
-}
-
-.listener-card-spotify-container {
-  position: absolute;
-  left: 88%;
+    .active-listener-cards {
+        align-items: center;
+        justify-content: center;
+    }
 }
