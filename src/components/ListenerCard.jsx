@@ -7,7 +7,7 @@ import spotifyLogo from "../assets/spotify-logo.png";
 import EmojiPopup from "./EmojiPopup";
 
 // variant: 'list' (default) or 'map'
-const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiProp }) => {
+const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiProp, onEmojiClick }) => {
   const isMap = variant === "map";
   const containerClass = isMap
     ? "listener-card-container listener-card-map"
@@ -76,8 +76,10 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
             minHeight: 24,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            cursor: onEmojiClick ? "pointer" : undefined
           }}
+          onClick={onEmojiClick}
         >
           {emoji}
         </div>
