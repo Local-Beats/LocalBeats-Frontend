@@ -205,11 +205,11 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
       <div className="active-listener-cards">
         {allListeningSessions?.map((session) => (
           <div>
-            {/* <ListenerCard
+            <ListenerCard
               key={session.id}
               user={session.user}
               track={session.song}
-            /> */}
+            />
             <div className="spotify-embed">
               <iframe
                 style={{ borderRadius: "25px" }}
