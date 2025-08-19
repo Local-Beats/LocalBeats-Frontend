@@ -23,6 +23,7 @@ module.exports = {
       REACT_APP_AUTH0_AUDIENCE: "",
       REACT_APP_GOOGLE_MAPS_API_KEY: "",
     }),
+    
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
