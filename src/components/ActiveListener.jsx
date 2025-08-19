@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-import './ActiveListener.css'
+import "./ActiveListener.css";
 import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
@@ -128,8 +128,6 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     syncListeningSession();
   }, [track?.song_id, user?.id]);
 
-
-
   // end sessin on unmount
   useEffect(() => {
     return () => {
@@ -206,66 +204,33 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
 
       <div className="active-listener-cards">
         {allListeningSessions?.map((session) => (
-          <ListenerCard
-            key={session.id}
-            user={session.user}
-            track={session.song}
-          />
+          <div>
+            {/* <ListenerCard
+              key={session.id}
+              user={session.user}
+              track={session.song}
+            /> */}
+            <div className="spotify-embed">
+              <iframe
+                style={{ borderRadius: "25px" }}
+                src={`https://open.spotify.com/embed/track/${session.song.spotify_track_id}`}
+                width="200%"
+                height="152"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              ></iframe>
+              {/* <iframe
+                src={`https://open.spotify.com/embed/track/${session.song.spotify_track_id}`}
+                width="100%"
+                height="152"
+                // allow="clipboard-write;"
+              ></iframe> */}
+            </div>
+          </div>
         ))}
-      </div>
-
-      <div className="listener-card-container">
-        <div className="listener-card-image">
-          <img
-            className="listener-card-album-art"
-            src="https://i.scdn.co/image/ab67616d0000b2739d706d33e975dfa107e11b1e"
-          />
-          {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
-        </div>
-        <div className="listener-card-info">
-          <p className="listener-card-name">LocalBeats</p>
-          <p className="listener-card-song">Le Onde</p>
-          <p className="listener-card-artist">Ludovico Einaudi</p>
-          {/* <p className="listener-card-location">{loc}</p> */}
-        </div>
-        <div className="listener-card-spotify-container">
-          <a
-            href={
-              "https://open.spotify.com/track/3jPGemJdr95abo520vyvVk?si=f28fc1bb6cfa409d"
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img className="listener-card-spotify" src={spotifyLogo} />
-          </a>
-        </div>
-      </div>
-
-      <div className="listener-card-container">
-        <div className="listener-card-image">
-          <img
-            className="listener-card-album-art"
-            src="https://i.scdn.co/image/ab67616d0000b2736219e9f7a37cdbf320829378"
-          />
-          {/* <img className="profile-image" src={user?.spotify_image || logo} alt="Profile" /> */}
-        </div>
-        <div className="listener-card-info">
-          <p className="listener-card-name">LocalBeats2</p>
-          <p className="listener-card-song">Que Vuelva</p>
-          <p className="listener-card-artist">Alex Bueno</p>
-          {/* <p className="listener-card-location">{loc}</p> */}
-        </div>
-        <div className="listener-card-spotify-container">
-          <a
-            href={"https://open.spotify.com/track/0ndYI8UT0PMaJzKLJbFr35"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img className="listener-card-spotify" src={spotifyLogo} />
-          </a>
-        </div>
       </div>
     </main>
   );
-}
+};
 export default ActiveListener;

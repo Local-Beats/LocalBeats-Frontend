@@ -150,6 +150,13 @@ const ListenerCard = ({
         >
           <img className="listener-card-spotify" src={spotifyLogo} />
         </a>
+        {/* <div>
+          <iframe
+            src={`https://open.spotify.com/embed/track/${track.spotify_track_id}`}
+            width="100%"
+            height="500px"
+          ></iframe>
+        </div> */}
       </div>
       {/* (showPopup and EmojiPopup removed: no longer needed) */}
     </main>
