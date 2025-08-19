@@ -22,43 +22,43 @@ const NavBar = ({ user, onLogout }) => {
     onLogout();
   };
 
-  // Placeholder handlers for new menu options
+  // Navigation handlers for menu options
   const handleProfile = () => {
     setMenuOpen(false);
-    // TODO: Implement profile navigation
-    alert('Profile page coming soon!');
+    navigate('/profile');
+  };
+  const handleFavorites = () => {
+    setMenuOpen(false);
+    navigate('/favorites');
   };
   const handleSettings = () => {
     setMenuOpen(false);
-    // TODO: Implement settings navigation
     alert('Settings page coming soon!');
   };
-  const handleContact = () => {
+  const handleDashboard = () => {
     setMenuOpen(false);
-    // TODO: Implement contact us navigation
-    alert('Contact Us page coming soon!');
+    navigate('/dashboard');
   };
-  const handleMap = () => {
-    setMenuOpen(false);
-    navigate('/dashboard'); // Adjust path if your map view route is different
+
+  // Make logo always go to dashboard if user is logged in
+  const handleLogoClick = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/');
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        {user ? (
-          <img
-            className="navbar-logo"
-            src={logo2}
-            alt="Logo"
-            style={{ cursor: "pointer" }}
-            onClick={() => window.location.reload()}
-          />
-        ) : (
-          <Link to="/">
-            <img className="navbar-logo" src={logo2} alt="Logo" />
-          </Link>
-        )}
+        <img
+          className="navbar-logo"
+          src={logo2}
+          alt="Logo"
+          style={{ cursor: "pointer" }}
+          onClick={handleLogoClick}
+        />
       </div>
 
       {user && (
@@ -94,11 +94,11 @@ const NavBar = ({ user, onLogout }) => {
                   </span>
                 </div>
               )}
+              <button className="hamburger-menu-btn" onClick={handleDashboard}>Dashboard</button>
               <button className="hamburger-menu-btn" onClick={handleProfile}>Profile</button>
-              <button className="hamburger-menu-btn" onClick={handleContact}>Favorites</button>
+              <button className="hamburger-menu-btn" onClick={handleFavorites}>Favorites</button>
               <button className="hamburger-menu-btn" onClick={handleSettings}>Settings</button>
               <button className="logout-btn" onClick={handleLogout}>Logout</button>
-                
             </div>,
             document.body
           )}

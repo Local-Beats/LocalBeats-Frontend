@@ -12,6 +12,8 @@ import { createRoot } from "react-dom/client";
 import "./AppStyles.css";
 // import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
+import Favorites from "./components/Favorites";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -148,12 +150,11 @@ const App = () => {
               Loading your profile...
             </div>
           ) : (
-            <>
-              {/* <NavBar user={user} onLogout={handleLogout} /> */}
-              <Dashboard user={user} onLogout={handleLogout} />
-            </>
+            <Dashboard user={user} onLogout={handleLogout} />
           )
         } />
+  <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
+  <Route path="/favorites" element={<Favorites user={user} onLogout={handleLogout} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
