@@ -1,9 +1,19 @@
+// Unregister service worker in development to avoid caching/flicker issues
+if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
 // import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
+import Favorites from "./components/Favorites";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -143,12 +153,11 @@ const App = () => {
               Loading your profile...
             </div>
           ) : (
-            <>
-              {/* <NavBar user={user} onLogout={handleLogout} /> */}
-              <Dashboard user={user} onLogout={handleLogout} />
-            </>
+            <Dashboard user={user} onLogout={handleLogout} />
           )
         } />
+  <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
+  <Route path="/favorites" element={<Favorites user={user} onLogout={handleLogout} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -185,3 +194,11 @@ const Root = () => {
 
 const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
+
+if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
