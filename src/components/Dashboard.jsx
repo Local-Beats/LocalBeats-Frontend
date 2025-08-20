@@ -7,6 +7,7 @@ import "./Dashboard.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MapIcon from "@mui/icons-material/Map";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
 
@@ -316,6 +317,10 @@ const Dashboard = ({ user, onLogout }) => {
                     <ActiveListener user={user} setCurrentUserTrack={setCurrentUserTrack} />
                 </section>
             )}
+
+            <div className="footer-container">
+                <Footer />
+            </div>
         </main>
     );
 };

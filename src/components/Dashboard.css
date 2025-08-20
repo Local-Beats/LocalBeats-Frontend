@@ -197,7 +197,7 @@
 .dashboard-bubble-btn {
     position: fixed;
     left: 50%;
-    bottom: 15px;
+    bottom: 65px;
     transform: translateX(-50%);
     background: rgb(46, 45, 46);
     color: lightgreen;
@@ -231,7 +231,7 @@
     /* Center the Back to Map button in results section */
     .dashboard-back-btn {
         position: fixed;
-        bottom: 1px;
+        bottom: 65px;
         left: 50%;
         transform: translateX(-50%);
         /* aligns horital in the middle */
