@@ -80,7 +80,7 @@ const Dashboard = ({ user, onLogout }) => {
     }, []);
 
     // ✅ Geolocation + reverse geocode + send location to server
-    useEffect(() => {
+    const handleRequestLocation = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -89,6 +89,8 @@ const Dashboard = ({ user, onLogout }) => {
                     setCoords({ lat, lng });
                     setGeoError(null);
 
+                    // Send to server + reverse geocode (same as your current code)
+                    // ...
                     fetch(
                         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
                     )
@@ -113,13 +115,56 @@ const Dashboard = ({ user, onLogout }) => {
                     }
                 },
                 (error) => {
-                    setGeoError(error.message || "Location permission denied.");
+                    setGeoError("Location access denied or unavailable.");
                 }
             );
         } else {
-            setGeoError("Geolocation is not supported by your browser.");
+            setGeoError("Geolocation not supported.");
         }
-    }, []);
+    };
+
+
+
+    // useEffect(() => {
+    //     if ("geolocation" in navigator) {
+    //         navigator.geolocation.getCurrentPosition(
+    //             async (position) => {
+    //                 const lat = position.coords.latitude;
+    //                 const lng = position.coords.longitude;
+    //                 setCoords({ lat, lng });
+    //                 setGeoError(null);
+
+    //                 fetch(
+    //                     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`
+    //                 )
+    //                     .then((res) => res.json())
+    //                     .then((data) => {
+    //                         if (data.status === "OK" && data.results.length > 0) {
+    //                             setAddress(data.results[0].formatted_address);
+    //                         } else {
+    //                             setAddress("");
+    //                         }
+    //                     })
+    //                     .catch(() => setAddress(""));
+
+    //                 try {
+    //                     await axios.post(
+    //                         "/api/users/location",
+    //                         { latitude: lat, longitude: lng },
+    //                         { withCredentials: true }
+    //                     );
+    //                 } catch (err) {
+    //                     console.error("Failed to update location:", err);
+    //                 }
+    //             },
+    //             (error) => {
+    //                 setGeoError(error.message || "Location permission denied.");
+    //             }
+    //         );
+    //     } else {
+    //         setGeoError("Geolocation is not supported by your browser.");
+    //     }
+    // }, []);
 
     // ✅ Poll online users
     const fetchOnlineUsers = async () => {
@@ -288,6 +333,14 @@ const Dashboard = ({ user, onLogout }) => {
             <div className="navbar-container">
                 <NavBar user={user} onLogout={onLogout} />
             </div>
+
+            {!coords && (
+                <div className="location-prompt">
+                    <p>📍 Location access is required to use the map.</p>
+                    <button onClick={handleRequestLocation}>Allow Location Access</button>
+                    {geoError && <p style={{ color: 'red' }}>{geoError}</p>}
+                </div>
+            )}
 
             {user && coords && !showResults && (
                 <div className="dashboard-map-container" style={{ position: "relative" }}>
