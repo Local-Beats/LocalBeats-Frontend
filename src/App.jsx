@@ -64,11 +64,6 @@ const App = () => {
 
   useEffect(() => {
     const syncSpotifyAndFetchUser = async () => {
-      if (!isAuthenticated || !auth0User) {
-        console.warn("User not authenticated or auth0User not ready.");
-        return;
-      }
-
       try {
         const claims = await getIdTokenClaims();
         const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
@@ -78,36 +73,29 @@ const App = () => {
           return;
         }
 
-        //  Sync with backend — this will update DB & create session token
         await axios.post("/auth/spotify/sync", {}, {
           headers: {
             Authorization: `Bearer ${spotifyAccessToken}`,
           },
           withCredentials: true,
-        }
-        );
+        });
 
-
-        // Fetch user info from DB (using session token)
         const res = await axios.get("/auth/me", { withCredentials: true });
-        console.log("this is data-->", res.data)
         setUser(res.data.user);
       } catch (err) {
         console.error("Post-login sync failed:", err);
       }
     };
 
-    // Update frontend state
-    // setUser({
-    //   name: auth0User.name,
-    //   email: auth0User.email,
-    //   picture: auth0User.picture,
-    // });
-
-    console.log("Auth0 state ->", { isAuthenticated, auth0User });
-    syncSpotifyAndFetchUser();
-  }, [isAuthenticated, auth0User, getIdTokenClaims]);
-
+    if (
+      isAuthenticated &&
+      auth0User &&
+      user === null // <- only sync if user hasn't been set yet
+    ) {
+      console.log("Syncing Auth0 → DB user...");
+      syncSpotifyAndFetchUser();
+    }
+  }, [isAuthenticated, auth0User, getIdTokenClaims, user]);
 
 
   const handleLogout = async () => {
@@ -125,7 +113,7 @@ const App = () => {
     // Prompt for location on mount
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        () => {},
+        () => { },
         (error) => {
           if (error.code === error.PERMISSION_DENIED) {
             alert("Location permission is required for full functionality.");
