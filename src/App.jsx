@@ -1,6 +1,6 @@
 // Unregister service worker in development to avoid caching/flicker issues
 if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
     for (let registration of registrations) {
       registration.unregister();
     }
@@ -90,8 +90,21 @@ const App = () => {
           withCredentials: true,
         });
 
-        const res = await axios.get("/auth/me", { withCredentials: true });
-        setUser(res.data.user);
+        let res;
+        try {
+          res = await axios.get("/auth/me", { withCredentials: true });
+          setUser(res.data.user);
+        } catch (err) {
+          console.warn("First /auth/me failed — retrying in 500ms...");
+          setTimeout(async () => {
+            try {
+              const retryRes = await axios.get("/auth/me", { withCredentials: true });
+              setUser(retryRes.data.user);
+            } catch (retryErr) {
+              console.error("Retry failed. Still not logged in.", retryErr);
+            }
+          }, 500);
+        }
       } catch (err) {
         console.error("Post-login sync failed:", err);
       }
@@ -156,8 +169,8 @@ const App = () => {
             <Dashboard user={user} onLogout={handleLogout} />
           )
         } />
-  <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
-  <Route path="/favorites" element={<Favorites user={user} onLogout={handleLogout} />} />
+        <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
+        <Route path="/favorites" element={<Favorites user={user} onLogout={handleLogout} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -196,8 +209,8 @@ const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
 
 if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for(let registration of registrations) {
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    for (let registration of registrations) {
       registration.unregister();
     }
   });
