@@ -1,6 +1,5 @@
-
 .listener-card-map {
-  max-width: 260px;
+  max-width: 150px;
   min-width: 0;
   padding: 8px 8px 8px 8px;
   background: #e6e6fa;
@@ -11,6 +10,7 @@
   gap: 0.7rem;
   border: 1.5px solid #b39ddb;
 }
+
 
 @media (max-width: 600px) {
   .listener-card-map {
