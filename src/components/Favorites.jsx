@@ -39,68 +39,66 @@ const Favorites = ({ user, onLogout }) => {
   return (
     <>
       <NavBar user={user} onLogout={onLogout || (() => {})} />
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, borderRadius: 12, boxShadow: "0 2px 12px #bbb", background: "#fff" }}>
-        <h2 style={{ textAlign: "center", marginBottom: 16 }}>Favorites</h2>
-        {favorites.length === 0 ? (
-          <div style={{ textAlign: "center", color: "#666" }}>
-            <p>Your favorite tracks and artists will appear here.</p>
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {favorites.map((fav, idx) => {
-              // Only show remove popup for the selected card
-              const showRemove = removeIdx === idx;
-              return (
-                <div key={fav.track.song_id + "-" + fav.user.id + "-" + idx} style={{ position: "relative" }}>
-                  <ListenerCard
-                    user={fav.user}
-                    track={fav.track}
-                    variant="list"
-                    emoji={fav.emoji}
-                    // Intercept heart click for removal
-                    onEmojiClick={fav.emoji === "❤️" ? () => setRemoveIdx(idx) : undefined}
-                    onFavorite={undefined}
-                  />
-                  {showRemove && (
+      <h2 style={{ textAlign: "center", margin: "40px 0 16px 0", color: "#222", fontWeight: 700, fontSize: 28, letterSpacing: 1 }}>Favorites</h2>
+      {favorites.length === 0 ? (
+        <div style={{ textAlign: "center", color: "#666", fontSize: 18, marginTop: 32 }}>
+          <p>Your favorite tracks and artists will appear here.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 600, margin: "0 auto", padding: 0 }}>
+          {favorites.map((fav, idx) => {
+            // Only show remove popup for the selected card
+            const showRemove = removeIdx === idx;
+            return (
+              <div key={fav.track.song_id + "-" + fav.user.id + "-" + idx} style={{ position: "relative" }}>
+                <ListenerCard
+                  user={fav.user}
+                  track={fav.track}
+                  variant="list"
+                  emoji={fav.emoji}
+                  // Intercept heart click for removal
+                  onEmojiClick={fav.emoji === "❤️" ? () => setRemoveIdx(idx) : undefined}
+                  onFavorite={undefined}
+                />
+                {showRemove && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: -38,
+                      left: 0,
+                      zIndex: 20,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start"
+                    }}
+                    onClick={() => setRemoveIdx(null)}
+                  >
                     <div
                       style={{
-                        position: "absolute",
-                        top: -38,
-                        left: 0,
-                        zIndex: 20,
+                        background: "#fff",
+                        borderRadius: 8,
+                        boxShadow: "0 2px 12px #bbb",
+                        padding: "8px 16px 8px 16px",
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "flex-start"
+                        alignItems: "center"
                       }}
-                      onClick={() => setRemoveIdx(null)}
+                      onClick={e => e.stopPropagation()}
                     >
-                      <div
-                        style={{
-                          background: "#fff",
-                          borderRadius: 8,
-                          boxShadow: "0 2px 12px #bbb",
-                          padding: "8px 16px 8px 16px",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center"
-                        }}
-                        onClick={e => e.stopPropagation()}
+                      <button
+                        onClick={() => handleRemove(idx)}
+                        style={{ background: "#c82333", color: "#fff", border: "none", borderRadius: 6, padding: "4px 18px", fontSize: 15, cursor: "pointer" }}
                       >
-                        <button
-                          onClick={() => handleRemove(idx)}
-                          style={{ background: "#c82333", color: "#fff", border: "none", borderRadius: 6, padding: "4px 18px", fontSize: 15, cursor: "pointer" }}
-                        >
-                          Remove
-                        </button>
-                      </div>
+                        Remove
+                      </button>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 };

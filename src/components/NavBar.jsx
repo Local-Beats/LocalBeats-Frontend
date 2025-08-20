@@ -115,8 +115,8 @@ const NavBar = ({ user, onLogout }) => {
                     </span>
                   </div>
                 )}
-                <button className="hamburger-menu-btn" onClick={handleDashboard}>Dashboard</button>
                 <button className="hamburger-menu-btn" onClick={handleProfile}>Profile</button>
+                <button className="hamburger-menu-btn" onClick={handleDashboard}>Dashboard</button>
                 <button className="hamburger-menu-btn" onClick={handleFavorites}>Favorites</button>
                 <button className="hamburger-menu-btn" onClick={handleSettings}>Settings</button>
                 <button className="logout-btn" onClick={handleLogout}>Logout</button>
