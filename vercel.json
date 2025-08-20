@@ -3,15 +3,15 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/auth/(.*)",
-      "destination": "https://local-beats-backend.vercel.app/auth/$1"
+      "source": "/auth/:path*",
+      "destination": "https://local-beats-backend.vercel.app/auth/:path*"
     },
     {
-      "source": "/api/(.*)",
-      "destination": "https://local-beats-backend.vercel.app/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://local-beats-backend.vercel.app/api/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ],
