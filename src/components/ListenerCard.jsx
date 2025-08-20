@@ -4,7 +4,7 @@ import logo from "../assets/LocalBeats.png";
 import "./ListenerCard.css";
 import "./ListenerCardMap.css";
 import spotifyLogo from "../assets/spotify-logo.png";
-import EmojiPopup from "./EmojiPopup";
+// import EmojiPopup from "./EmojiPopup";
 
 // variant: 'list' (default) or 'map'
 const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiProp, onEmojiClick }) => {
@@ -26,7 +26,7 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
       return null;
     }
   });
-  const [showPopup, setShowPopup] = useState(false);
+  // No popup needed for new heart UX
 
   useEffect(() => {
     if (emoji && !emojiProp) {
@@ -34,19 +34,22 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
     }
   }, [emoji, cardKey, emojiProp]);
 
-  // For favorites, freeze the card's info
-  const handleEmojiSelect = (selectedEmoji) => {
-    setEmoji(selectedEmoji);
-    setShowPopup(false);
-    if (selectedEmoji === "❤️" && onFavorite) {
-      // Save the card to favorites (with emoji and all info)
-      onFavorite({ user, track, emoji: selectedEmoji });
+  // Toggle heart state in ActiveListener
+  const handleHeartClick = (e) => {
+    e.stopPropagation();
+    if (!emoji && onFavorite) {
+      setEmoji("❤️");
+      onFavorite({ user, track, emoji: "❤️" });
+    } else if (emoji === "❤️" && onFavorite) {
+      setEmoji(null);
+      // Remove from favorites in localStorage
+      try {
+        const stored = localStorage.getItem("favorites");
+        let favs = stored ? JSON.parse(stored) : [];
+        favs = favs.filter(f => !(f.user.id === user.id && f.track.song_id === track.song_id));
+        localStorage.setItem("favorites", JSON.stringify(favs));
+      } catch {}
     }
-  };
-
-  // For demo, show popup on click (not on map variant)
-  const handleCardClick = (e) => {
-    if (!isMap && onFavorite) setShowPopup(true);
   };
 
   // --- EMOJI BADGE STYLE ---
@@ -57,16 +60,46 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
   return (
     <main
       className={containerClass}
-      style={isMap ? { overflow: "visible", maxHeight: "none" } : { position: "relative", cursor: !isMap ? "pointer" : undefined }}
-      onClick={handleCardClick}
+      style={isMap ? { overflow: "visible", maxHeight: "none" } : { position: "relative" }}
     >
-      {/* Emoji badge */}
-      {emoji && (
+      {/* Heart badge for ActiveListener (not in favorites view) */}
+      {typeof onFavorite === "function" && (
         <div
           style={{
             position: "absolute",
-            top: -10, // Move higher (was 4)
-            left: -10, // Move more left (was 4)
+            top: -10,
+            left: -10,
+            fontSize: 20,
+            zIndex: 2,
+            background: "rgba(255,255,255,0.85)",
+            borderRadius: "50%",
+            padding: "2px 4px",
+            minWidth: 24,
+            minHeight: 24,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            opacity: emoji ? 1 : 0.7
+          }}
+          onClick={handleHeartClick}
+        >
+          <span style={{
+            color: emoji ? "#e53935" : "#bbb",
+            filter: emoji ? "none" : "grayscale(1)",
+            transition: "color 0.2s"
+          }}>
+            ❤️
+          </span>
+        </div>
+      )}
+      {/* Emoji badge for favorites view (read-only, but clickable for remove) */}
+      {typeof onFavorite !== "function" && emoji && (
+        <div
+          style={{
+            position: "absolute",
+            top: -10,
+            left: -10,
             fontSize: 20,
             zIndex: 2,
             background: "rgba(255,255,255,0.85)",
@@ -102,12 +135,7 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
           <img className="listener-card-spotify" src={spotifyLogo} />
         </a>
       </div>
-      {showPopup && !isMap && (
-        <EmojiPopup
-          onSelect={handleEmojiSelect}
-          onClose={() => setShowPopup(false)}
-        />
-      )}
+  {/* (showPopup and EmojiPopup removed: no longer needed) */}
     </main>
   );
 };

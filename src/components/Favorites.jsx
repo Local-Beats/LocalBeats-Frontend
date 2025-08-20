@@ -20,10 +20,20 @@ const Favorites = ({ user, onLogout }) => {
 
   // Remove favorite at index
   const handleRemove = (idx) => {
+    const removed = favorites[idx];
     const updated = favorites.filter((_, i) => i !== idx);
     setFavorites(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
     setRemoveIdx(null);
+    // Dispatch event to notify ActiveListener to update heart
+    if (removed && removed.user && removed.track) {
+      window.dispatchEvent(new CustomEvent("favorite-removed", {
+        detail: {
+          userId: removed.user.id,
+          songId: removed.track.song_id
+        }
+      }));
+    }
   };
 
   return (
@@ -52,22 +62,36 @@ const Favorites = ({ user, onLogout }) => {
                     onFavorite={undefined}
                   />
                   {showRemove && (
-                    <div style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      background: "rgba(0,0,0,0.18)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 10
-                    }}>
-                      <div style={{ background: "#fff", borderRadius: 8, padding: 24, boxShadow: "0 2px 12px #bbb", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <div style={{ fontSize: 22, marginBottom: 12 }}>Remove from favorites?</div>
-                        <button onClick={() => handleRemove(idx)} style={{ background: "#c82333", color: "#fff", border: "none", borderRadius: 6, padding: "8px 24px", fontSize: 16, cursor: "pointer", marginBottom: 8 }}>Remove</button>
-                        <button onClick={() => setRemoveIdx(null)} style={{ background: "#eee", color: "#333", border: "none", borderRadius: 6, padding: "6px 18px", fontSize: 15, cursor: "pointer" }}>Cancel</button>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: -38,
+                        left: 0,
+                        zIndex: 20,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start"
+                      }}
+                      onClick={() => setRemoveIdx(null)}
+                    >
+                      <div
+                        style={{
+                          background: "#fff",
+                          borderRadius: 8,
+                          boxShadow: "0 2px 12px #bbb",
+                          padding: "8px 16px 8px 16px",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center"
+                        }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        <button
+                          onClick={() => handleRemove(idx)}
+                          style={{ background: "#c82333", color: "#fff", border: "none", borderRadius: 6, padding: "4px 18px", fontSize: 15, cursor: "pointer" }}
+                        >
+                          Remove
+                        </button>
                       </div>
                     </div>
                   )}

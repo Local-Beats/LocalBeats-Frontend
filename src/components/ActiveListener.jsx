@@ -13,6 +13,25 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     }
   });
 
+  // Listen for favorite-removed event to update heart status
+  useEffect(() => {
+    const handler = (e) => {
+      const { userId, songId } = e.detail || {};
+      if (!userId || !songId) return;
+      setFavorites((prev) => {
+        // Remove from favorites state if present
+        const updated = prev.filter(f => !(f.user.id === userId && f.track.song_id === songId));
+        return updated;
+      });
+      // Also remove emoji from localStorage for this card
+      try {
+        localStorage.removeItem(`emoji_${userId}_${songId}`);
+      } catch {}
+    };
+    window.addEventListener("favorite-removed", handler);
+    return () => window.removeEventListener("favorite-removed", handler);
+  }, []);
+
   // Add to favorites (freeze card)
   const handleFavorite = (card) => {
     // Allow multiple favorites, even for same user/track

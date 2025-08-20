@@ -52,17 +52,23 @@ const NavBar = ({ user, onLogout }) => {
   return (
     <nav className="navbar">
       <div className="nav-brand">
-        <img
-          className="navbar-logo"
-          src={logo2}
-          alt="Logo"
-          style={{ cursor: "pointer" }}
+        <button
+          className="navbar-logo-btn"
           onClick={handleLogoClick}
-        />
+          aria-label="Go to dashboard"
+          style={{ padding: 0, border: 'none', background: 'none', width: 'auto', height: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <img
+            className="navbar-logo"
+            src={logo2}
+            alt="Logo"
+            style={{ display: 'block', pointerEvents: 'none' }}
+          />
+        </button>
       </div>
 
       {user && (
-        <>
+        <React.Fragment>
           <div className="nav-user-info">
             <div className="username-stack">
               <span className="navbar-app-name">Local Beats</span>
@@ -81,28 +87,44 @@ const NavBar = ({ user, onLogout }) => {
             </button>
           </div>
           {menuOpen && createPortal(
-            <div className="hamburger-dropdown hamburger-dropdown-portal">
-              {profilePicUrl && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
-                  <img
-                    src={profilePicUrl}
-                    alt="Profile"
-                    style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', marginBottom: 4 }}
-                  />
-                  <span style={{ fontWeight: 500, fontSize: '1.05rem', color: '#333', marginTop: 2, marginBottom: 8 }}>
-                    Welcome, {user.spotify_display_name || user.display_name || user.nickname}
-                  </span>
-                </div>
-              )}
-              <button className="hamburger-menu-btn" onClick={handleDashboard}>Dashboard</button>
-              <button className="hamburger-menu-btn" onClick={handleProfile}>Profile</button>
-              <button className="hamburger-menu-btn" onClick={handleFavorites}>Favorites</button>
-              <button className="hamburger-menu-btn" onClick={handleSettings}>Settings</button>
-              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 99998
+              }}
+              onClick={() => setMenuOpen(false)}
+            >
+              <div
+                className="hamburger-dropdown hamburger-dropdown-portal"
+                style={{ zIndex: 99999 }}
+                onClick={e => e.stopPropagation()}
+              >
+                {profilePicUrl && (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
+                    <img
+                      src={profilePicUrl}
+                      alt="Profile"
+                      style={{ width: 64, height: 64, borderRadius: '50%', objectFit: 'cover', marginBottom: 4 }}
+                    />
+                    <span style={{ fontWeight: 500, fontSize: '1.05rem', color: '#333', marginTop: 2, marginBottom: 8 }}>
+                      Welcome, {user.spotify_display_name || user.display_name || user.nickname}
+                    </span>
+                  </div>
+                )}
+                <button className="hamburger-menu-btn" onClick={handleDashboard}>Dashboard</button>
+                <button className="hamburger-menu-btn" onClick={handleProfile}>Profile</button>
+                <button className="hamburger-menu-btn" onClick={handleFavorites}>Favorites</button>
+                <button className="hamburger-menu-btn" onClick={handleSettings}>Settings</button>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+              </div>
             </div>,
             document.body
           )}
-        </>
+        </React.Fragment>
       )}
     </nav>
   );
