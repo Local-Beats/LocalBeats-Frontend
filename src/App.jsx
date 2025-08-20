@@ -63,11 +63,13 @@ const App = () => {
         const response = await axios.get("/auth/me", {
           withCredentials: true,
         });
+        console.log("✅ /auth/me success:", response.data);
         setUser(response.data.user);
-      } catch {
-        console.log("Not authenticated");
+      } catch (err) {
+        console.warn("❌ /auth/me failed:", err);
         setUser(null);
       }
+
     };
     checkAuth();
   }, []);
@@ -157,6 +159,13 @@ const App = () => {
 
   return (
     <div className="app">
+      {user === null && (
+        <div style={{ padding: 20, color: "red" }}>
+          <p>⚠️ Not logged in</p>
+          <p>Auth check likely failed on Safari due to blocked cookies.</p>
+          <p>Please check if your backend is setting a <code>Secure; SameSite=None</code> cookie.</p>
+        </div>
+      )}
       <Routes>
         <Route path="/" element={<LandingPage setUser={setUser} />} />
         <Route path="/signup" element={<Signup setUser={setUser} />} />
