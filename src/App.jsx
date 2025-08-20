@@ -163,7 +163,7 @@ const App = () => {
         <Route path="/dashboard" element={
           user === null ? (
             <div style={{ textAlign: "center", marginTop: 60 }}>
-              Loading your profile...
+              {isAuthenticated ? "Loading your profile..." : "Please log in first."}
             </div>
           ) : (
             <Dashboard user={user} onLogout={handleLogout} />
