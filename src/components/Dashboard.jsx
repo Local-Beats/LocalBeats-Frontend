@@ -13,58 +13,51 @@ import OtherUsersBeet from "../assets/Other_users_beet.png";
 import DummyMarkers from "./DummyMarkers"; // ✅ imported
 
 
-function getSessionForUser(userObj, sessions) {
-  if (!userObj || !sessions) return null;
-  return sessions.find(
-    (s) => s.user && (s.user.id === userObj.id || s.user.username === userObj.username)
-  );
-}
-
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
+// ✅ Utility function (this can be outside the component)
 function loadGoogleMapsScript(apiKey, callback) {
-  if (window.google && window.google.maps) {
-    callback();
-    return;
-  }
-  const existingScript = document.getElementById("google-maps-script");
-  if (!existingScript) {
-    const script = document.createElement("script");
-    script.id = "google-maps-script";
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
-    script.async = true;
-    script.onload = callback;
-    script.onerror = function (e) {
-      console.error("Failed to load Google Maps script", e);
-      alert("Failed to load Google Maps. Check your API key and network.");
-    };
-    document.body.appendChild(script);
-  } else {
-    existingScript.onload = callback;
-  }
+    if (window.google && window.google.maps) {
+        callback();
+        return;
+    }
+
+    const existingScript = document.getElementById("google-maps-script");
+    if (!existingScript) {
+        const script = document.createElement("script");
+        script.id = "google-maps-script";
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+        script.async = true;
+        script.onload = callback;
+        script.onerror = function (e) {
+            console.error("Failed to load Google Maps script", e);
+            alert("Failed to load Google Maps. Check your API key and network.");
+        };
+        document.body.appendChild(script);
+    } else {
+        existingScript.onload = callback;
+    }
 }
 
 const Dashboard = ({ user, onLogout }) => {
-  if (!user) return null;
+    if (!user) return null;
 
-  const [coords, setCoords] = useState(null);
-  const [geoError, setGeoError] = useState(null);
-  const [address, setAddress] = useState("");
-  const [mapKey, setMapKey] = useState(0);
-  const mapRef = useRef(null);
+    const [coords, setCoords] = useState(null);
+    const [geoError, setGeoError] = useState(null);
+    const [address, setAddress] = useState("");
+    const [mapKey, setMapKey] = useState(0);
+    const mapRef = useRef(null);
 
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [showResults, setShowResults] = useState(false);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [showResults, setShowResults] = useState(false);
 
-  const mapInstanceRef = useRef(null);
-  const markersRef = useRef([]);
-  const [selectedLatLng, setSelectedLatLng] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [allListeningSessions, setAllListeningSessions] = useState([]);
-  const infoWindowRef = useRef(null);
-
-  // Used as a fallback when the current user's session isn't found yet
-  const [currentUserTrack, setCurrentUserTrack] = useState(null);
+    const mapInstanceRef = useRef(null);
+    const markersRef = useRef([]);
+    const [selectedLatLng, setSelectedLatLng] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [allListeningSessions, setAllListeningSessions] = useState([]);
+    const infoWindowRef = useRef(null);
+    const [currentUserTrack, setCurrentUserTrack] = useState(null);
 
   // Poll all listening sessions
   useEffect(() => {
@@ -273,39 +266,47 @@ const Dashboard = ({ user, onLogout }) => {
               </div>
             );
 
-            const infoWindow = new window.google.maps.InfoWindow({
-              content: `<div class="custom-infowindow-content">${contentHtml}</div>`,
-              position: { lat: latLng.lat(), lng: latLng.lng() },
-            });
+                        const infoWindow = new window.google.maps.InfoWindow({
+                            content: contentHtml,
+                            position: { lat: latLng.lat(), lng: latLng.lng() },
+                        });
 
-            infoWindow.open(map);
-            infoWindowRef.current = infoWindow;
+                        infoWindow.open(map);
+                        infoWindowRef.current = infoWindow;
 
-            // Remove default InfoWindow background + close button
-            setTimeout(() => {
-              const iw = document.querySelector(".gm-style-iw");
-              if (iw && iw.parentElement) {
-                iw.parentElement.style.background = "none";
-                iw.parentElement.style.boxShadow = "none";
-                iw.parentElement.style.border = "none";
-                iw.style.background = "none";
-                iw.style.boxShadow = "none";
-                iw.style.border = "none";
-                const closeBtn = iw.parentElement.querySelector('button[aria-label="Close"]');
-                if (closeBtn) closeBtn.style.display = "none";
-                const arrow = iw.parentElement.querySelector('div[style*="transform: rotateZ(45deg)"]');
-                if (arrow) arrow.style.display = "none";
-                const arrowBg = iw.parentElement.querySelector('div[style*="background-color: white"]');
-                if (arrowBg) arrowBg.style.display = "none";
-              }
-            }, 0);
-          }
+                        setTimeout(() => {
+                            const iwScrollWrapper = document.querySelector(".gm-style-iw-d");
+                            if (iwScrollWrapper) {
+                                iwScrollWrapper.style.overflow = "visible";
+                                iwScrollWrapper.style.maxHeight = "unset";
+                            }
+
+                            const iw = document.querySelector(".gm-style-iw");
+                            if (iw && iw.parentElement) {
+                                iw.parentElement.style.background = "none";
+                                iw.parentElement.style.boxShadow = "none";
+                                iw.parentElement.style.border = "none";
+                                iw.style.background = "none";
+                                iw.style.boxShadow = "none";
+                                iw.style.border = "none";
+
+                                const closeBtn = iw.parentElement.querySelector('button[aria-label="Close"]');
+                                if (closeBtn) closeBtn.style.display = "none";
+
+                                const arrow = iw.parentElement.querySelector('div[style*="transform: rotateZ(45deg)"]');
+                                if (arrow) arrow.style.display = "none";
+
+                                const arrowBg = iw.parentElement.querySelector('div[style*="background-color: white"]');
+                                if (arrowBg) arrowBg.style.display = "none";
+                            }
+                        }, 0);
+                    }
+                });
+
+                markersRef.current.push(marker);
+            }
         });
-
-        markersRef.current.push(marker);
-      }
-    });
-  }, [onlineUsers, mapKey, user, allListeningSessions, currentUserTrack]);
+    }, [onlineUsers, mapKey, user, allListeningSessions, currentUserTrack]);
 
   return (
     <main className="dashboard-main">
@@ -324,27 +325,26 @@ const Dashboard = ({ user, onLogout }) => {
         </div>
       )}
 
-      {showResults && (
-        <section className="dashboard-results-section">
-          <div className="dashboard-results-header">
-            <button
-              className="dashboard-back-btn"
-              onClick={() => {
-                setShowResults(false);
-                setMapKey((prev) => prev + 1);
-              }}
-              aria-label="Map"
-            >
-              <MapIcon className="MapIcon" /> Map
-            </button>
-            <div className="dashboard-header-texts"></div>
-          </div>
-          {/* Passing setter—ActiveListener may choose to update it; harmless if ignored */}
-          <ActiveListener user={user} setCurrentUserTrack={setCurrentUserTrack} />
-        </section>
-      )}
-    </main>
-  );
+            {showResults && (
+                <section className="dashboard-results-section">
+                    <div className="dashboard-results-header">
+                        <button
+                            className="dashboard-back-btn"
+                            onClick={() => {
+                                setShowResults(false);
+                                setMapKey((prev) => prev + 1);
+                            }}
+                            aria-label="Map"
+                        >
+                            <MapIcon className="MapIcon" /> Map
+                        </button>
+                        <div className="dashboard-header-texts"></div>
+                    </div>
+                    <ActiveListener user={user} setCurrentUserTrack={setCurrentUserTrack} />
+                </section>
+            )}
+        </main>
+    );
 };
 
 export default Dashboard;

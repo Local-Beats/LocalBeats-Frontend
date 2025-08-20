@@ -27,6 +27,21 @@ import axios from './utils/axiosInstance';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 //test
 
+// 💥 DEV-ONLY: Unregister service workers + clear caches
+if (process.env.NODE_ENV !== "production" && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const reg of registrations) {
+      reg.unregister().then(() => {
+        console.log("🧹 Unregistered SW");
+      });
+    }
+  });
+  caches.keys().then((keys) => {
+    keys.forEach((key) => caches.delete(key));
+    console.log("🧹 Cleared caches");
+  });
+}
+
 // AUTH0 CONFIGURATION
 const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
 const AUTH0_CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;

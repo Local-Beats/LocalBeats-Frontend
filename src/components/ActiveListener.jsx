@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
+import './ActiveListener.css'
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
   // Favorites state (persisted in localStorage)
@@ -165,6 +166,8 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     syncListeningSession();
   }, [track?.song_id, user?.id]);
 
+
+
   // end sessin on unmount
   useEffect(() => {
     return () => {
@@ -237,12 +240,28 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
   //   );
 
   return (
-    <main>
-      <h1>Active Listeners</h1>
-      {/* Current user */}
-      {/* <ListenerCard sessions={allListeningSessions} /> */}
-      {/* Other active listeners */}
-      <div className="active-listener-cards">
+    <main className="active-listener-wrapper">
+      <h1 className="active-listener-header">Active Listeners</h1>
+
+      {/*
+        === LISTENER CARD CONTAINER DIMENSIONS ===
+        To adjust the width and vertical height of the card container for Active Listeners,
+        edit maxWidth, width, minHeight, and height below.
+        Example: maxWidth: 600 for desktop, width: '100%' for responsive, minHeight: 400 for vertical space.
+      */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 24,
+          maxWidth: 600, // <-- Edit maxWidth for desktop/mobile size (decreased for thinner container)
+          width: '100%', // <-- Edit width for responsiveness
+          minHeight: 400,  // <-- Edit minHeight for vertical space (increased for longer container)
+          height: 'auto', // <-- Edit height for fixed vertical height
+          margin: '0 auto',
+          padding: 0,
+        }}
+      >
         {allListeningSessions?.map((session) => (
           <ListenerCard
             key={session.id}
@@ -254,6 +273,5 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
       </div>
     </main>
   );
-};
-
+}
 export default ActiveListener;

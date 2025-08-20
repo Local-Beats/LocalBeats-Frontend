@@ -39,44 +39,112 @@ h1, .active-listeners-title {
     border-style: solid;
     border-radius: .5rem;
     box-sizing: border-box;
-    padding: .3rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
+/* On screens < 600px, we shrink padding & spacing */
+@media (max-width: 600px) {
+    .listener-card-container {
+        grid-template-columns: 50px 1fr auto;
+        gap: 8px;
+        padding: 10px 12px;
+    }
+}
+
+/* Optional safety for very small screens */
+@media (max-width: 400px) {
+    .listener-card-container {
+        max-width: 100%;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+/* Album art */
 .listener-card-album-art {
-    border-radius:.5rem;
-    min-height: 50px;
-    max-width: 50px;
+    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
 }
 
-.listener-card-name {
-    margin:5px 0px;
-    font-family: none;
-    font-size:small;
+@media (min-width: 600px) {
+    .listener-card-album-art {
+        width: 64px;
+        height: 64px;
+    }
 }
 
-.listener-card-song {
-    margin:1px 0px;
-    font-family: none;
-    font-weight: bold;
+/* Text container */
+.listener-card-info {
+    min-width: 0;
+    /* Needed for text truncation inside grid */
 }
 
+.listener-card-name,
+.listener-card-song,
 .listener-card-artist {
-    margin:1px 0px;
-    font-family: none;
-    font-size:small;
-} 
+    margin: 0;
+    font-family: system-ui, sans-serif;
+}
 
+/* Name */
+.listener-card-name {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* Song (bold + ellipsis) */
+.listener-card-song {
+    font-weight: bold;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Artist (small + ellipsis) */
+.listener-card-artist {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.9;
+}
+
+/* Spotify logo */
 .listener-card-spotify {
-    height:30px;
-    width: 30px;
+    width: 28px;
+    height: 28px;
+    display: block;
 }
 
-.listener-card-spotify-container {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
+@media (min-width: 600px) {
+    .listener-card-spotify {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.listener-card-spotify-container a {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 999px;
+    transition: transform 0.15s ease;
 }
 
+.listener-card-spotify-container a:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
+}
+
+.listener-card-spotify-container a:hover {
+    transform: scale(1.04);
+}

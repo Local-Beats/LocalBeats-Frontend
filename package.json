@@ -4,10 +4,11 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --mode production",
+    "start-dev": "webpack serve --mode development --open",
+    "start-dev:https": "USE_HTTPS=true webpack serve --mode development --open",
     "build": "webpack --mode production",
     "vercel-build": "npm run build",
-    "lint": "eslint src/**/*.{js,jsx}",
-    "start-dev": "webpack serve --mode development --open"
+    "lint": "eslint src/**/*.{js,jsx}"
   },
   "keywords": [],
   "author": "",
