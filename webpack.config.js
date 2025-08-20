@@ -1,10 +1,9 @@
-
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-require("dotenv").config();
+// dotenv removed for Vercel compatibility; use Vercel dashboard for env vars
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
