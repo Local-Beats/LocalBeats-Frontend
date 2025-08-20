@@ -68,7 +68,17 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-react"],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: { safari: "13" },
+                  useBuiltIns: "entry",
+                  corejs: 3,
+                },
+              ],
+              "@babel/preset-react",
+            ],
           },
         },
       },
@@ -96,22 +106,4 @@ module.exports = {
     server: useHttps ? "https" : "http",
     hot: true,
   },
-  use: {
-    loader: "babel-loader",
-    options: {
-      presets: [
-        [
-          "@babel/preset-env",
-          {
-            targets: {
-              safari: "13"
-            },
-            useBuiltIns: "entry",
-            corejs: 3
-          }
-        ],
-        "@babel/preset-react"
-      ]
-    }
-  }
 };
