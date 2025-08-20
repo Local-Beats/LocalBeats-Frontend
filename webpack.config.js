@@ -11,7 +11,7 @@ const useHttps = process.env.USE_HTTPS === 'true';
 
 module.exports = {
   watch: false,
-  mode: "development",
+  mode: isProduction ? "production" : "development",
   entry: "./src/App.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -36,6 +36,16 @@ module.exports = {
           clientsClaim: true,
           skipWaiting: true,
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          // Add a cache version
+          runtimeCaching: [
+            {
+              urlPattern: /\.(?:js|css)$/,
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'static-resources-v2', // <- bump this to bust cache
+              },
+            },
+          ],
           cleanupOutdatedCaches: true,
           navigateFallback: '/index.html', // <-- key line for React Router!
           exclude: [/index\.html/],         // Don't precache index.html manually
@@ -85,5 +95,23 @@ module.exports = {
     historyApiFallback: true,
     server: useHttps ? "https" : "http",
     hot: true,
+  },
+  use: {
+    loader: "babel-loader",
+    options: {
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            targets: {
+              safari: "13"
+            },
+            useBuiltIns: "entry",
+            corejs: 3
+          }
+        ],
+        "@babel/preset-react"
+      ]
+    }
   }
 };
