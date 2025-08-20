@@ -1,6 +1,16 @@
 {
   "version": 2,
   "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/auth/(.*)",
+      "destination": "https:local-beats-backend.vercel.app/auth/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://local-beats-backend.vercel.app/api/$1"
+    }
+  ],
   "routes": [
     {
       "src": "/manifest.json",
