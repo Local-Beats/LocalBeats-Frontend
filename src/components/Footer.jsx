@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import "./Footer.css";
+import "./Footer.css";
 
 const Footer = () => {
   return (
@@ -8,11 +8,13 @@ const Footer = () => {
       <p>© {new Date().getFullYear()} LocalBeats. All rights reserved.</p>
       <p>
         <Link to="/privacy" className="footer-link">
-          Privacy | {" "}
+          Privacy
         </Link>
+        {" "} | {" "}
         <Link to="/terms" className="footer-link">
-          Terms | {" "}
+          Terms
         </Link>
+        {" "} | {" "}
         <Link to="/contact" className="footer-link">
           Contact
         </Link>
