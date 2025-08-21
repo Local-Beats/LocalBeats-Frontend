@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/LocalBeats.png";
 import "./ListenerCard.css";
-// import "./ListenerCardMap.css";
-import spotifyLogo from "../assets/spotify-logo.png";
+import "./ListenerCardMap.css";
+import spotifyLogo from "../assets/Spotify-Listener.png";
 // import EmojiPopup from "./EmojiPopup";
 
 // variant: 'list' (default) or 'map'
@@ -153,8 +153,8 @@ const ListenerCard = ({
         {/* <div>
           <iframe
             src={`https://open.spotify.com/embed/track/${track.spotify_track_id}`}
-            width="100%"
-            height="500px"
+            width="120%"
+            height="100x"
           ></iframe>
         </div> */}
       </div>

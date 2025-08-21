@@ -5,7 +5,43 @@ import "./ActiveListener.css";
 import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
-  console.log("this is user--->", user);
+  // Favorites state (persisted in localStorage)
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem("favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Listen for favorite-removed event to update heart status
+  useEffect(() => {
+    const handler = (e) => {
+      const { userId, songId } = e.detail || {};
+      if (!userId || !songId) return;
+      setFavorites((prev) => {
+        // Remove from favorites state if present
+        const updated = prev.filter(f => !(f.user.id === userId && f.track.song_id === songId));
+        return updated;
+      });
+      // Also remove emoji from localStorage for this card
+      try {
+        localStorage.removeItem(`emoji_${userId}_${songId}`);
+      } catch {}
+    };
+    window.addEventListener("favorite-removed", handler);
+    return () => window.removeEventListener("favorite-removed", handler);
+  }, []);
+
+  // Add to favorites (freeze card)
+  const handleFavorite = (card) => {
+    // Allow multiple favorites, even for same user/track
+    const updated = [...favorites, card];
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
+  console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
   console.log("this is track--->", track);
@@ -202,32 +238,32 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     <main className="active-listener-wrapper">
       <h1 className="active-listener-header">Active Listeners</h1>
 
-      <div className="active-listener-cards">
+      {/*
+        === LISTENER CARD CONTAINER DIMENSIONS ===
+        To adjust the width and vertical height of the card container for Active Listeners,
+        edit maxWidth, width, minHeight, and height below.
+        Example: maxWidth: 600 for desktop, width: '100%' for responsive, minHeight: 400 for vertical space.
+      */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 24,
+          maxWidth: 600, // <-- Edit maxWidth for desktop/mobile size (decreased for thinner container)
+          width: '100%', // <-- Edit width for responsiveness
+          minHeight: 400,  // <-- Edit minHeight for vertical space (increased for longer container)
+          height: 'auto', // <-- Edit height for fixed vertical height
+          margin: '0 auto',
+          padding: 0,
+        }}
+      >
         {allListeningSessions?.map((session) => (
-          <div>
-            <ListenerCard
-              key={session.id}
-              user={session.user}
-              track={session.song}
-            />
-            <div className="spotify-embed">
-              <iframe
-                style={{ borderRadius: "25px" }}
-                src={`https://open.spotify.com/embed/track/${session.song.spotify_track_id}`}
-                width="200%"
-                height="152"
-                allowfullscreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              ></iframe>
-              {/* <iframe
-                src={`https://open.spotify.com/embed/track/${session.song.spotify_track_id}`}
-                width="100%"
-                height="152"
-                // allow="clipboard-write;"
-              ></iframe> */}
-            </div>
-          </div>
+          <ListenerCard
+            key={session.id}
+            user={session.user}
+            track={session.song}
+            onFavorite={handleFavorite}
+          />
         ))}
       </div>
     </main>

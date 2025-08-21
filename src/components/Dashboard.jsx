@@ -11,13 +11,9 @@ import MapIcon from "@mui/icons-material/Map";
 import NavBar from "./NavBar";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
-
-// function getSessionForUser(userObj, sessions) {
-//   if (!userObj || !sessions) return null;
-//   return sessions.find(
-//     (s) => s.user && (s.user.id === userObj.id || s.user.username === userObj.username)
-//   );
-// }
+import OtherUsersBeet from "../assets/Other_users_beet.png";
+import DummyMarkers from "./DummyMarkers";
+import backgroundImage from "../assets/3.1.png";
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -66,27 +62,25 @@ const Dashboard = ({ user, onLogout }) => {
   // Used as a fallback when the current user's session isn't found yet
   const [currentUserTrack, setCurrentUserTrack] = useState(null);
 
-  const fetchSessions = async () => {
-    try {
-      const res = await axios.get("/api/listeners", { withCredentials: true });
-      const sessions = res.data;
-
-      if (Array.isArray(sessions) && sessions.length > 0) {
-        console.log("Setting new sessions");
-        setAllListeningSessions(sessions);
-      } else {
-        console.warn("Skipped setting empty sessions");
-      }
-    } catch (err) {
-      console.error("Failed to fetch sessions", err);
-    }
-  };
-
   // Poll all listening sessions
   useEffect(() => {
+    let alive = true;
+    async function fetchSessions() {
+      try {
+        const res = await axios.get("/api/listeners", {
+          withCredentials: true,
+        });
+        if (alive) setAllListeningSessions(res.data || []);
+      } catch {
+        // ignore
+      }
+    }
     fetchSessions();
-    const interval = setInterval(fetchSessions, 8000);
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchSessions, 10000);
+    return () => {
+      alive = false;
+      clearInterval(interval);
+    };
   }, []);
 
   // Geolocation + reverse geocode + send location to server
@@ -137,7 +131,22 @@ const Dashboard = ({ user, onLogout }) => {
       const res = await axios.get("/api/users/online", {
         withCredentials: true,
       });
-      setOnlineUsers(res.data.users || []);
+      let users = res.data.users || [];
+      // Ensure current user is present with latest coords
+      if (user && coords) {
+        const alreadyPresent = users.some((u) => u.username === user.username);
+        if (!alreadyPresent) {
+          users = [
+            ...users,
+            {
+              ...user,
+              latitude: coords.lat,
+              longitude: coords.lng,
+            },
+          ];
+        }
+      }
+      setOnlineUsers(users);
     } catch (err) {
       console.error("Failed to fetch online users:", err);
     }
@@ -179,13 +188,17 @@ const Dashboard = ({ user, onLogout }) => {
             styles: customMapStyle,
           });
 
+          // Close any open ListenerCard when clicking on the map.
+          // Also prevent default POI InfoWindows.
           map.addListener("click", (event) => {
+            // Always close our custom card on any map click
             setSelectedUser(null);
             setSelectedLatLng(null);
             if (infoWindowRef.current) {
               infoWindowRef.current.close();
               infoWindowRef.current = null;
             }
+            // Prevent Google default POI InfoWindow if a placeId is present
             if (event && event.placeId) {
               event.stop();
             }
@@ -197,6 +210,7 @@ const Dashboard = ({ user, onLogout }) => {
     }
 
     return () => {
+      // Cleanup
       markersRef.current.forEach((m) => m.setMap && m.setMap(null));
       markersRef.current = [];
       if (infoWindowRef.current) {
@@ -217,31 +231,42 @@ const Dashboard = ({ user, onLogout }) => {
     };
   }, [coords, apiKey, mapKey]);
 
-  // Render user markers
+  // Render markers + attach click to open clean ListenerCard-only InfoWindow
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
 
+    // Clear previous markers
     markersRef.current.forEach((marker) => marker.setMap(null));
     markersRef.current = [];
 
     onlineUsers.forEach((u) => {
       if (typeof u.latitude === "number" && typeof u.longitude === "number") {
         const isCurrentUser = u.username === user.username;
-        const session = allListeningSessions.find((s) => s.user.id === u.id);
+
+        // Find the exact session for this user, just like ActiveListener
+        const session = allListeningSessions.find(
+          (s) =>
+            s.user && (s.user.id === u.id || s.user.username === u.username)
+        );
+        const cardUser = session?.user || u;
+        const cardTrack = session?.song || {
+          title: "No song playing",
+          artist: "",
+          album_art: "https://via.placeholder.com/80x80?text=No+Art",
+          spotify_track_id: "",
+        };
 
         const marker = new window.google.maps.Marker({
           position: { lat: u.latitude, lng: u.longitude },
           map,
           icon: isCurrentUser
-            ? // ? { url: BeatNavImg, scaledSize: new window.google.maps.Size(40, 40) }
-              { url: UserIcon, scaledSize: new window.google.maps.Size(40, 40) }
-            : // : {
-              //     url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
-              //     scaledSize: new window.google.maps.Size(40, 40),
-              //   },
-              {
-                url: OtherUserIcon,
+            ? {
+                url: BeatNavImg,
+                scaledSize: new window.google.maps.Size(40, 40),
+              }
+            : {
+                url: OtherUsersBeet, // imported
                 scaledSize: new window.google.maps.Size(40, 40),
               },
         });
@@ -252,24 +277,15 @@ const Dashboard = ({ user, onLogout }) => {
           if (latLng) {
             setSelectedLatLng({ lat: latLng.lat(), lng: latLng.lng() });
 
+            // Close existing infoWindow if any
             if (infoWindowRef.current) {
               infoWindowRef.current.close();
             }
 
-            const session = allListeningSessions.find(
-              (s) => s.user_id === u.id || s.user?.id === u.id
-            );
-            const cardUser = session?.user || u;
-            const cardTrack = session?.song || {
-              title: "No song playing",
-              artist: "",
-              album_art: "/images/no-art.png",
-              spotify_track_id: "",
-            };
-
+            // Render ListenerCard as the only content, no extra box
             const contentHtml = ReactDOMServer.renderToString(
               <div className="custom-infowindow-content">
-                <ListenerCard user={cardUser} track={cardTrack} />
+                <ListenerCard user={cardUser} track={cardTrack} variant="map" />
               </div>
             );
 
@@ -321,6 +337,39 @@ const Dashboard = ({ user, onLogout }) => {
     });
   }, [onlineUsers, mapKey, user, allListeningSessions, currentUserTrack]);
 
+  // //add background
+  // // Set amy-background2.png as background only on this page
+  // useEffect(() => {
+  //   const originalBg = document.body.style.background;
+  //   document.body.style.background = `url(${require("../assets/0.png")}) no-repeat center center fixed`;
+  //   document.body.style.backgroundSize = "cover";
+  //   document.body.style.backgroundAttachment = "fixed";
+  //   return () => {
+  //     document.body.style.background = originalBg;
+  //     document.body.style.backgroundSize = "";
+  //     document.body.style.backgroundAttachment = "";
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const originalBg = document.body.style.background;
+
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundPosition = "center center";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundAttachment = "fixed";
+
+    return () => {
+      document.body.style.background = originalBg;
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundRepeat = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundAttachment = "";
+    };
+  }, []);
+
   return (
     <main className="dashboard-main">
       <div className="navbar-container">
@@ -333,6 +382,8 @@ const Dashboard = ({ user, onLogout }) => {
           style={{ position: "relative" }}
         >
           <div ref={mapRef} className="dashboard-map" key={mapKey} />
+          {/* DUMMY MARKERS: comment out next line to hide test beets */}
+          <DummyMarkers map={mapInstanceRef.current} />
           <button
             className="dashboard-bubble-btn"
             onClick={() => setShowResults(true)}

@@ -1,9 +1,19 @@
+// Unregister service worker in development to avoid caching/flicker issues
+if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}
 import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 // import axios from "axios";
 import "./AppStyles.css";
 // import NavBar from "./components/NavBar";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
+import Favorites from "./components/Favorites";
 // import NowPlaying from "./components/Activelistener";
 // import ActliveListener from "./components/Activelistener";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -53,22 +63,19 @@ const App = () => {
         const response = await axios.get("/auth/me", {
           withCredentials: true,
         });
+        console.log("✅ /auth/me success:", response.data);
         setUser(response.data.user);
-      } catch {
-        console.log("Not authenticated");
+      } catch (err) {
+        console.warn("❌ /auth/me failed:", err);
         setUser(null);
       }
+
     };
     checkAuth();
   }, []);
 
   useEffect(() => {
     const syncSpotifyAndFetchUser = async () => {
-      if (!isAuthenticated || !auth0User) {
-        console.warn("User not authenticated or auth0User not ready.");
-        return;
-      }
-
       try {
         const claims = await getIdTokenClaims();
         const spotifyAccessToken = claims["https://localbeats.app/spotify_access_token"];
@@ -78,36 +85,42 @@ const App = () => {
           return;
         }
 
-        //  Sync with backend — this will update DB & create session token
         await axios.post("/auth/spotify/sync", {}, {
           headers: {
             Authorization: `Bearer ${spotifyAccessToken}`,
           },
           withCredentials: true,
+        });
+
+        let res;
+        try {
+          res = await axios.get("/auth/me", { withCredentials: true });
+          setUser(res.data.user);
+        } catch (err) {
+          console.warn("First /auth/me failed — retrying in 500ms...");
+          setTimeout(async () => {
+            try {
+              const retryRes = await axios.get("/auth/me", { withCredentials: true });
+              setUser(retryRes.data.user);
+            } catch (retryErr) {
+              console.error("Retry failed. Still not logged in.", retryErr);
+            }
+          }, 500);
         }
-        );
-
-
-        // Fetch user info from DB (using session token)
-        const res = await axios.get("/auth/me", { withCredentials: true });
-        console.log("this is data-->", res.data)
-        setUser(res.data.user);
       } catch (err) {
         console.error("Post-login sync failed:", err);
       }
     };
 
-    // Update frontend state
-    // setUser({
-    //   name: auth0User.name,
-    //   email: auth0User.email,
-    //   picture: auth0User.picture,
-    // });
-
-    console.log("Auth0 state ->", { isAuthenticated, auth0User });
-    syncSpotifyAndFetchUser();
-  }, [isAuthenticated, auth0User, getIdTokenClaims]);
-
+    if (
+      isAuthenticated &&
+      auth0User &&
+      user === null // <- only sync if user hasn't been set yet
+    ) {
+      console.log("Syncing Auth0 → DB user...");
+      syncSpotifyAndFetchUser();
+    }
+  }, [isAuthenticated, auth0User, getIdTokenClaims, user]);
 
 
   const handleLogout = async () => {
@@ -125,7 +138,7 @@ const App = () => {
     // Prompt for location on mount
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        () => {},
+        () => { },
         (error) => {
           if (error.code === error.PERMISSION_DENIED) {
             alert("Location permission is required for full functionality.");
@@ -146,21 +159,27 @@ const App = () => {
 
   return (
     <div className="app">
+      {user === null && (
+        <div style={{ padding: 20, color: "red" }}>
+          <p>⚠️ Not logged in</p>
+          <p>Auth check likely failed on Safari due to blocked cookies.</p>
+          <p>Please check if your backend is setting a <code>Secure; SameSite=None</code> cookie.</p>
+        </div>
+      )}
       <Routes>
         <Route path="/" element={<LandingPage setUser={setUser} />} />
         <Route path="/signup" element={<Signup setUser={setUser} />} />
         <Route path="/dashboard" element={
           user === null ? (
             <div style={{ textAlign: "center", marginTop: 60 }}>
-              Loading your profile...
+              {isAuthenticated ? "Loading your profile..." : "Please log in first."}
             </div>
           ) : (
-            <>
-              {/* <NavBar user={user} onLogout={handleLogout} /> */}
-              <Dashboard user={user} onLogout={handleLogout} />
-            </>
+            <Dashboard user={user} onLogout={handleLogout} />
           )
         } />
+        <Route path="/profile" element={<Profile user={user} onLogout={handleLogout} />} />
+        <Route path="/favorites" element={<Favorites user={user} onLogout={handleLogout} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
@@ -197,3 +216,11 @@ const Root = () => {
 
 const root = createRoot(document.getElementById("root"));
 root.render(<Root />);
+
+if (process.env.NODE_ENV !== "production" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  });
+}

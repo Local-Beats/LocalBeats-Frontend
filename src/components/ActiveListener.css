@@ -11,12 +11,6 @@
         align-items: center;
 }
 
-.spotify-embed{
-    display: flex;
-    justify-content: center;
-    min-width: 600px;
-}
-
 @media (max-width: 600px) {
     .active-listener-cards {
         align-items: center;
