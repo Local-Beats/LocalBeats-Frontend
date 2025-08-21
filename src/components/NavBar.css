@@ -407,7 +407,7 @@
   display: block;
   width: 22px; /* Hamburger line width. Adjust here. */
   height: 2px;  /* Hamburger line height. Adjust here. */
-  background: black;
+  background: lightgreen;
   /* <-- HAMBURGER LINES COLOR */
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(.4, 2.3, .3, 1);
