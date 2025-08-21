@@ -1,3 +1,108 @@
+/* === LIST BUTTON ICON ===
+     To adjust the List icon size or position, edit below. */
+.ListIcon {
+    font-size: 1.3em;
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
+
+/* === LIST BUTTON VERTICAL POSITION ===
+     To move the List button up or down, change the bottom value below. */
+/* Bubble button at bottom center */
+.dashboard-bubble-btn {
+    position: fixed;
+    left: 50%;
+    bottom: 44px !important; /* Force position with !important. Adjust here. */
+    transform: translateX(-50%);
+    background: #434242;
+    color: lightgreen;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1.5px solid #0505A9;
+    border-radius: 999px;
+    box-shadow: none;
+    padding: 0.45em 1.3em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+}
+/* Force all SVG arrows, plus, and minus icons in Google Maps controls to blue */
+.gm-control svg,
+.gm-control button svg,
+.gm-control-active svg,
+.gm-control-active button svg,
+.gm-control *[aria-label],
+.gm-control button *[aria-label],
+.gm-control *[class*="icon"],
+.gm-control button *[class*="icon"] {
+    fill: #0505A9 !important;
+    stroke: #0505A9 !important;
+    color: #0505A9 !important;
+}
+/* Force all text and icon colors inside Google Maps controls to blue */
+.gm-control-active,
+.gm-svpc,
+.gm-style-mtc,
+.gm-control,
+.gm-control > div,
+.gm-control button,
+.gm-control-active button,
+.gm-control-active > div,
+.gm-control-active > div > button,
+.gm-control * {
+    color: #0505A9 !important;
+    fill: #0505A9 !important;
+    border-color: #0505A9 !important;
+}
+/* Style Google Maps controls to match List/Map button */
+.gm-control-active,
+.gm-svpc,
+.gm-style-mtc,
+.gm-control,
+.gm-control > div,
+.gm-control button,
+.gm-control-active button,
+.gm-control-active > div,
+.gm-control-active > div > button {
+    background: #fff !important;
+    color: #0505A9 !important;
+    border: 1.5px solid #0505A9 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    outline: none !important;
+}
+.gm-control button svg,
+.gm-control-active button svg {
+    fill: #0505A9 !important;
+}
+/* Make the InfoWindow arrow match the listener card color */
+.gm-style-iw-t, .gm-style-iw-t::after, .gm-style-iw-t::before {
+    background: #e6e6fa !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+/* Make InfoWindow scrollbars (vertical and horizontal) transparent */
+.gm-style-iw::-webkit-scrollbar,
+.gm-style-iw-c::-webkit-scrollbar,
+.gm-style-iw-d::-webkit-scrollbar {
+    background: transparent !important;
+    width: 8px !important;
+    height: 8px !important;
+}
+.gm-style-iw::-webkit-scrollbar-thumb,
+.gm-style-iw-c::-webkit-scrollbar-thumb,
+.gm-style-iw-d::-webkit-scrollbar-thumb {
+    background: transparent !important;
+}
+.gm-style-iw {
+    scrollbar-color: transparent transparent !important;
+    scrollbar-width: thin !important;
+}
 /* Force remove white background/padding/arrow below InfoWindow in desktop browsers */
 /* Only apply to your dashboard map */
 .dashboard-map-container .gm-style-iw-c,
@@ -86,7 +191,9 @@
 .dashboard-main {
     position: relative;
     min-height: 100vh;
-    background: #fff;
+    /* background: #fff; */
+    /* background: #e6e6fa; */
+    background-image: url('../assets/3.1.png');
 }
 
 
@@ -137,18 +244,6 @@
 }
 
 
-/* Map container: mobile first, covers full viewport */
-
-/*
-    === MAP DIMENSIONS (Mobile) ===
-    To adjust the map height/width on mobile, edit the values below.
-    Example: height: 70vh; (for 70% of viewport height)
-*/
-/*
-    === MAP VERTICAL POSITION (Mobile) ===
-    To move the map higher or lower on mobile, edit the 'top' value below.
-    Example: top: 60px; (moves map closer to navbar)
-*/
 /*
     === MAP HEIGHT (Mobile) ===
     To make the map extend lower, increase the height below.
@@ -158,10 +253,9 @@
     /* position: fixed; */
     /* top: 106px; */
     /* <-- MAP TOP OFFSET (Mobile) */
-    /* left: 0; */
-    width: 100vw;
-    height: 87.5vh;
-    /* Changed from 100% to ensure full viewport height */
+        background: #e6e6fa;
+        color: #4b3c6e;
+    height: 94.5vh; /* Changed from 100% to ensure full viewport height */
     /* <-- MAP HEIGHT (Mobile, container) */
     margin: 0;
     border: none;
@@ -199,15 +293,13 @@
     left: 50%;
     bottom: 65px;
     transform: translateX(-50%);
-    background: rgb(46, 45, 46);
+    background: #434242;
     color: lightgreen;
-    /* display: block; */
-    /* margin: 0 auto 1.2rem auto; */
     font-weight: 600;
     font-size: 1rem;
-    border: none;
+    border: 1.5px solid black;
     border-radius: 999px;
-    /* box-shadow: 0 2px 12px rgba(25, 118, 210, 0.18); */
+    box-shadow: none;
     padding: 0.45em 1.3em;
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
@@ -218,10 +310,8 @@
 }
 
 .dashboard-bubble-btn:active {
-    background: #e3f2fd;
-    color: #0d47a1;
-    align-items: center;
-    gap: 0.5em;
+    background: #434242;
+    color: lightgreen;
 }
 
 /* Results section: covers full viewport, scrollable */
@@ -229,33 +319,32 @@
 
     /* Back to Map button at top of results section */
     /* Center the Back to Map button in results section */
+    /* === MAP BUTTON VERTICAL POSITION ===
+       To move the Map button up or down, change the bottom value below. */
     .dashboard-back-btn {
         position: fixed;
-        bottom: 65px;
+        bottom: 30px !important; /* Force position with !important. Adjust here. */
         left: 50%;
         transform: translateX(-50%);
-        /* aligns horital in the middle */
         margin: 0 auto 1.2rem auto;
-        background: rgb(46, 45, 46);
-        color: lightgreen;
+         background: #434242;
+    color: lightgreen;
         font-weight: 600;
         font-size: 1rem;
-        border: none;
+        border: 1.5px solid black;
         border-radius: 999px;
-        /* box-shadow: 0 1px 6px rgba(25, 118, 210, 0.10); */
+        box-shadow: none;
         padding: 0.45em 1.3em;
         cursor: pointer;
-        /* z-index removed to prevent hovering above navbar */
-        transition: background 0.18s, color 0.18s, border 0.18s;
+        transition: background 0.2s, color 0.2s;
         display: flex;
         align-items: center;
         gap: 0.2em;
     }
 
     .dashboard-back-btn:active {
-        background: #e3f2fd;
-        color: #0d47a1;
-        border-color: #0d47a1;
+        background: #434242;
+    color: lightgreen;
     }
 
     /* Results section: covers full viewport, scrollable */
@@ -342,7 +431,7 @@
     }
 
     .dashboard-bubble-btn {
-
+            
         bottom: 16px;
     }
 
@@ -373,3 +462,5 @@
     align-items: center;
     gap: 0.5em;
 } */
+
+

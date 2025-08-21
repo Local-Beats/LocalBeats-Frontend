@@ -1,46 +1,29 @@
 {
   "version": 2,
   "outputDirectory": "dist",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
+      "source": "/auth/:path*",
+      "destination": "https://local-beats-backend.vercel.app/auth/:path*"
     },
     {
-      "src": "/service-worker.js",
-      "dest": "/service-worker.js"
+      "source": "/api/:path*",
+      "destination": "https://local-beats-backend.vercel.app/api/:path*"
     },
     {
-      "src": "/icons/(.*)",
-      "dest": "/icons/$1"
-    },
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
     {
-      "src": "/screenshots/(.*)",
-      "dest": "/screenshots/$1"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/main.js",
-      "dest": "/main.js"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/react-logo.svg",
-      "dest": "/react-logo.svg"
-    },
-    {
-      "src": "/spongebob-404.webp",
-      "dest": "/spongebob-404.webp"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/service-worker.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }
