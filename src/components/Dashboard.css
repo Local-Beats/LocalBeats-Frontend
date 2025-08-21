@@ -14,8 +14,8 @@
     left: 50%;
     bottom: 44px !important; /* Force position with !important. Adjust here. */
     transform: translateX(-50%);
-    background: #fff;
-    color: #0505A9;
+    background: #434242;
+    color: lightgreen;
     font-weight: 600;
     font-size: 1rem;
     border: 1.5px solid #0505A9;
@@ -191,7 +191,9 @@
 .dashboard-main {
     position: relative;
     min-height: 100vh;
-    background: #fff;
+    /* background: #fff; */
+    /* background: #e6e6fa; */
+    background-image: url('../assets/3.1.png');
 }
 
 
@@ -291,11 +293,11 @@
     left: 50%;
     bottom: 15px;
     transform: translateX(-50%);
-    background: #fff;
-    color: #0505A9;
+    background: #434242;
+    color: lightgreen;
     font-weight: 600;
     font-size: 1rem;
-    border: 1.5px solid #0505A9;
+    border: 1.5px solid black;
     border-radius: 999px;
     box-shadow: none;
     padding: 0.45em 1.3em;
@@ -308,8 +310,8 @@
 }
 
 .dashboard-bubble-btn:active {
-    background: #fff;
-    color: #0505A9;
+    background: #434242;
+    color: lightgreen;
 }
 
 /* Results section: covers full viewport, scrollable */
@@ -325,11 +327,11 @@
         left: 50%;
         transform: translateX(-50%);
         margin: 0 auto 1.2rem auto;
-        background: #fff;
-        color: #0505A9;
+         background: #434242;
+    color: lightgreen;
         font-weight: 600;
         font-size: 1rem;
-        border: 1.5px solid #0505A9;
+        border: 1.5px solid black;
         border-radius: 999px;
         box-shadow: none;
         padding: 0.45em 1.3em;
@@ -341,8 +343,8 @@
     }
 
     .dashboard-back-btn:active {
-        background: #fff;
-        color: #0505A9;
+        background: #434242;
+    color: lightgreen;
     }
 
     /* Results section: covers full viewport, scrollable */

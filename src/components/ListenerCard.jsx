@@ -1,20 +1,28 @@
-
 import React, { useState, useEffect } from "react";
 import logo from "../assets/LocalBeats.png";
 import "./ListenerCard.css";
 import "./ListenerCardMap.css";
-import spotifyLogo from "../assets/spotify-logo.png";
+import spotifyLogo from "../assets/Spotify-Listener.png";
 // import EmojiPopup from "./EmojiPopup";
 
 // variant: 'list' (default) or 'map'
-const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiProp, onEmojiClick }) => {
+const ListenerCard = ({
+  user,
+  track,
+  variant = "list",
+  onFavorite,
+  emoji: emojiProp,
+  onEmojiClick,
+}) => {
   const isMap = variant === "map";
   const containerClass = isMap
     ? "listener-card-container listener-card-map"
     : "listener-card-container";
 
   // Unique key for this card (user+track)
-  const cardKey = `${user.id || user.username || ""}_${track.song_id || track.title}`;
+  const cardKey = `${user.id || user.username || ""}_${
+    track.song_id || track.title
+  }`;
 
   // Emoji state: persistent per card using localStorage
   const [emoji, setEmoji] = useState(() => {
@@ -46,7 +54,9 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
       try {
         const stored = localStorage.getItem("favorites");
         let favs = stored ? JSON.parse(stored) : [];
-        favs = favs.filter(f => !(f.user.id === user.id && f.track.song_id === track.song_id));
+        favs = favs.filter(
+          (f) => !(f.user.id === user.id && f.track.song_id === track.song_id)
+        );
         localStorage.setItem("favorites", JSON.stringify(favs));
       } catch {}
     }
@@ -60,7 +70,11 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
   return (
     <main
       className={containerClass}
-      style={isMap ? { overflow: "visible", maxHeight: "none" } : { position: "relative" }}
+      style={
+        isMap
+          ? { overflow: "visible", maxHeight: "none" }
+          : { position: "relative" }
+      }
     >
       {/* Heart badge for ActiveListener (not in favorites view) */}
       {typeof onFavorite === "function" && (
@@ -80,15 +94,17 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            opacity: emoji ? 1 : 0.7
+            opacity: emoji ? 1 : 0.7,
           }}
           onClick={handleHeartClick}
         >
-          <span style={{
-            color: emoji ? "#e53935" : "#bbb",
-            filter: emoji ? "none" : "grayscale(1)",
-            transition: "color 0.2s"
-          }}>
+          <span
+            style={{
+              color: emoji ? "#e53935" : "#bbb",
+              filter: emoji ? "none" : "grayscale(1)",
+              transition: "color 0.2s",
+            }}
+          >
             ❤️
           </span>
         </div>
@@ -110,7 +126,7 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            cursor: onEmojiClick ? "pointer" : undefined
+            cursor: onEmojiClick ? "pointer" : undefined,
           }}
           onClick={onEmojiClick}
         >
@@ -130,12 +146,19 @@ const ListenerCard = ({ user, track, variant = "list", onFavorite, emoji: emojiP
           href={`https://open.spotify.com/track/${track.spotify_track_id}`}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={e => e.stopPropagation()} // Don't trigger popup when clicking Spotify
+          onClick={(e) => e.stopPropagation()} // Don't trigger popup when clicking Spotify
         >
           <img className="listener-card-spotify" src={spotifyLogo} />
         </a>
+        {/* <div>
+          <iframe
+            src={`https://open.spotify.com/embed/track/${track.spotify_track_id}`}
+            width="120%"
+            height="100x"
+          ></iframe>
+        </div> */}
       </div>
-  {/* (showPopup and EmojiPopup removed: no longer needed) */}
+      {/* (showPopup and EmojiPopup removed: no longer needed) */}
     </main>
   );
 };

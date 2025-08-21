@@ -1,0 +1,609 @@
+/* Make the logo button fill the logo area and be fully clickable, but invisible */
+.navbar-logo-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .navbar-logo-btn {
+    width: 50px;
+    height: 50px;
+  }
+}
+/* Flip card animation for navbar logo/profile image */
+.flip-card-navbar {
+  perspective: 600px;
+  width: 85px;
+  height: 85px;
+  position: relative;
+  display: inline-block;
+}
+.flip-card-inner-navbar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flip-card-inner-navbar.flipped {
+  transform: rotateY(180deg);
+}
+.flip-card-front-navbar, .flip-card-back-navbar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
+.flip-card-back-navbar {
+  transform: rotateY(180deg);
+}
+@media (max-width: 600px) {
+  .hamburger-container {
+    width: 85px;
+    height: 85px;
+    min-width: 75px;
+    min-height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Make the whole container clickable */
+    cursor: pointer;
+    z-index: 301;
+    /* Remove pointer-events: none if present */
+    pointer-events: auto;
+  }
+  .hamburger-container .McButton {
+    width: 100%;
+    height: 100%;
+    min-width: 60px;
+    min-height: 60px;
+    /* Remove margin/padding so button fills container */
+    margin: 0;
+    padding: 0;
+  }
+}
+@media (max-width: 600px) {
+  .McButton {
+    width: 75px;
+    height: 75px;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 300;
+    gap: 0;
+    /* Make sure the button is always on top and clickable */
+    pointer-events: auto;
+  }
+  .McButton b {
+    width: 54px;
+    height: 5px;
+    margin: 10px 0;
+    pointer-events: none;
+  }
+}
+@media (max-width: 600px) {
+  .McButton {
+    width: 75px;
+    height: 75px;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0;
+    /* Remove any gap between lines and button edge */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Optionally, increase the b line width for easier tap */
+  }
+  .McButton b {
+    width: 54px;
+    height: 5px;
+    margin: 10px 0;
+  }
+}
+@keyframes logo-dance-run {
+  0% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+  }
+
+  5% {
+    transform: translateX(-50%) scale(1.08) rotate(8deg);
+  }
+
+  10% {
+    transform: translateX(-50%) scale(1.12) rotate(-8deg);
+  }
+
+  15% {
+    transform: translateX(-50%) scale(1.08) rotate(8deg);
+  }
+
+  20% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+  }
+
+  40% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+  }
+
+  60% {
+    transform: translateX(120vw) scale(1) rotate(0deg);
+    opacity: 0;
+  }
+
+  61% {
+    transform: translateX(-120vw) scale(1) rotate(0deg);
+    opacity: 0;
+  }
+
+  62% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1) rotate(-5deg);
+    opacity: 1;
+  }
+}
+
+
+/* === PROFILE IMAGE/LOGO SIZE ===
+   To adjust the profile image or logo size, change width/height below. */
+.navbar-logo {
+  width: 56px; /* Bigger logo/profile image. Adjust here. */
+  height: 56px; /* Bigger logo/profile image. Adjust here. */
+  transition: width 0.3s, height 0.3s, margin 0.3s;
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: none;
+  margin: 0 0 0 0;
+  z-index: 200;
+  display: block;
+  /* box-shadow: 0 0 15px 5px white;
+  border-radius:10px; */
+}
+
+@media (min-width: 601px) {
+  .navbar {
+    justify-content: flex-start;
+  }
+
+  .nav-brand {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* === PROFILE IMAGE/LOGO SIZE (Desktop) ===
+     To adjust the desktop profile image/logo size, change width/height below. */
+  .navbar-logo {
+    width: 68px; /* Bigger desktop logo/profile image. Adjust here. */
+    height: 68px; /* Bigger desktop logo/profile image. Adjust here. */
+    margin: 0 0 0 0;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    justify-content: flex-start;
+  }
+
+  .nav-brand {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* === PROFILE IMAGE/LOGO SIZE (Mobile) ===
+     To adjust the mobile profile image/logo size, change width/height below. */
+  .navbar-logo {
+    width: 50px; /* Bigger mobile logo/profile image. Adjust here. */
+    height: 50px; /* Bigger mobile logo/profile image. Adjust here. */
+    margin: 0 0 0 0;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+
+ /* .nav-user-info {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  pointer-events: auto;
+  justify-content: center; */
+  /* <-- USERNAME PLACEMENT (Mobile) */
+  /* width: 100%;
+  position: absolute;
+  right: 0;
+  top: 46%; */
+  /* <-- Move up/down (was 50%) */
+  /* transform: translateY(-34%); */
+  /* <-- Move up/down (was -50%) */
+  /* z-index: 201;
+} */
+}
+
+/*
+  === NAVBAR BACKGROUND COLOR ===
+  To change the navbar color, edit the background property below.
+  Example: background: #e3f2fd; (baby blue)
+*/
+/* === NAVBAR HEIGHT & PADDING ===
+   To make the navbar thinner, adjust min-height and padding below. */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #4e4e4e;
+  /* <-- NAVBAR COLOR (baby blue) */
+  padding: 0.15rem 0.5rem; /* Thinner navbar. Adjust here. */
+  border: none;
+  pointer-events: auto;
+  /* none */
+  min-height: 50px; /* Thinner navbar. Adjust here. */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 0px;
+}
+
+/*
+  === USERNAME PLACEMENT (Mobile) ===
+  To move the username left, right, or center on mobile, edit the justify-content property below.
+  Example: justify-content: center; (centered), flex-start (left), flex-end (right)
+*/
+/*
+  === USERNAME CONTAINER POSITIONING ===
+  To move the username container up/down or adjust spacing, edit top, transform, and gap below.
+*/
+
+
+.navbar-app-name { 
+  /* color:rgb(33, 168, 33); */
+  font-size:larger;
+  color:lightgreen;
+  margin-top: 35px; 
+  margin: auto;
+  /* box-shadow: 50px 50px 80px 5px rgb(251, 253, 253);
+  border-radius:20px;
+  background-color:#fff; */
+}
+
+.nav-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  pointer-events: auto;
+  justify-content: center;
+  /* <-- USERNAME PLACEMENT (Mobile) */
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 46%;
+  /* <-- Move up/down (was 50%) */
+  transform: translateY(-34%);
+  /* <-- Move up/down (was -50%) */
+  z-index: 201;
+}
+
+/*
+  === USERNAME STACK (Welcome + Username) ===
+  To adjust vertical spacing between 'Welcome:' and username, edit gap and margin below.
+*/
+/*
+  === USERNAME STACK HORIZONTAL POSITION (Mobile) ===
+  To move the welcome/username stack right or left on mobile, edit margin-left below.
+  Example: margin-left: 12px; (moves right), 0 (default)
+*/
+.username-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  /* <-- Space between Welcome and username */
+  margin-left: 26px;
+  /* 100px */
+  /* <-- Move welcome/username 12px to the right (Mobile) */
+}
+
+.username-welcome {
+  font-size: 0.95rem;
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 0.1rem;
+  /* <-- Space below Welcome */
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 601px) {
+
+  /*
+    === USERNAME PLACEMENT (Desktop) ===
+    To center the username container horizontally in the navbar on desktop, use left/top/transform below.
+    To move up/down, edit top/transform. To move left/right, edit left.
+  */
+  .nav-user-info {
+    position: absolute;
+    left: 50%;
+    /* <-- USERNAME CENTER (Desktop) */
+    top: 46%;
+    /* <-- Move up/down (was 50%) */
+    transform: translate(-50%, -46%);
+    width: max-content;
+    margin-left: 0;
+  }
+}
+
+/*
+  === HAMBURGER ICON POSITION ===
+  To move the hamburger icon further right, edit the right property below.
+  Example: right: 2rem; (default), right: 2rem + 12px = calc(2rem - -12px)
+*/
+.hamburger-container {
+  position: absolute;
+  right: -1.0rem; /* Move hamburger further right. Adjust here. */
+  /* <-- Move hamburger right by increasing right value */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+/* Hamburger Menu */
+/*
+  The hamburger button is now fully clickable. To adjust the clickable area, edit width/height below.
+*/
+/*
+  === HAMBURGER BUTTON CLICKABLE AREA ===
+  To make the hamburger fully clickable, ensure width/height cover the whole icon and remove any gaps.
+  You can adjust width/height below for a larger or smaller clickable area.
+*/
+/* === HAMBURGER BUTTON SIZE ===
+   To adjust the hamburger button clickable area, change width/height below. */
+.McButton {
+  width: 38px; /* Hamburger clickable area. Adjust here. */
+  height: 38px; /* Hamburger clickable area. Adjust here. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 300;
+  padding: 0;
+  gap: 0;
+  touch-action: manipulation;
+}
+
+/*
+  To change the color of the 3 lines (hamburger icon), edit the 'background' property below:
+  Example: background: #000; for black lines, background: #fff; for white lines
+*/
+/* === HAMBURGER LINES SIZE ===
+   To adjust the hamburger lines, change width/height below. */
+.McButton b {
+  display: block;
+  width: 22px; /* Hamburger line width. Adjust here. */
+  height: 2px;  /* Hamburger line height. Adjust here. */
+  background: lightgreen;
+  /* <-- HAMBURGER LINES COLOR */
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(.4, 2.3, .3, 1);
+  position: relative;
+  margin: 3px 0; /* Hamburger line spacing. Adjust here. */
+  /* Ensures lines are spaced but button is fully clickable */
+}
+
+.McButton b:nth-child(1) {
+  top: 0;
+}
+
+.McButton b:nth-child(2) {
+  top: 0;
+}
+
+.McButton b:nth-child(3) {
+  top: 0;
+}
+
+.McButton.active b:nth-child(1) {
+  transform: translateY(7px) rotate(45deg); /* Make X same size as hamburger lines. Adjust here. */
+}
+
+.McButton.active b:nth-child(2) {
+  opacity: 0;
+}
+
+.McButton.active b:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg); /* Make X same size as hamburger lines. Adjust here. */
+}
+
+/*
+  Hamburger dropdown uses absolute positioning and a very high z-index so it appears above the map but within the navbar area.
+  Adjust z-index if needed.
+*/
+/*
+  Hamburger dropdown in portal: fixed to top right, always above all content.
+*/
+/*
+  Hamburger dropdown in portal: fixed to top right, always above all content.
+  To adjust the left padding (space between button and left edge), change padding-left below.
+*/
+
+/* === HAMBURGER DROPDOWN MENU ===
+   To adjust the dropdown size, change min-width and min-height below. */
+/* === HAMBURGER DROPDOWN MENU ===
+   To adjust the dropdown size, change min-width and min-height below. */
+.hamburger-dropdown-portal {
+  position: fixed;
+  top: 80px;
+  right: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 12px 12px 12px 10px;
+  min-width: 180px; /* Popout width. Adjust here. */
+  min-height: 170px; /* Popout height. Adjust here. */
+  width: auto; /* Let content wrap nicely. Adjust as needed. */
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+/* === HAMBURGER MENU BUTTONS ===
+   Match styling to .logout-btn. Adjust padding, font-size, etc. as needed. */
+.hamburger-menu-btn {
+  background-color: #bbd0ff;
+  color: #333;
+  border: none;
+  padding: 6px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hamburger-menu-btn:hover {
+    background-color: #c82333;
+  }
+}
+
+
+.nav-brand a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.nav-brand a:hover {
+  color: #007bff;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.auth-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background: transparent;
+}
+
+.nav-link {
+  color: #666;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  background: rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nav-link:hover {
+  color: #007bff;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: transparent;
+}
+
+/*
+  === USERNAME FONT SIZE (Mobile) ===
+  To change the username font size on mobile, edit font-size below.
+*/
+.username {
+  color: #666;
+  font-weight: 500;
+  font-size: 1.25rem;
+  /* <-- USERNAME FONT SIZE (Mobile) */
+}
+
+@media (min-width: 601px) {
+
+  /*
+    === USERNAME FONT SIZE (Desktop) ===
+    To change the username font size on desktop, edit font-size below.
+  */
+  .username {
+    font-size: 1.55rem;
+    /* <-- USERNAME FONT SIZE (Desktop) */
+  }
+}
+
+/*
+  Logout button always fills the vertical height of the dropdown container.
+  On mobile, the button always shows the hover color.
+  To adjust the height, edit height below. To adjust color, edit background-color.
+*/
+
+/*
+  Logout button always shows #c82333 on mobile (no hover), and changes on hover for desktop browsers only.
+*/
+/*
+  Logout button is solid #c82333 (no overlay) on all devices, with white text.
+  To adjust color, edit background-color below.
+*/
+.logout-btn {
+  background-color: #bbd0ff;
+  /* #c82333 */
+  color: black;
+  border: none;
+  padding: 6px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .logout-btn:hover {
+    background-color: #c82333;
+  }
+}
+

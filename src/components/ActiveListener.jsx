@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../utils/axiosInstance";
 import ListenerCard from "./ListenerCard";
-import './ActiveListener.css'
+import "./ActiveListener.css";
+import spotifyLogo from "../assets/spotify-logo.png";
 
 const ActiveListener = ({ user, setCurrentUserTrack }) => {
   // Favorites state (persisted in localStorage)
@@ -43,8 +44,8 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
   console.log("this is user--->", user)
   // console.log("this is user from Nowplaying--->", user)
   const [track, setTrack] = useState(null);
-  console.log("this is track--->", track)
-  // const [error, setError] = useState(null);
+  console.log("this is track--->", track);
+  const [error, setError] = useState(null);
 
   const [activeSession, setActiveSession] = useState(null);
   // console.log("This is active session", activeSession)
@@ -63,7 +64,7 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
   useEffect(() => {
     const fetchCurrentTrack = async () => {
       try {
-        const { data } = await axios.get("/api/spotify/current-track")
+        const { data } = await axios.get("/api/spotify/current-track");
 
         if (!aliveRef.current) return;
 
@@ -101,14 +102,14 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     };
   }, [setCurrentUserTrack]);
 
-  // 
+  //
   // Sync a session whenever song_id OR user changes
   //   - If no track -> stop existing session (if any) and clear ref
   //   - If track   -> stop old (if any), then create a new session
-  // 
+  //
 
   useEffect(() => {
-    console.log("Entered useEffect for syncListeningSession")
+    console.log("Entered useEffect for syncListeningSession");
     const syncListeningSession = async () => {
       // console.log("This is user ID --->", user.id)
       if (!user?.id) return;
@@ -118,7 +119,7 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
         // if there is no track playing stop and clear then leave and do nothing
         if (!track) {
           if (openSessionIdRef.current) {
-            console.log("ending any pending session")
+            console.log("ending any pending session");
             await axios.patch(
               "/api/listeners",
               {
@@ -138,22 +139,19 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
 
         // if track exist end old session first if any on memory
         if (openSessionIdRef.current) {
-          console.log("found track closing old")
-          await axios.patch(
-            "/api/listeners",
-            { status: "stopped", id: openSessionIdRef.current },
-          );
+          console.log("found track closing old");
+          await axios.patch("/api/listeners", {
+            status: "stopped",
+            id: openSessionIdRef.current,
+          });
         }
 
         // create a new session for this track
-        const newListeningSession = await axios.post(
-          "/api/listeners",
-          {
-            status: "playing",
-            song_id: track.song_id,
-            ended_at: null,
-          },
-        );
+        const newListeningSession = await axios.post("/api/listeners", {
+          status: "playing",
+          song_id: track.song_id,
+          ended_at: null,
+        });
 
         setActiveSession(newListeningSession.data);
         openSessionIdRef.current = newListeningSession.data.id;
@@ -166,18 +164,16 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     syncListeningSession();
   }, [track?.song_id, user?.id]);
 
-
-
   // end sessin on unmount
   useEffect(() => {
     return () => {
       if (openSessionIdRef.current) {
         axios
-          .patch(
-            "/api/listeners",
-            { id: openSessionIdRef.current, status: "stopped" },
-          )
-          .catch(() => { });
+          .patch("/api/listeners", {
+            id: openSessionIdRef.current,
+            status: "stopped",
+          })
+          .catch(() => {});
       }
     };
   }, []);
@@ -229,7 +225,6 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
     fetchAllActiveListeners();
   }, [activeSession?.id, fetchAllActiveListeners]);
 
-
   // if (error)
   //   return <p style={{ textAlign: "center", marginTop: "40px" }}>{error}</p>;
   // if (!track)
@@ -273,5 +268,5 @@ const ActiveListener = ({ user, setCurrentUserTrack }) => {
       </div>
     </main>
   );
-}
+};
 export default ActiveListener;

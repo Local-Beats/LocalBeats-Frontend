@@ -1,21 +1,8 @@
-/* Outer wrapper for Active Listeners */
-.active-listener-wrapper {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 16px;
-    box-sizing: border-box;
-}
-
-/* Header */
 .active-listener-header {
-    margin: 0 0 1rem;
+    margin: .7rem;
     text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
 }
 
-/* Card list container */
 .active-listener-cards {
         display: flex;
         padding: .3rem;

@@ -34,7 +34,10 @@ const LandingPage = ({ setUser }) => {
             console.warn("No user returned from /auth/me");
           }
         } catch (error) {
-          console.error("Error verifying session:", error.response?.data || error.message);
+          console.error(
+            "Error verifying session:",
+            error.response?.data || error.message
+          );
         }
       }
     };
@@ -43,23 +46,30 @@ const LandingPage = ({ setUser }) => {
 
   return (
     <div className="landing-spotify-container">
-      <img
-        src={require("../assets/LocalBeats.png")}
-        alt="LocalBeats Logo"
-        className="localbeats-main-logo"
-      />
+      <div className="localbeats-box">
+        <img
+          src={require("../assets/Local-Beats.png")}
+          alt="LocalBeats Logo"
+          className="localbeats-main-logo"
+        />
+        {/* <div className="localbeats-headline">LocalBeats</div> */}
+      </div>
+
       <div className="landing-headline">Discover What NYC is Vibing To!</div>
-      <div className="login-title">Login with Spotify</div>
       <button
         className="spotify-logo-btn"
-        onClick={() => loginWithRedirect({
-          authorizationParams: {
-            prompt: "login",
-          },
-          connection: "spotify-custom",
-          prompt: "consent",
-          scope: "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access"
-        })}
+        role="button"
+        onClick={() =>
+          loginWithRedirect({
+            authorizationParams: {
+              prompt: "login",
+            },
+            connection: "spotify-custom",
+            prompt: "consent",
+            scope:
+              "user-read-email user-read-private user-read-playback-state user-read-currently-playing offline_access",
+          })
+        }
         aria-label="Login with Spotify"
       >
         <img
@@ -67,6 +77,7 @@ const LandingPage = ({ setUser }) => {
           alt="Log in with Spotify"
           className="spotify-logo-img"
         />
+        <div className="login-title">Try it now with Spotify</div>
       </button>
     </div>
   );
