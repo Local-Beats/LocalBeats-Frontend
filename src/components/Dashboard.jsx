@@ -9,6 +9,7 @@ import "./Dashboard.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import MapIcon from "@mui/icons-material/Map";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 import ReactDOMServer from "react-dom/server";
 import "./ListenerCard.css";
 import OtherUsersBeet from "../assets/Other_users_beet.png";

@@ -291,7 +291,7 @@
 .dashboard-bubble-btn {
     position: fixed;
     left: 50%;
-    bottom: 15px;
+    bottom: 65px;
     transform: translateX(-50%);
     background: #434242;
     color: lightgreen;
